@@ -1,0 +1,38 @@
+.font-display {
+  font-family: var(--font-plus-jakarta-sans, system-ui);
+}
+
+.font-body {
+  font-family: var(--font-roboto, serif);
+}
+
+.text-caption {
+  font-size: var(--text-caption);
+  line-height: var(--text-xs--line-height);
+  color: var(--color-subtle-foreground);
+}
+
+.control-text-sm {
+  font-size: var(--text-sm);
+  line-height: var(--tw-leading-none);
+}
+.control-text-md {
+  font-size: var(--text-sm);
+  line-height: var(--tw-leading-none);
+}
+.control-text-lg {
+  font-size: var(--text-base);
+  line-height: var(--tw-leading-none);
+}
+.compact-text-sm {
+  font-size: var(--text-xs);
+  line-height: var(--tw-leading-none);
+}
+.compact-text-md {
+  font-size: var(--text-xs);
+  line-height: var(--tw-leading-none);
+}
+.compact-text-lg {
+  font-size: var(--text-sm);
+  line-height: var(--tw-leading-none);
+}

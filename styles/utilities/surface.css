@@ -1,0 +1,71 @@
+/*
+====================================
+SURFACE - BACKGROUND
+==================================== 
+*/
+
+.surface-background {
+  background-color: theme("colors.background");
+  color: theme("colors.foreground");
+  border-color: theme("colors.border");
+}
+
+/*
+====================================
+SURFACE - CARD
+==================================== 
+*/
+
+.surface-card {
+  background-color: theme("colors.card");
+  color: theme("colors.foreground");
+  border-color: theme("colors.border");
+}
+
+/*
+====================================
+SURFACE - POPOVER
+==================================== 
+*/
+
+.surface-popover {
+  background-color: theme("colors.popover");
+  color: theme("colors.foreground");
+  border-color: theme("colors.border");
+}
+
+/*
+====================================
+SURFACE - SIDEBAR
+==================================== 
+*/
+
+.surface-sidebar {
+  background-color: theme("colors.sidebar");
+  color: theme("colors.foreground");
+  border-color: theme("colors.border");
+}
+
+/*
+====================================
+SURFACE - MUTED
+==================================== 
+*/
+
+.surface-muted {
+  background-color: theme("colors.muted");
+  color: theme("colors.foreground");
+  border-color: theme("colors.card");
+}
+
+/*
+====================================
+SURFACE - OUTLINE
+==================================== 
+*/
+
+.surface-outline {
+  background-color: transparent;
+  color: theme("colors.foreground");
+  border-color: theme("colors.border");
+}

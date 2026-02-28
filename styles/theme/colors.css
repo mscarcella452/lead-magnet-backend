@@ -1,0 +1,95 @@
+@theme {
+  /* Expose color scale as CSS variables */
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-soft-hover: var(--primary-soft-hover);
+  --color-primary-soft-foreground: var(--primary-soft-foreground);
+  --color-primary-text: var(--primary-text);
+  --color-primary-text-hover: var(--primary-text-hover);
+
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-soft-hover: var(--brand-soft-hover);
+  --color-brand-soft-foreground: var(--brand-soft-foreground);
+  --color-brand-text: var(--brand-text);
+  --color-brand-text-hover: var(--brand-text-hover);
+
+  --color-info: var(--info);
+  --color-info-hover: var(--info-hover);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-soft: var(--info-soft);
+  --color-info-soft-hover: var(--info-soft-hover);
+  --color-info-soft-foreground: var(--info-soft-foreground);
+  --color-info-text: var(--info-text);
+  --color-info-text-hover: var(--info-text-hover);
+
+  --color-success: var(--success);
+  --color-success-hover: var(--success-hover);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-soft: var(--success-soft);
+  --color-success-soft-hover: var(--success-soft-hover);
+  --color-success-soft-foreground: var(--success-soft-foreground);
+  --color-success-text: var(--success-text);
+  --color-success-text-hover: var(--success-text-hover);
+
+  --color-warning: var(--warning);
+  --color-warning-hover: var(--warning-hover);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-soft-hover: var(--warning-soft-hover);
+  --color-warning-soft-foreground: var(--warning-soft-foreground);
+  --color-warning-text: var(--warning-text);
+  --color-warning-text-hover: var(--warning-text-hover);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-hover: var(--destructive-hover);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-soft: var(--destructive-soft);
+  --color-destructive-soft-hover: var(--destructive-soft-hover);
+  --color-destructive-soft-foreground: var(--destructive-soft-foreground);
+  --color-destructive-text: var(--destructive-text);
+  --color-destructive-text-hover: var(--destructive-text-hover);
+
+  --color-purple: var(--purple);
+  --color-purple-hover: var(--purple-hover);
+  --color-purple-foreground: var(--purple-foreground);
+  --color-purple-soft: var(--purple-soft);
+  --color-purple-soft-hover: var(--purple-soft-hover);
+  --color-purple-soft-foreground: var(--purple-soft-foreground);
+  --color-purple-text: var(--purple-text);
+  --color-purple-text-hover: var(--purple-text-hover);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--foreground);
+  --color-sidebar-primary: var(--brand);
+  --color-sidebar-primary-foreground: var(--brand-foreground);
+  --color-sidebar-accent: var(--accent);
+  --color-sidebar-accent-foreground: var(--foreground);
+  --color-sidebar-border: var(--border);
+  --color-sidebar-ring: var(--ring);
+
+  --color-overlay: var(--overlay);
+}

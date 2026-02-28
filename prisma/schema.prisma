@@ -1,0 +1,117 @@
+// Prisma schema for MongoDB
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  displayId String       @unique // Short ID for display
+  email     String       @unique
+  name      String?
+  source    LeadSource?
+  campaign  LeadCampaign?
+  status    LeadStatus   @default(NEW)
+  priority  LeadPriority @default(MEDIUM)
+  score     Int?
+  metadata  Json?        // optional phone, company, etc.
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  notes     Note[]
+  activities Activity[]
+
+  @@index([createdAt])
+  @@index([name])
+  @@index([status])
+  @@index([source])
+  @@map("leads")
+}
+
+model Note {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  leadId           String   @db.ObjectId
+  lead             Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  content          String
+  author           String   @default("You") // Default to "You" or "System"
+  isPinned         Boolean  @default(false)
+  pinnedAt         DateTime? // Set when note is pinned, cleared when unpinned
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  contentUpdatedAt DateTime? // Only set when content is edited, null on creation
+
+  @@index([leadId, pinnedAt, createdAt])
+  @@map("notes")
+}
+
+model Activity {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  leadId    String       @db.ObjectId
+  lead      Lead         @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type      ActivityType
+  performedBy String     // Who performed the action, required
+  metadata  Json?        // Additional context for the activity
+  createdAt DateTime     @default(now())
+
+  @@index([leadId, createdAt])
+  @@map("activities")
+}
+
+enum ActivityType {
+  NOTE_ADDED
+  NOTE_UPDATED
+  NOTE_DELETED
+  STATUS_CHANGED
+  LEAD_CREATED
+  LEAD_UPDATED
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  CONVERTED
+  LOST
+}
+
+enum LeadSource {
+  WEBSITE_HOMEPAGE
+  WEBSITE_CONTACT
+  WEBSITE_PRICING
+  WEBSITE_BLOG
+  WEBSITE_DEMO
+  LANDING_PAGE_PROMO
+  GOOGLE_ADS
+  FACEBOOK_AD
+  LINKEDIN_POST
+  TWITTER_AD
+  EMAIL_CAMPAIGN
+  WEBINAR
+  REFERRAL
+  PARTNER_REFERRAL
+  ORGANIC_SEARCH
+  DIRECT
+}
+
+enum LeadCampaign {
+  LOCAL_GYM_WEBSITE_REDESIGN
+  SPRING_PROMO_2026
+  SUMMER_FITNESS_CHALLENGE
+  EMAIL_NEWSLETTER_SIGNUP
+  FREE_WEBINAR_FEB
+  FACEBOOK_AD_CAMPAIGN
+  GOOGLE_ADS_CAMPAIGN
+  LINKEDIN_OUTREACH
+  PARTNER_PROMO
+  BLOG_DOWNLOAD_PROMO
+}
+
+enum LeadPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}

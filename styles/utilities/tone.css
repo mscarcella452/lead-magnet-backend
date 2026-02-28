@@ -1,0 +1,421 @@
+/*
+====================================
+PRIMARY
+==================================== 
+*/
+
+/* Primary — solid */
+.tone-primary-solid {
+  background-color: theme("colors.primary");
+  color: theme("colors.primary.foreground");
+}
+.tone-primary-solid-hover:hover {
+  background-color: theme("colors.primary.hover");
+}
+
+/* Primary — soft */
+.tone-primary-soft {
+  background-color: theme("colors.primary.soft");
+  color: theme("colors.primary.soft-foreground");
+}
+.tone-primary-soft-badge {
+  background-color: theme("colors.primary.soft.hover");
+  color: theme("colors.primary.soft-foreground");
+}
+.tone-primary-soft-hover:hover {
+  background-color: theme("colors.primary.soft.hover");
+}
+
+/* Primary — outline */
+.tone-primary-outline {
+  background-color: theme("colors.background");
+  border-color: theme("colors.border");
+  color: theme("colors.foreground");
+}
+.tone-primary-outline-popover {
+  background-color: theme("colors.popover");
+  border-color: theme("colors.border");
+  color: theme("colors.popover.foreground");
+}
+.tone-primary-outline-hover:hover {
+  background-color: theme("colors.primary.soft");
+}
+
+/* Primary — ghost */
+.tone-primary-ghost {
+  color: theme("colors.primary.text");
+}
+.tone-primary-ghost-hover:hover {
+  background-color: theme("colors.primary.soft.hover");
+  color: theme("colors.primary.soft-foreground");
+}
+
+/* Primary — text */
+.tone-primary-text {
+  color: theme("colors.primary.text");
+}
+.tone-primary-text-hover:hover {
+  color: theme("colors.primary.text-hover");
+}
+
+/* Primary — ghost-text */
+.tone-primary-ghost-text {
+  color: theme("colors.subtle.foreground");
+}
+.tone-primary-ghost-text-hover:hover {
+  color: theme("colors.primary.text");
+}
+
+/*
+=======================================
+    BRAND
+=======================================
+*/
+
+/* Brand — solid */
+.tone-brand-solid {
+  background-color: theme("colors.brand");
+  color: theme("colors.brand.foreground");
+}
+.tone-brand-solid-hover:hover {
+  background-color: theme("colors.brand.hover");
+}
+
+/* Brand — soft */
+.tone-brand-soft {
+  background-color: theme("colors.brand.soft");
+  color: theme("colors.brand.soft-foreground");
+}
+.tone-brand-soft-hover:hover {
+  background-color: theme("colors.brand.soft-hover");
+}
+
+/* Brand — outline */
+.tone-brand-outline {
+  border-color: theme("colors.brand");
+  color: theme("colors.brand.text");
+}
+.tone-brand-outline-hover:hover {
+  background-color: theme("colors.brand.soft");
+  color: theme("colors.brand.soft-foreground");
+}
+
+/* Brand — ghost */
+.tone-brand-ghost {
+  color: theme("colors.brand.text");
+}
+.tone-brand-ghost-hover:hover {
+  background-color: theme("colors.brand.soft");
+  color: theme("colors.brand.soft-foreground");
+}
+
+/* Brand — text */
+.tone-brand-text {
+  color: theme("colors.brand.text");
+}
+.tone-brand-text-hover:hover {
+  color: theme("colors.brand.text-hover");
+}
+
+/* Brand — ghost-text */
+.tone-brand-ghost-text {
+  color: theme("colors.subtle.foreground");
+}
+.tone-brand-ghost-text-hover:hover {
+  color: theme("colors.brand.text");
+}
+
+/*
+=======================================
+INFO
+=======================================
+*/
+
+/* Info — solid */
+.tone-info-solid {
+  background-color: theme("colors.info");
+  color: theme("colors.info.foreground");
+}
+.tone-info-solid-hover:hover {
+  background-color: theme("colors.info.hover");
+}
+
+/* Info — soft */
+.tone-info-soft {
+  background-color: theme("colors.info.soft");
+  color: theme("colors.info.soft-foreground");
+}
+.tone-info-soft-hover:hover {
+  background-color: theme("colors.info.soft-hover");
+}
+
+/* Info — outline */
+.tone-info-outline {
+  border-color: theme("colors.info.text");
+  color: theme("colors.info.text");
+}
+.tone-info-outline-hover:hover {
+  background-color: theme("colors.info.soft");
+  color: theme("colors.info.soft-foreground");
+}
+
+/* Info — ghost */
+.tone-info-ghost {
+  color: theme("colors.info.text");
+}
+.tone-info-ghost-hover:hover {
+  background-color: theme("colors.info.soft");
+  color: theme("colors.info.soft-foreground");
+}
+
+/* Info — text */
+.tone-info-text {
+  color: theme("colors.info.text");
+}
+.tone-info-text-hover:hover {
+  color: theme("colors.info.text-hover");
+}
+
+/* Info — ghost-text */
+.tone-info-ghost-text {
+  color: theme("colors.subtle.foreground");
+}
+.tone-info-ghost-text-hover:hover {
+  color: theme("colors.info.text");
+}
+
+/*
+=======================================
+SUCCESS
+=======================================
+*/
+
+/* Success — solid */
+.tone-success-solid {
+  background-color: theme("colors.success");
+  color: theme("colors.success.foreground");
+}
+.tone-success-solid-hover:hover {
+  background-color: theme("colors.success.hover");
+}
+
+/* Success — soft */
+.tone-success-soft {
+  background-color: theme("colors.success.soft");
+  color: theme("colors.success.soft-foreground");
+}
+.tone-success-soft-hover:hover {
+  background-color: theme("colors.success.soft-hover");
+}
+
+/* Success — outline */
+.tone-success-outline {
+  border-color: theme("colors.success.text");
+  color: theme("colors.success.text");
+}
+.tone-success-outline-hover:hover {
+  background-color: theme("colors.success.soft");
+  color: theme("colors.success.soft-foreground");
+}
+
+/* Success — ghost */
+.tone-success-ghost {
+  color: theme("colors.success.text");
+}
+.tone-success-ghost-hover:hover {
+  background-color: theme("colors.success.soft");
+  color: theme("colors.success.soft-foreground");
+}
+
+/* Success — text */
+.tone-success-text {
+  color: theme("colors.success.text");
+}
+.tone-success-text-hover:hover {
+  color: theme("colors.success.text-hover");
+}
+
+/* Success — ghost-text */
+.tone-success-ghost-text {
+  color: theme("colors.subtle.foreground");
+}
+.tone-success-ghost-text-hover:hover {
+  color: theme("colors.success.text");
+}
+
+/*
+=======================================
+WARNING
+=======================================
+*/
+
+/* Warning — solid */
+.tone-warning-solid {
+  background-color: theme("colors.warning");
+  color: theme("colors.warning.foreground");
+}
+.tone-warning-solid-hover:hover {
+  background-color: theme("colors.warning.hover");
+}
+
+/* Success — soft */
+.tone-warning-soft {
+  background-color: theme("colors.warning.soft");
+  color: theme("colors.warning.soft-foreground");
+}
+.tone-warning-soft-hover:hover {
+  background-color: theme("colors.warning.soft-hover");
+}
+
+/* Warning — outline */
+.tone-warning-outline {
+  border-color: theme("colors.warning.text");
+  color: theme("colors.warning.text");
+}
+.tone-warning-outline-hover:hover {
+  background-color: theme("colors.warning.soft");
+  color: theme("colors.warning.soft-foreground");
+}
+
+/* Warning — ghost */
+.tone-warning-ghost {
+  color: theme("colors.warning.text");
+}
+.tone-warning-ghost-hover:hover {
+  background-color: theme("colors.warning.soft");
+  color: theme("colors.warning.soft-foreground");
+}
+
+/* Warning — text */
+.tone-warning-text {
+  color: theme("colors.warning.text");
+}
+.tone-warning-text-hover:hover {
+  color: theme("colors.warning.text-hover");
+}
+
+/* Warning — ghost-text */
+.tone-warning-ghost-text {
+  color: theme("colors.subtle.foreground");
+}
+.tone-warning-ghost-text-hover:hover {
+  color: theme("colors.warning.text");
+}
+
+/*
+=======================================
+DESTRUCTIVE
+=======================================
+*/
+
+/* Destructive — solid */
+.tone-destructive-solid {
+  background-color: theme("colors.destructive");
+  color: theme("colors.destructive.foreground");
+}
+.tone-destructive-solid-hover:hover {
+  background-color: theme("colors.destructive.hover");
+}
+
+/* Destructive — soft */
+.tone-destructive-soft {
+  background-color: theme("colors.destructive.soft");
+  color: theme("colors.destructive.soft-foreground");
+}
+.tone-destructive-soft-hover:hover {
+  background-color: theme("colors.destructive.soft-hover");
+}
+
+/* Destructive — outline */
+.tone-destructive-outline {
+  border-color: theme("colors.destructive.text");
+  color: theme("colors.destructive.text");
+}
+.tone-destructive-outline-hover:hover {
+  background-color: theme("colors.destructive.soft");
+  color: theme("colors.destructive.soft-foreground");
+}
+
+/* Destructive — ghost */
+.tone-destructive-ghost {
+  color: theme("colors.destructive.text");
+}
+.tone-destructive-ghost-hover:hover {
+  background-color: theme("colors.destructive.soft");
+  color: theme("colors.destructive.soft-foreground");
+}
+
+/* Destructive — text */
+.tone-destructive-text {
+  color: theme("colors.destructive.text");
+}
+.tone-destructive-text-hover:hover {
+  color: theme("colors.destructive.text-hover");
+}
+
+/* Destructive — ghost-text */
+.tone-destructive-ghost-text {
+  color: theme("colors.subtle.foreground");
+}
+.tone-destructive-ghost-text-hover:hover {
+  color: theme("colors.destructive.text");
+}
+
+/*
+=======================================
+PURPLE
+=======================================
+*/
+
+/* Purple — solid */
+.tone-purple-solid {
+  background-color: theme("colors.purple");
+  color: theme("colors.purple.foreground");
+}
+.tone-purple-solid-hover:hover {
+  background-color: theme("colors.purple.hover");
+}
+
+/* Purple — soft */
+.tone-purple-soft {
+  background-color: theme("colors.purple.soft");
+  color: theme("colors.purple.soft-foreground");
+}
+.tone-purple-soft-hover:hover {
+  background-color: theme("colors.purple.soft-hover");
+}
+
+/* Purple — outline */
+.tone-purple-outline {
+  border-color: theme("colors.purple.text");
+  color: theme("colors.purple.text");
+}
+.tone-purple-outline-hover:hover {
+  background-color: theme("colors.purple.soft");
+  color: theme("colors.purple.soft-foreground");
+}
+
+/* Purple — ghost */
+.tone-purple-ghost {
+  color: theme("colors.purple.text");
+}
+.tone-purple-ghost-hover:hover {
+  background-color: theme("colors.purple.soft");
+  color: theme("colors.purple.soft-foreground");
+}
+
+/* Purple — text */
+.tone-purple-text {
+  color: theme("colors.purple.text");
+}
+.tone-purple-text-hover:hover {
+  color: theme("colors.purple.text-hover");
+}
+
+/* Purple — ghost-text */
+.tone-purple-ghost-text {
+  color: theme("colors.subtle.foreground");
+}
+.tone-purple-ghost-text-hover:hover {
+  color: theme("colors.purple.text");
+}

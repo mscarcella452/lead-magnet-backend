@@ -1,0 +1,27 @@
+@import "./tokens.css" layer(base);
+@import "./theme/index.css";
+@import "tailwindcss";
+@import "./utilities/index.css" layer(utilities);
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------- */
+/* ---------- Base Layer ---------- */
+@layer base {
+  body {
+    letter-spacing: var(--tracking-normal);
+    overscroll-behavior: none; /* Disable bounce/rubber-band scrolling */
+  }
+
+  html {
+    overscroll-behavior: none;
+    height: 100%;
+    color: var(--foreground);
+    /* scroll-behavior: smooth; */
+  }
+
+  * {
+    overscroll-behavior: none;
+    border-color: var(--border);
+  }
+}
