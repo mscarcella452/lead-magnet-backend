@@ -1,5 +1,3 @@
-import { Lead } from "@prisma/client";
-
 // ============================================================================
 // Constants
 // Unique identifiers for all dialogs — used to open dialogs and map to
@@ -40,8 +38,14 @@ export type DialogEnterFrom = "left" | "right" | "top" | "bottom";
 
 /** Dialog payload types. */
 export type DialogPayloads = {
-  [DIALOG_TYPES.EDIT_LEAD]: { leadId: string };
-  [DIALOG_TYPES.VIEW_LEAD]: { leadId: string };
+  [DIALOG_TYPES.EDIT_LEAD]: {
+    leadId: string;
+    onLeadUpdated: () => void | Promise<void>;
+  };
+  [DIALOG_TYPES.VIEW_LEAD]: {
+    leadId: string;
+    onLeadUpdated: () => void | Promise<void>;
+  };
 };
 
 /** Alert dialog payload types. */
@@ -73,3 +77,19 @@ export type ActiveAlertDialog = {
     payload: AlertDialogPayloads[K];
   };
 }[AlertDialogType];
+
+// ============================================================================
+// Dialog Payload Aliases
+// Convenience types for each dialog's payload — use these in component props
+// instead of the verbose DialogPayloads[typeof DIALOG_TYPES.X] syntax.
+// ============================================================================
+
+// Dialogs
+export type EditLeadDialogPayload =
+  DialogPayloads[typeof DIALOG_TYPES.EDIT_LEAD];
+export type ViewLeadDialogPayload =
+  DialogPayloads[typeof DIALOG_TYPES.VIEW_LEAD];
+
+// Alert Dialogs
+export type DeleteLeadAlertPayload =
+  AlertDialogPayloads[typeof ALERT_DIALOG_TYPES.DELETE_LEAD];

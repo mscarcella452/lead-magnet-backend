@@ -1,20 +1,34 @@
+import React from "react";
 import { cn } from "@/lib/utils/classnames";
 import { ContainerVariantProps } from "@/design-system/lib/types/cva-types";
 import { containerVariants } from "@/design-system/cva-variants/container-variants";
 
-export interface ContainerProps extends ContainerVariantProps {
+interface ContainerPropsBase extends ContainerVariantProps {
   children: React.ReactNode;
   className?: string;
-  as?: keyof JSX.IntrinsicElements;
 }
-const Container = ({
-  children,
-  className,
-  spacing = "section",
-  width,
-  position,
-  as: Component = "div",
-}: ContainerProps) => {
+
+type ContainerProps<T extends keyof JSX.IntrinsicElements = "div"> = ContainerPropsBase &
+  React.ComponentPropsWithoutRef<T> & {
+    as?: T;
+  };
+
+const Container = React.forwardRef<
+  any,
+  ContainerProps<any>
+>(
+  (
+    {
+      children,
+      className,
+      spacing = "section",
+      width,
+      position,
+      as: Component = "div",
+      ...props
+    },
+    ref
+  ) => {
   /**
    * Container defaults are derived from `spacing`.
    *
@@ -37,7 +51,7 @@ const Container = ({
   };
   if (spacing === "section") {
     return (
-      <Component className="@container">
+      <Component ref={ref} className="@container" {...props}>
         <div className={cn(containerVariants(variants), className)}>
           {children}
         </div>
@@ -46,10 +60,13 @@ const Container = ({
   }
 
   return (
-    <Component className={cn(containerVariants(variants), className)}>
+    <Component ref={ref} className={cn(containerVariants(variants), className)} {...props}>
       {children}
     </Component>
   );
-};
+  }
+);
+
+Container.displayName = "Container";
 
 export { Container };

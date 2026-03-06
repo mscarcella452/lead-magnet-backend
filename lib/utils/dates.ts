@@ -73,3 +73,59 @@ export function formatDateForFilename(date: Date = new Date()): string {
 
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
+
+// ============================================================================
+// getStartOfYesterday(baseDate: Date = new Date()): Date
+// Returns the start of yesterday (midnight)
+// ============================================================================
+export function getStartOfYesterday(baseDate: Date = new Date()): Date {
+  return getDaysAgo(1, baseDate);
+}
+
+// ============================================================================
+// getEndOfYesterday(baseDate: Date = new Date()): Date
+// Returns the end of yesterday (23:59:59.999)
+// ============================================================================
+export function getEndOfYesterday(baseDate: Date = new Date()): Date {
+  const date = getStartOfToday(baseDate);
+  date.setMilliseconds(-1);
+  return date;
+}
+
+// ============================================================================
+// getStartOfLastWeek(baseDate: Date = new Date()): Date
+// Returns the start of the previous 7-day period (14 days ago)
+// ============================================================================
+export function getStartOfLastWeek(baseDate: Date = new Date()): Date {
+  return getDaysAgo(14, baseDate);
+}
+
+// ============================================================================
+// getEndOfLastWeek(baseDate: Date = new Date()): Date
+// Returns the end of the previous 7-day period (start of current week - 1ms)
+// ============================================================================
+export function getEndOfLastWeek(baseDate: Date = new Date()): Date {
+  const date = getStartOfWeek(baseDate);
+  date.setMilliseconds(-1);
+  return date;
+}
+
+// ============================================================================
+// getStartOfLastMonth(baseDate: Date = new Date()): Date
+// Returns the start of the previous calendar month
+// ============================================================================
+export function getStartOfLastMonth(baseDate: Date = new Date()): Date {
+  const date = new Date(baseDate);
+  return new Date(date.getFullYear(), date.getMonth() - 1, 1);
+}
+
+// ============================================================================
+// getEndOfLastMonth(baseDate: Date = new Date()): Date
+// Returns the end of the previous calendar month (23:59:59.999)
+// ============================================================================
+export function getEndOfLastMonth(baseDate: Date = new Date()): Date {
+  const date = new Date(baseDate);
+  const end = new Date(date.getFullYear(), date.getMonth(), 1);
+  end.setMilliseconds(-1);
+  return end;
+}

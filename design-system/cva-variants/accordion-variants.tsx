@@ -15,6 +15,7 @@ export const accordionVariants = cva("bg-(--accordion-bg)", {
       background: "surface-background",
       card: "surface-card",
       popover: "surface-popover",
+      panel: "surface-panel",
       outline: "border surface-outline",
       dividers: "border-y surface-outline",
     },

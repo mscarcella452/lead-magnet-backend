@@ -6,7 +6,7 @@ import { CONTROL_RADIUS_FIELD_RECORD } from "@/design-system/presets/radius-pres
 // ============================================================================
 export const inputVariants = cva(
   [
-    "bg-input border border-border w-full justify-start text-foreground",
+    "surface-input border w-full justify-start text-foreground",
     "px-3 py-1",
     "file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
     "placeholder:text-muted-foreground",

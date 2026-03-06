@@ -1,10 +1,10 @@
-import { LeadRelations } from "@/types";
+import { LeadWithRelations } from "@/types";
 
 /**
  * In-memory cache for lead with relations.
  * Resets on page refresh, preventing stale data across sessions.
  */
-export const leadWithRelationsCache = new Map<string, LeadRelations>();
+export const leadWithRelationsCache = new Map<string, LeadWithRelations>();
 
 /**
  * Invalidates the cache for a specific lead.

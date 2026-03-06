@@ -1,4 +1,5 @@
 import { Lead, LeadStatus } from "@prisma/client";
+import { UpdateLeadData } from "@/lib/server/write/updateLead";
 
 // ============================================================================
 // Lead Change Tracking Helpers
@@ -25,12 +26,7 @@ export function formatFieldChange(
  */
 export function trackLeadChanges(
   currentLead: Lead,
-  updates: {
-    name?: string;
-    email?: string;
-    source?: string;
-    status?: LeadStatus;
-  },
+  updates: UpdateLeadData,
 ): string[] {
   const changes: string[] = [];
 

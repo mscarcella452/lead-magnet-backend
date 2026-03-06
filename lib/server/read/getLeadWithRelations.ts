@@ -21,6 +21,7 @@ export async function getLeadWithRelations(
         ],
       },
       activities: { orderBy: { createdAt: "desc" } },
+      leadMagnet: true,
     },
   });
   return lead;

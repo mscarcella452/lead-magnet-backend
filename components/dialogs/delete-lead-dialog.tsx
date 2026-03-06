@@ -15,12 +15,12 @@ import {
 
 import { Button } from "@/components/ui/controls";
 import { Trash2 } from "lucide-react";
-import { AlertDialogPayloads, ALERT_DIALOG_TYPES } from "@/types/ui/dialog";
+import type { DeleteLeadAlertPayload } from "@/types/ui/dialog";
 
 export function DeleteLeadDialog({
   leadId,
   onConfirm,
-}: AlertDialogPayloads[typeof ALERT_DIALOG_TYPES.DELETE_LEAD]) {
+}: DeleteLeadAlertPayload) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   // const handleDelete = async () => {

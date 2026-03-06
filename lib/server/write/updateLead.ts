@@ -1,16 +1,14 @@
 // /lib/server/write/updateLead.ts
 import "server-only";
-import { Lead, LeadSource, LeadStatus } from "@prisma/client";
+import { Lead } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { trackLeadChanges } from "@/lib/helpers/lead-changes";
 import { ActivityType } from "@prisma/client";
+import { LeadMetadataUpdate } from "@/types/lead-fields";
 
-export interface UpdateLeadData {
-  name?: string;
-  email?: string;
-  source?: LeadSource;
-  status?: LeadStatus;
-}
+export type UpdateLeadData = Partial<
+  Pick<Lead, "name" | "email" | "source" | "status" | "priority" | "metadata">
+>;
 
 // ============================================================================
 // updateLead(id: string, data: UpdateLeadData): Promise<Lead>
@@ -43,6 +41,10 @@ export async function updateLead(
         ...(data.email && { email: data.email }),
         ...(data.source !== undefined && { source: data.source }),
         ...(data.status && { status: data.status }),
+        ...(data.priority && { priority: data.priority }),
+        ...(data.metadata && {
+          metadata: data.metadata as LeadMetadataUpdate,
+        }),
       },
     }),
     // Only log activity if something actually changed

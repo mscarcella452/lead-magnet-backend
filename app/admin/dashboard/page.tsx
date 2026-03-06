@@ -1,76 +1,94 @@
-import { redirect } from "next/navigation";
+// ============================================================================
+// Dashboard Page
+// ============================================================================
 
+import { redirect } from "next/navigation";
 import { checkAuth } from "@/lib/auth";
 import { Inset, Container } from "@/components/ui/layout/containers";
-import { DashboardHeader } from "./dashboard-header";
-import { LeadsTableSection } from "@/app/admin/dashboard/leads-table-section";
-import { getLeadsAction } from "@/lib/server/actions/read/getLeadsAction";
-import { SortField, SortOrder } from "@/lib/server/read/getLeads";
-import { getDashboardStatsAction } from "@/lib/server/actions/read/getDashboardStatsAction";
-import { StatsCards } from "@/app/admin/dashboard/StatsCards";
+import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { StatsCards } from "@/components/dashboard/stats-cards";
+import { LeadsPanel } from "@/components/leads/leads-panel";
+import { getTableLeadsAction } from "@/lib/server/actions/read/getTableLeadsAction";
+import { getDashboardStats } from "@/lib/server/read/getDashboardStats";
+import type { SortField, SortOrder } from "@/lib/server/read/getTableLeads";
 
-type PageProps = {
+// ============================================================================
+// Types
+// ============================================================================
+
+interface PageProps {
   searchParams: Promise<{
     page?: string;
     limit?: string;
     sortBy?: string;
     sortOrder?: string;
   }>;
-};
+}
+
+async function safeCall<T>(fn: () => Promise<T>) {
+  try {
+    return { success: true as const, data: await fn() };
+  } catch {
+    return { success: false as const };
+  }
+}
+
+// ============================================================================
+// Helpers
+// ============================================================================
+
+function parseSearchParams(params: Awaited<PageProps["searchParams"]>) {
+  const page = Math.max(1, parseInt(params.page ?? "1"));
+  const limit = Math.max(1, parseInt(params.limit ?? "10"));
+  return {
+    page,
+    limit,
+    offset: (page - 1) * limit,
+    sortBy: (params.sortBy as SortField) ?? "createdAt",
+    sortOrder: (params.sortOrder as SortOrder) ?? "desc",
+  };
+}
+
+// ============================================================================
+// Page
+// ============================================================================
 
 export default async function DashboardPage({ searchParams }: PageProps) {
-  // Check authentication
   const isAuthenticated = await checkAuth();
-  if (!isAuthenticated) {
-    redirect("/admin/login");
-  }
+  if (!isAuthenticated) redirect("/admin/login");
 
-  const params = await searchParams;
+  const { page, ...tableParams } = parseSearchParams(await searchParams);
 
-  const page = parseInt(params.page ?? "1");
-  const limit = parseInt(params.limit ?? "10");
-  const offset = (page - 1) * limit;
-  const sortBy = (params.sortBy as SortField) ?? "createdAt";
-  const sortOrder = (params.sortOrder as SortOrder) ?? "desc";
-
-  const leadsResult = await getLeadsAction({
-    limit,
-    offset,
-    sortBy,
-    sortOrder,
-  });
-
-  const stats = await getDashboardStatsAction();
-
-  if (!leadsResult.success) {
-    return <div>Error loading leads</div>;
-  }
-
-  if (!stats.success) {
-    return <div>Error loading stats</div>;
-  }
+  // Parallel fetches — don't await sequentially
+  const [leadsResult, statsResult] = await Promise.all([
+    getTableLeadsAction(tableParams),
+    safeCall(getDashboardStats),
+  ]);
 
   return (
-    <>
-      <Inset as="main" variant="content">
-        <Container spacing="section" width="constrained">
-          <Container spacing="content" position="start" width="full">
-            <DashboardHeader />
-
-            <StatsCards stats={stats.data} />
-          </Container>
-          <LeadsTableSection
-            initialLeadData={{
-              initialLimit: limit,
-              initialPage: page,
-              initialSortBy: sortBy,
-              initialSortOrder: sortOrder,
-              total: leadsResult.data.total,
-              initialLeads: leadsResult.data.leads,
-            }}
+    <Inset as="main" variant="content">
+      <Container spacing="section" width="constrained">
+        <Container spacing="content" position="start" width="full">
+          <DashboardHeader />
+          <StatsCards
+            stats={statsResult.success ? statsResult.data : undefined}
+            error={statsResult.success ? undefined : "Stats unavailable"}
           />
         </Container>
-      </Inset>
-    </>
+
+        <LeadsPanel
+          {...(leadsResult.success
+            ? {
+                initialLeadData: {
+                  leads: leadsResult.data.leads,
+                  total: leadsResult.data.total,
+                  page,
+                  ...tableParams,
+                },
+              }
+            : { error: "Could not load leads" })}
+        />
+      </Container>
+    </Inset>
   );
 }

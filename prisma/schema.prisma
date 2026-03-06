@@ -9,26 +9,42 @@ datasource db {
 }
 
 model Lead {
-  id        String       @id @default(auto()) @map("_id") @db.ObjectId
-  displayId String       @unique // Short ID for display
-  email     String       @unique
-  name      String?
-  source    LeadSource?
-  campaign  LeadCampaign?
-  status    LeadStatus   @default(NEW)
-  priority  LeadPriority @default(MEDIUM)
-  score     Int?
-  metadata  Json?        // optional phone, company, etc.
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-  notes     Note[]
-  activities Activity[]
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  displayId      String       @unique // Short ID for display
+  email          String       @unique
+  name           String?
+  source         String?
+  campaign       String?
+  status         LeadStatus   @default(NEW)
+  priority       LeadPriority @default(MEDIUM)
+  score          Int?
+  metadata       Json?        // dynamic field values per lead magnet
+  leadMagnetId   String?      @db.ObjectId
+  leadMagnet     LeadMagnet?  @relation("LeadMagnetLeads", fields: [leadMagnetId], references: [id], onDelete: SetNull)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  notes          Note[]
+  activities     Activity[]
 
   @@index([createdAt])
   @@index([name])
   @@index([status])
   @@index([source])
+  @@index([leadMagnetId])
   @@map("leads")
+}
+
+model LeadMagnet {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  fields      Json     // array of form field definitions
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  leads       Lead[]   @relation("LeadMagnetLeads")
+
+  @@index([createdAt])
+  @@map("lead_magnets")
 }
 
 model Note {
@@ -77,37 +93,6 @@ enum LeadStatus {
   LOST
 }
 
-enum LeadSource {
-  WEBSITE_HOMEPAGE
-  WEBSITE_CONTACT
-  WEBSITE_PRICING
-  WEBSITE_BLOG
-  WEBSITE_DEMO
-  LANDING_PAGE_PROMO
-  GOOGLE_ADS
-  FACEBOOK_AD
-  LINKEDIN_POST
-  TWITTER_AD
-  EMAIL_CAMPAIGN
-  WEBINAR
-  REFERRAL
-  PARTNER_REFERRAL
-  ORGANIC_SEARCH
-  DIRECT
-}
-
-enum LeadCampaign {
-  LOCAL_GYM_WEBSITE_REDESIGN
-  SPRING_PROMO_2026
-  SUMMER_FITNESS_CHALLENGE
-  EMAIL_NEWSLETTER_SIGNUP
-  FREE_WEBINAR_FEB
-  FACEBOOK_AD_CAMPAIGN
-  GOOGLE_ADS_CAMPAIGN
-  LINKEDIN_OUTREACH
-  PARTNER_PROMO
-  BLOG_DOWNLOAD_PROMO
-}
 
 enum LeadPriority {
   LOW
@@ -115,3 +100,4 @@ enum LeadPriority {
   HIGH
   URGENT
 }
+

@@ -2,10 +2,10 @@
 // Dialog Modal Layout Presets
 // ============================================================================
 const modal = {
-  default: "relative self-center mx-auto max-h-[95vh] w-[min(90vw,40rem)]",
+  default: "relative my-auto mx-auto max-h-[95vh] w-[min(90vw,40rem)]",
   drawerModal:
-    //   ***** make sure DialogContent component has @container for contianer queries to work *****
-    "@max-lg:self-end @max-lg:w-screen @max-lg:rounded-b-none @max-lg:rounded-x-none",
+    //   ***** make sure DialogContent fixed wrapper motion.div component has @container for contianer queries to work *****
+    "@max-lg:mt-auto @max-lg:mb-0 @max-lg:w-screen @max-lg:rounded-b-none @max-lg:rounded-x-none  ",
 };
 
 // ============================================================================
@@ -14,10 +14,10 @@ const modal = {
 const drawer = {
   enterY: "w-screen max-h-[95vh]",
   enterX: "h-screen max-w-xl",
-  bottom: "self-end rounded-b-none rounded-x-none",
-  top: "self-start rounded-t-none rounded-x-none ",
-  left: "self-stretch mr-auto rounded-l-none rounded-y-none",
-  right: "self-stretch ml-auto rounded-r-none rounded-y-none",
+  bottom: "mt-auto rounded-b-none rounded-x-none",
+  top: "mb-auto rounded-t-none rounded-x-none ",
+  left: "mr-auto rounded-l-none rounded-y-none",
+  right: "ml-auto rounded-r-none rounded-y-none",
 };
 
 // ============================================================================

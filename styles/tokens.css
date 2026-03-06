@@ -8,8 +8,9 @@
   --background: oklch(98.7% 0 0);
   --foreground: oklch(30% 0 0);
   --popover: oklch(99.7% 0 0);
+  --panel: oklch(97.7% 0 0);
   --card: oklch(95.7% 0 0);
-  --sidebar: oklch(96.7% 0 0);
+  --sidebar: oklch(97.7% 0 0);
   --muted: oklch(92.7% 0 0);
   --accent: oklch(93.7% 0 0);
   --muted-foreground: oklch(42% 0 0);
@@ -17,7 +18,7 @@
 
   /* ------Core UI tokens------ */
   --border: oklch(90.7% 0 0);
-  --input: oklch(97.7% 0 0);
+  --input: oklch(96.7% 0 0);
   --ring: oklch(55% 0.1632 253.6);
 
   /* ------Functional colors------ */
@@ -29,7 +30,7 @@
   --primary: oklch(34% 0 0);
   /* --primary: oklch(30% 0 0); */
   --primary-foreground: oklch(98.81% 0 0);
-  --primary-hover: oklch(37% 0 0);
+  --primary-hover: oklch(50% 0 0);
   /* SUBTLE/SURFACE variant */
   --primary-soft: oklch(93.7% 0 0);
   --primary-soft-foreground: oklch(30% 0 0);
@@ -168,6 +169,7 @@
   --background: oklch(22% 0 0);
   --foreground: oklch(94% 0 0);
   --popover: oklch(27% 0 0);
+  --panel: oklch(24% 0 0);
   --card: oklch(25% 0 0);
   --sidebar: oklch(27% 0 0);
   --muted: oklch(20% 0 0);

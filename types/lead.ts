@@ -1,4 +1,4 @@
-import { Lead as PrismaLead, Note as PrismaNote, Activity } from '@prisma/client';
+import { Lead as PrismaLead, Note as PrismaNote, Activity, LeadMagnet } from '@prisma/client';
 
 /**
  * Lead Types
@@ -17,10 +17,11 @@ export type LeadWithNotes = PrismaLead & {
   notes: Note[];
 };
 
-// Lead with all relations (notes and activities)
+// Lead with all relations (notes, activities, and leadMagnet)
 export type LeadWithRelations = PrismaLead & {
   notes: Note[];
   activities: Activity[];
+  leadMagnet: LeadMagnet | null;
 };
 
 // Only the relations (notes and activities) without the lead

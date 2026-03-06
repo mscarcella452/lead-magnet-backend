@@ -6,73 +6,80 @@ import { DIALOG_LAYOUT_VARIANTS } from "@/design-system/presets/dialog-presets";
 // Dialog Layout Variants
 // ============================================================================
 
-export const dialogLayoutVariants = cva("relative  w-full", {
-  variants: {
-    layout: {
-      modal: [DIALOG_LAYOUT_VARIANTS.modal, "max-w-screen"],
-      responsiveModal: [DIALOG_LAYOUT_VARIANTS.responsiveModal, "max-w-screen"],
-      drawer: "",
-      screen: DIALOG_LAYOUT_VARIANTS.screen,
+export const dialogLayoutVariants = cva(
+  "relative w-full overflow-hidden flex flex-col",
+  {
+    variants: {
+      variant: {
+        background: "surface-background",
+        card: "surface-card",
+        popover: "surface-popover",
+        panel: "surface-panel",
+      },
+      layout: {
+        modal: [DIALOG_LAYOUT_VARIANTS.modal, "max-w-screen"],
+        responsiveModal: [
+          DIALOG_LAYOUT_VARIANTS.responsiveModal,
+          "max-w-screen",
+        ],
+        drawer: "",
+        screen: DIALOG_LAYOUT_VARIANTS.screen,
+      },
+
+      enterFrom: {
+        top: "",
+        bottom: "",
+        left: "",
+        right: "",
+      },
+
+      rounded: SURFACE_RADIUS_FIELD_RECORD,
+      border: {
+        true: "border",
+        false: "",
+      },
     },
 
-    enterFrom: {
-      top: "",
-      bottom: "",
-      left: "",
-      right: "",
-    },
+    compoundVariants: [
+      // drawer positions
+      {
+        layout: "drawer",
+        enterFrom: "bottom",
+        className: DIALOG_LAYOUT_VARIANTS.drawer.bottom,
+      },
+      {
+        layout: "drawer",
+        enterFrom: "top",
+        className: DIALOG_LAYOUT_VARIANTS.drawer.top,
+      },
+      {
+        layout: "drawer",
+        enterFrom: "left",
+        className: DIALOG_LAYOUT_VARIANTS.drawer.left,
+      },
+      {
+        layout: "drawer",
+        enterFrom: "right",
+        className: DIALOG_LAYOUT_VARIANTS.drawer.right,
+      },
+    ],
 
-    rounded: SURFACE_RADIUS_FIELD_RECORD,
-    border: {
-      true: "border",
-      false: "",
-    },
-  },
-
-  compoundVariants: [
-    // drawer positions
-    {
-      layout: "drawer",
+    defaultVariants: {
+      layout: "modal",
       enterFrom: "bottom",
-      className: DIALOG_LAYOUT_VARIANTS.drawer.bottom,
+      rounded: "lg",
+      border: true,
+      variant: "background",
     },
-    {
-      layout: "drawer",
-      enterFrom: "top",
-      className: DIALOG_LAYOUT_VARIANTS.drawer.top,
-    },
-    {
-      layout: "drawer",
-      enterFrom: "left",
-      className: DIALOG_LAYOUT_VARIANTS.drawer.left,
-    },
-    {
-      layout: "drawer",
-      enterFrom: "right",
-      className: DIALOG_LAYOUT_VARIANTS.drawer.right,
-    },
-  ],
-
-  defaultVariants: {
-    layout: "modal",
-    enterFrom: "bottom",
-    rounded: "lg",
-    border: true,
   },
-});
+);
 
 // ============================================================================
 // Dialog Content Variants
 // ============================================================================
 
-export const dialogContentVariants = cva("", {
+export const dialogContentVariants = cva("overflow-y-auto flex-1 min-h-0", {
   variants: {
-    variant: {
-      background: "surface-background",
-      card: "surface-card",
-      popover: "surface-popover",
-    },
-
     spacing: {
       none: "",
       sm: "px-dialog-x-sm py-dialog-y-sm space-y-dialog-y-xs",
@@ -86,6 +93,5 @@ export const dialogContentVariants = cva("", {
 
   defaultVariants: {
     spacing: "md",
-    variant: "background",
   },
 });

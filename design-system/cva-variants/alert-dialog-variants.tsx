@@ -14,6 +14,7 @@ export const alertDialogVariants = cva(
         background: "surface-background",
         card: "surface-card",
         popover: "surface-popover",
+        panel: "surface-panel",
       },
 
       spacing: {

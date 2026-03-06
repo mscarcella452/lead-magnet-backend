@@ -96,7 +96,7 @@ const DialogContent = React.forwardRef<
         {...currentMotion}
         transition={{ duration: 0.4 }}
         onAnimationComplete={onEntranceComplete}
-        className="fixed flex inset-0 z-50 @container"
+        className="fixed flex inset-0 z-50 @container "
       >
         <DialogPrimitive.Content
           ref={ref}
@@ -108,13 +108,12 @@ const DialogContent = React.forwardRef<
           {...props}
           className={cn(
             dialogLayoutVariants({
+              variant,
               enterFrom,
               layout,
               rounded,
               border,
             }),
-
-            "overflow-hidden relative grid",
             className,
           )}
         >
@@ -122,10 +121,8 @@ const DialogContent = React.forwardRef<
             ref={resolvedContentRef}
             className={cn(
               dialogContentVariants({
-                variant,
                 spacing,
               }),
-              "overflow-y-auto h-full",
               contentClassName,
             )}
           >

@@ -10,6 +10,7 @@ import {
   dialogLayoutVariants,
 } from "@/design-system/cva-variants/dialog-variants";
 import { inputVariants } from "@/design-system/cva-variants/input-variants";
+import { selectTriggerVariants } from "@/design-system/cva-variants/select-variants";
 import { controlVariants } from "@/design-system/cva-variants/control-variants";
 import { VariantProps } from "class-variance-authority";
 
@@ -67,3 +68,10 @@ export type DialogLayoutVariantProps = VariantProps<
 // Input Variants
 // ============================================================================
 export type InputVariantProps = VariantProps<typeof inputVariants>;
+
+// ============================================================================
+// Select Trigger Variants
+// ============================================================================
+export type SelectTriggerVariantProps = VariantProps<
+  typeof selectTriggerVariants
+>;

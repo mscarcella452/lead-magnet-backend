@@ -18,6 +18,7 @@ export const cardVariants = cva(
         card: "surface-card",
         popover: "surface-popover",
         muted: "surface-muted",
+        panel: "surface-panel",
         outline: "border surface-outline",
       },
       size: {

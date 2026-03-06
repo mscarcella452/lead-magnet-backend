@@ -3,7 +3,7 @@ import "@/styles/globals.css";
 import { cn } from "@/lib/utils/classnames";
 import { plusJakartaSans, roboto } from "./fonts";
 import { AppProvider } from "@/components/providers/app-provider";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/feedback/sonner";
 
 export const metadata: Metadata = {
   title: "Lead Magnet Backend",
