@@ -3,15 +3,10 @@
 import { useRef } from "react";
 import { DialogContent, DialogTitle } from "@/components/ui/feedback/dialog";
 import { ViewLeadStates } from "@/components/lead-details/view-lead/view-lead-states";
-import { useLeadWithRelations } from "@/components/lead-details/lib/hooks/useLeadWithRelations";
 import type { ViewLeadDialogPayload } from "@/types/ui/dialog";
 
-export function ViewLeadDialog({
-  leadId,
-  onLeadUpdated,
-}: ViewLeadDialogPayload) {
+export function ViewLeadDialog(payload: ViewLeadDialogPayload) {
   const contentRef = useRef<HTMLDivElement>(null);
-  const leadState = useLeadWithRelations(leadId);
 
   return (
     <DialogContent
@@ -26,11 +21,7 @@ export function ViewLeadDialog({
       aria-describedby={undefined}
     >
       <DialogTitle className="sr-only">Lead Details</DialogTitle>
-      <ViewLeadStates
-        leadId={leadId}
-        contentRef={contentRef}
-        onLeadUpdated={onLeadUpdated}
-      />
+      <ViewLeadStates {...payload} contentRef={contentRef} />
     </DialogContent>
   );
 }

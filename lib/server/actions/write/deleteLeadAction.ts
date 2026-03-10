@@ -13,6 +13,9 @@ import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 export async function deleteLeadAction(
   leadIds: string[],
 ): Promise<ActionResult<null>> {
+  if (leadIds.length === 0) {
+    return { success: false, error: "No leads selected" };
+  }
   try {
     await deleteLead(leadIds);
 

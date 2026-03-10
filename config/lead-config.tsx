@@ -1,16 +1,19 @@
 import { LeadStatus, LeadPriority } from "@prisma/client";
 
 // ============================================================================
+// Option Config Type
+// ============================================================================
+
+export interface OptionConfig {
+  label: string;
+  variant: "info" | "warning" | "purple" | "success" | "destructive";
+}
+
+// ============================================================================
 // Status Config
 // ============================================================================
 
-export const STATUS_CONFIG: Record<
-  LeadStatus,
-  {
-    label: string;
-    variant: "info" | "warning" | "purple" | "success" | "destructive";
-  }
-> = {
+export const STATUS_CONFIG: Record<LeadStatus, OptionConfig> = {
   NEW: { label: "New", variant: "info" },
   CONTACTED: { label: "Contacted", variant: "warning" },
   QUALIFIED: { label: "Qualified", variant: "purple" },
@@ -30,13 +33,7 @@ export const STATUS_OPTIONS = [
 // Priority Config
 // ============================================================================
 
-export const PRIORITY_CONFIG: Record<
-  LeadPriority,
-  {
-    label: string;
-    variant: "info" | "warning" | "success" | "destructive";
-  }
-> = {
+export const PRIORITY_CONFIG: Record<LeadPriority, OptionConfig> = {
   LOW: { label: "Low", variant: "info" },
   MEDIUM: { label: "Medium", variant: "success" },
   HIGH: { label: "High", variant: "warning" },
@@ -49,7 +46,3 @@ export const PRIORITY_OPTIONS = [
   "HIGH",
   "URGENT",
 ] satisfies LeadPriority[];
-
-// ============================================================================
-// Source Config
-// ============================================================================

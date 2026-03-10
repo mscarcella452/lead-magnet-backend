@@ -3,8 +3,7 @@
 import { Link, ControlLabel } from "@/components/ui/controls";
 import { usePathname, useRouter } from "next/navigation";
 import { Button, ThemeToggleButton } from "@/components/ui/controls";
-import { LayoutDashboard, LogOut } from "lucide-react";
-import { clearAuthCookie } from "@/lib/auth";
+import { LogOut } from "lucide-react";
 import { Container } from "@/components/ui/layout/containers";
 import { cn } from "@/lib/utils/classnames";
 import { LogoAvatar } from "@/components/brand/logo-avatar";
@@ -32,7 +31,7 @@ export function AdminNav() {
   };
 
   return (
-    <nav className="border-b border-muted bg-card-blur sticky top-0 z-50 px-4 lg:px-8">
+    <nav className="border-b surface-card-blur sticky top-0 z-50 px-4 lg:px-8">
       <div className="mx-auto flex h-16 items-center justify-between">
         <Container
           spacing="group"

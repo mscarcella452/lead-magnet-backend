@@ -6,7 +6,7 @@ import {
 export const CONTROL_RADIUS_FIELD_RECORD: Record<ControlRadiusFields, string> =
   {
     square: "",
-    rounded: "rounded-md",
+    rounded: "rounded-lg",
     pill: "rounded-full",
   };
 

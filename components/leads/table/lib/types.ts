@@ -47,4 +47,5 @@ export interface LeadTableRowProps {
 export interface StatusTableCellProps {
   leadId: string;
   status: LeadStatus;
+  refetch: () => void;
 }

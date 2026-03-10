@@ -6,7 +6,7 @@ import { STATUS_CONFIG } from "@/config/lead-config";
 // Types
 // ============================================================================
 
-interface StatusBadgeProps extends BadgeProps {
+export interface StatusBadgeProps extends BadgeProps {
   status: LeadStatus;
 }
 
@@ -14,7 +14,7 @@ interface StatusBadgeProps extends BadgeProps {
 // STATUSBADGE
 // ============================================================================
 
-const StatusBadge = ({ status, ...props }: StatusBadgeProps) => {
+export const StatusBadge = ({ status, ...props }: StatusBadgeProps) => {
   const config = STATUS_CONFIG[status];
 
   return (
@@ -29,5 +29,3 @@ const StatusBadge = ({ status, ...props }: StatusBadgeProps) => {
     </Badge>
   );
 };
-
-export { StatusBadge, type StatusBadgeProps };

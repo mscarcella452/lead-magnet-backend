@@ -85,12 +85,12 @@ export const controlVariants = cva(
       } satisfies Record<ControlIntent, string>,
 
       size: {
-        xs: "h-compact-h-lg px-compact-x-lg control-text-sm",
+        xs: "h-compact-h-lg px-compact-x-md control-text-sm",
         sm: "h-control-h-sm px-control-x-sm control-text-sm",
         md: "h-control-h-md px-control-x-md control-text-md",
         lg: "h-control-h-lg px-control-x-lg control-text-lg",
         "responsive-sm": [
-          "@max-lg:h-compact-h-lg @max-lg:px-compact-x-lg",
+          "@max-lg:h-compact-h-lg @max-lg:px-compact-x-md",
           "h-control-h-sm px-control-x-sm control-text-sm",
         ],
         "responsive-md": [

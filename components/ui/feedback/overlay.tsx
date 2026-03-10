@@ -16,7 +16,7 @@ export const Overlay = React.forwardRef<
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
       className={cn(
-        "fixed inset-0 z-50 bg-overlay-blur cursor-pointer",
+        "fixed inset-0 z-50 surface-overlay-blur cursor-pointer",
         className,
       )}
       {...props}

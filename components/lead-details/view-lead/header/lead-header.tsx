@@ -15,14 +15,14 @@ import type { LeadWithRelations } from "@/types";
 
 interface LeadHeaderProps {
   lead: LeadWithRelations;
-  onLeadUpdated: () => void;
+  onConfirm: () => void;
 }
 
 // ============================================================================
 // Component
 // ============================================================================
 
-export function LeadHeader({ lead, onLeadUpdated }: LeadHeaderProps) {
+export function LeadHeader({ lead, onConfirm }: LeadHeaderProps) {
   const leadTitle = lead.name ?? `#${lead.displayId}`;
   const formattedDate = formatDate(lead.createdAt);
 
@@ -42,7 +42,7 @@ export function LeadHeader({ lead, onLeadUpdated }: LeadHeaderProps) {
 
           <h2 className="mr-auto text-lg @lg:text-xl truncate">{leadTitle}</h2>
 
-          <LeadHeaderDropdown lead={lead} onLeadUpdated={onLeadUpdated} />
+          <LeadHeaderDropdown lead={lead} onConfirm={onConfirm} />
         </Container>
 
         <StatusBadge

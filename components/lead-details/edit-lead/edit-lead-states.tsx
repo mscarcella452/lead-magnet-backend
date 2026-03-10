@@ -7,21 +7,13 @@ import {
   EditLeadError,
   EditLeadDetails,
 } from "@/components/lead-details/edit-lead/states";
-
-// ============================================================================
-// Types
-// ============================================================================
-
-interface EditLeadStatesProps {
-  leadId: string;
-  onLeadUpdated: () => void;
-}
+import type { EditLeadDialogPayload } from "@/types/ui/dialog";
 
 // ============================================================================
 // Component
 // ============================================================================
 
-export function EditLeadStates({ leadId, onLeadUpdated }: EditLeadStatesProps) {
+export function EditLeadStates({ leadId, onConfirm }: EditLeadDialogPayload) {
   const leadState = useLeadWithRelations(leadId);
 
   return (
@@ -31,7 +23,7 @@ export function EditLeadStates({ leadId, onLeadUpdated }: EditLeadStatesProps) {
         <EditLeadError message={leadState.error} />
       )}
       {leadState.status === "success" && (
-        <EditLeadDetails lead={leadState.lead} onLeadUpdated={onLeadUpdated} />
+        <EditLeadDetails lead={leadState.lead} onConfirm={onConfirm} />
       )}
     </>
   );

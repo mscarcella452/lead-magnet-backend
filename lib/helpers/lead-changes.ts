@@ -1,4 +1,4 @@
-import { Lead, LeadStatus } from "@prisma/client";
+import { Lead, LeadStatus, LeadPriority } from "@prisma/client";
 import { UpdateLeadData } from "@/lib/server/write/updateLead";
 
 // ============================================================================
@@ -49,6 +49,11 @@ export function trackLeadChanges(
       formatFieldChange("status", currentLead.status, updates.status),
     );
   }
+  if (updates.priority && updates.priority !== currentLead.priority) {
+    changes.push(
+      formatFieldChange("priority", currentLead.priority, updates.priority),
+    );
+  }
 
   return changes;
 }
@@ -62,4 +67,14 @@ export function formatStatusChange(
   newStatus: LeadStatus,
 ): string {
   return formatFieldChange("status", oldStatus, newStatus);
+}
+/**
+ * Formats a priority change specifically
+ * Used by updateLeadPriority for consistent messaging
+ */
+export function formatPriorityChange(
+  oldPriority: LeadPriority,
+  newPriority: LeadPriority,
+): string {
+  return formatFieldChange("priority", oldPriority, newPriority);
 }

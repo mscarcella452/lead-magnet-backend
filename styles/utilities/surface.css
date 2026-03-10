@@ -1,11 +1,38 @@
 /*
 ====================================
+SURFACE - Overlay
+==================================== 
+*/
+
+.surface-overlay {
+  background-color: theme("colors.overlay");
+  color: theme("colors.foreground");
+  border-color: theme("colors.border");
+}
+
+.surface-overlay-blur {
+  background-color: color-mix(in oklch, var(--overlay), transparent 50%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: theme("colors.foreground");
+  border-color: theme("colors.border");
+}
+/*
+====================================
 SURFACE - BACKGROUND
 ==================================== 
 */
 
 .surface-background {
   background-color: theme("colors.background");
+  color: theme("colors.foreground");
+  border-color: theme("colors.border");
+}
+
+.surface-background-blur {
+  background-color: color-mix(in oklch, var(--background), transparent 50%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   color: theme("colors.foreground");
   border-color: theme("colors.border");
 }
@@ -19,7 +46,15 @@ SURFACE - CARD
 .surface-card {
   background-color: theme("colors.card");
   color: theme("colors.foreground");
-  border-color: theme("colors.border");
+  border-color: theme("colors.border-soft");
+}
+
+.surface-card-blur {
+  background-color: color-mix(in oklch, var(--card), transparent 50%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: theme("colors.foreground");
+  border-color: theme("colors.border-soft");
 }
 
 /*
@@ -34,6 +69,14 @@ SURFACE - POPOVER
   border-color: theme("colors.border");
 }
 
+.surface-popover-blur {
+  background-color: color-mix(in oklch, var(--popover), transparent 50%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: theme("colors.foreground");
+  border-color: theme("colors.border");
+}
+
 /*
 ====================================
 SURFACE - HYBRID
@@ -43,7 +86,15 @@ SURFACE - HYBRID
 .surface-panel {
   background-color: theme("colors.panel");
   color: theme("colors.foreground");
-  border-color: theme("colors.accent");
+  border-color: theme("colors.border-soft");
+}
+
+.surface-panel-blur {
+  background-color: color-mix(in oklch, var(--panel), transparent 50%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: theme("colors.foreground");
+  border-color: theme("colors.border-soft");
 }
 
 /*
@@ -54,6 +105,14 @@ SURFACE - SIDEBAR
 
 .surface-sidebar {
   background-color: theme("colors.sidebar");
+  color: theme("colors.foreground");
+  border-color: theme("colors.border");
+}
+
+.surface-sidebar-blur {
+  background-color: color-mix(in oklch, var(--sidebar), transparent 50%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   color: theme("colors.foreground");
   border-color: theme("colors.border");
 }
@@ -70,6 +129,14 @@ SURFACE - MUTED
   border-color: theme("colors.card");
 }
 
+.surface-muted-blur {
+  background-color: color-mix(in oklch, var(--muted), transparent 50%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: theme("colors.foreground");
+  border-color: theme("colors.card");
+}
+
 /*
 ====================================
 SURFACE - OUTLINE
@@ -81,6 +148,15 @@ SURFACE - OUTLINE
   color: theme("colors.foreground");
   border-color: theme("colors.border");
 }
+
+.surface-outline-blur {
+  background-color: color-mix(in oklch, var(--outline), transparent 50%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: theme("colors.foreground");
+  border-color: theme("colors.border");
+}
+
 /*
 ====================================
 SURFACE - INPUT
@@ -90,5 +166,13 @@ SURFACE - INPUT
 .surface-input {
   background-color: theme("colors.input");
   color: theme("colors.foreground");
-  border-color: theme("colors.border");
+  border-color: theme("colors.border-soft");
+}
+
+.surface-input-blur {
+  background-color: color-mix(in oklch, var(--input), transparent 50%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: theme("colors.foreground");
+  border-color: theme("colors.border-soft");
 }

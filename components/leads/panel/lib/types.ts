@@ -13,7 +13,3 @@ export interface InitialLeadData {
   sortOrder: SortOrder;
   total: number;
 }
-
-export type LeadsPanelProps =
-  | { error: string; initialLeadData?: never }
-  | { error?: never; initialLeadData: InitialLeadData };

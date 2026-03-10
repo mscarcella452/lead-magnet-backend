@@ -1,5 +1,5 @@
 import { Container } from "@/components/ui/layout/containers";
-import { ExportButton } from "@/components/dashboard/export-button";
+import { ExportAllButton } from "@/components/leads/export/export-all-button";
 
 // ============================================================================
 // Component
@@ -16,7 +16,7 @@ export function DashboardHeader() {
         <h1 className="text-2xl @3xl:text-3xl font-bold tracking-tight text-display truncate">
           Dashboard
         </h1>
-        <ExportButton />
+        <ExportAllButton />
       </Container>
       <p className="text-sm @3xl:text-base text-muted-foreground">
         Track and manage leads from your fitness campaigns

@@ -25,6 +25,7 @@ import type {
 const StatusTableCell = memo(function StatusTableCell({
   leadId,
   status,
+  refetch,
 }: StatusTableCellProps) {
   const onStatusChange = useCallback(
     async (newStatus: LeadStatus) => {
@@ -39,11 +40,13 @@ const StatusTableCell = memo(function StatusTableCell({
       if (result.success) {
         toast.success(`Lead status updated from ${status} to ${newStatus}`);
         invalidateLeadWithRelationsCache(leadId);
+        refetch();
       } else {
         toast.error(result.error);
+        throw new Error(result.error);
       }
     },
-    [leadId, status],
+    [leadId, status, refetch],
   );
 
   return (
@@ -94,7 +97,11 @@ export const LeadTableRow = memo(function LeadTableRow({
         )}
       </TableCell>
 
-      <StatusTableCell leadId={lead.id} status={lead.status} />
+      <StatusTableCell
+        leadId={lead.id}
+        status={lead.status}
+        refetch={refetch}
+      />
 
       <TableCell className="text-xs text-subtle-foreground">
         <time dateTime={new Date(lead.createdAt).toISOString()}>

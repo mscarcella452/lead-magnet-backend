@@ -10,10 +10,15 @@ import { DialogTrigger } from "@/components/ui/feedback/dialog";
 import { AlertDialogTrigger } from "@/components/ui/feedback/alert-dialog";
 import { Button } from "@/components/ui/controls";
 import { Eye, Pencil, MoreHorizontal, Trash2 } from "lucide-react";
-import { DIALOG_TYPES, ALERT_DIALOG_TYPES } from "@/types/ui/dialog";
+import {
+  DIALOG_TYPES,
+  ALERT_DIALOG_TYPES,
+  LeadUpdatePayload,
+} from "@/types/ui/dialog";
 import { getLeadWithRelationsAction } from "@/lib/server/actions/read/getLeadWithRelationsAction";
 import { leadWithRelationsCache } from "@/lib/cache/lead-with-relations-cache";
 import type { ActionsMenuProps } from "@/components/leads/table/lib/types";
+import { DeleteLeadMenuItem } from "@/components/leads/delete/delete-lead-menuItem";
 
 // ============================================================================
 // Actions Menu Component
@@ -30,12 +35,6 @@ export const ActionsMenu = memo(function ActionsMenu({
     if (result.success) {
       leadWithRelationsCache.set(lead.id, result.data); // ✅ full lead
     }
-    // if (result.success) {
-    //   leadWithRelationsCache.set(lead.id, {
-    //     notes: result.data.notes,
-    //     activities: result.data.activities,
-    //   });
-    // }
   }, [lead.id]);
 
   const handleOpenChange = useCallback(
@@ -44,7 +43,6 @@ export const ActionsMenu = memo(function ActionsMenu({
     },
     [prefetchLead],
   );
-  const leadPayload = { leadId: lead.id, onLeadUpdated: refetch };
 
   return (
     <DropdownMenu onOpenChange={handleOpenChange}>
@@ -64,7 +62,10 @@ export const ActionsMenu = memo(function ActionsMenu({
           <DialogTrigger
             asChild
             dialogType={DIALOG_TYPES.VIEW_LEAD}
-            payload={leadPayload}
+            payload={{
+              leadId: lead.id,
+              onConfirm: refetch,
+            }}
           >
             <DropdownMenuItem>
               <Eye aria-hidden="true" />
@@ -75,7 +76,10 @@ export const ActionsMenu = memo(function ActionsMenu({
           <DialogTrigger
             asChild
             dialogType={DIALOG_TYPES.EDIT_LEAD}
-            payload={leadPayload}
+            payload={{
+              leadId: lead.id,
+              onConfirm: refetch,
+            }}
           >
             <DropdownMenuItem>
               <Pencil aria-hidden="true" />
@@ -85,16 +89,10 @@ export const ActionsMenu = memo(function ActionsMenu({
         </DropdownMenuGroup>
 
         <DropdownMenuGroup>
-          <AlertDialogTrigger
-            asChild
-            dialogType={ALERT_DIALOG_TYPES.DELETE_LEAD}
-            payload={{ leadId: [lead.id] }}
-          >
-            <DropdownMenuItem variant="destructive">
-              <Trash2 aria-hidden="true" />
-              Delete
-            </DropdownMenuItem>
-          </AlertDialogTrigger>
+          <DeleteLeadMenuItem
+            payload={{ leadId: lead.id, onConfirm: refetch }}
+            label="Delete Lead"
+          />
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

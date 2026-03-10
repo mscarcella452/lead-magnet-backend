@@ -1,93 +1,48 @@
-// ============================================================================
-// Dashboard Page
-// ============================================================================
-
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { ErrorBoundary } from "@/components/ui/feedback/error-boundary";
 import { checkAuth } from "@/lib/auth";
 import { Inset, Container } from "@/components/ui/layout/containers";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { StatsCards } from "@/components/dashboard/stats-cards";
-import { LeadsPanel } from "@/components/leads/leads-panel";
-import { getTableLeadsAction } from "@/lib/server/actions/read/getTableLeadsAction";
-import { getDashboardStats } from "@/lib/server/read/getDashboardStats";
-import type { SortField, SortOrder } from "@/lib/server/read/getTableLeads";
+import {
+  StatsCardsError,
+  StatsCardsSkeleton,
+} from "@/components/dashboard/stats-cards";
+import { StatsSection } from "@/components/dashboard/stats-section";
+import { LeadsSection } from "@/components/dashboard/leads-section";
+import { LeadsPanelSkeleton, LeadsPanelError } from "@/components/leads/panel";
+import type { PageProps } from "@/components/dashboard/lib/types";
 
 // ============================================================================
-// Types
-// ============================================================================
-
-interface PageProps {
-  searchParams: Promise<{
-    page?: string;
-    limit?: string;
-    sortBy?: string;
-    sortOrder?: string;
-  }>;
-}
-
-async function safeCall<T>(fn: () => Promise<T>) {
-  try {
-    return { success: true as const, data: await fn() };
-  } catch {
-    return { success: false as const };
-  }
-}
-
-// ============================================================================
-// Helpers
-// ============================================================================
-
-function parseSearchParams(params: Awaited<PageProps["searchParams"]>) {
-  const page = Math.max(1, parseInt(params.page ?? "1"));
-  const limit = Math.max(1, parseInt(params.limit ?? "10"));
-  return {
-    page,
-    limit,
-    offset: (page - 1) * limit,
-    sortBy: (params.sortBy as SortField) ?? "createdAt",
-    sortOrder: (params.sortOrder as SortOrder) ?? "desc",
-  };
-}
-
-// ============================================================================
-// Page
+// Dashboard Page
 // ============================================================================
 
 export default async function DashboardPage({ searchParams }: PageProps) {
   const isAuthenticated = await checkAuth();
   if (!isAuthenticated) redirect("/admin/login");
 
-  const { page, ...tableParams } = parseSearchParams(await searchParams);
-
-  // Parallel fetches — don't await sequentially
-  const [leadsResult, statsResult] = await Promise.all([
-    getTableLeadsAction(tableParams),
-    safeCall(getDashboardStats),
-  ]);
+  const resolvedSearchParams = await searchParams;
 
   return (
     <Inset as="main" variant="content">
       <Container spacing="section" width="constrained">
         <Container spacing="content" position="start" width="full">
           <DashboardHeader />
-          <StatsCards
-            stats={statsResult.success ? statsResult.data : undefined}
-            error={statsResult.success ? undefined : "Stats unavailable"}
-          />
+          <ErrorBoundary
+            fallback={<StatsCardsError message="Stats unavailable" />}
+          >
+            <Suspense fallback={<StatsCardsSkeleton />}>
+              <StatsSection />
+            </Suspense>
+          </ErrorBoundary>
         </Container>
-
-        <LeadsPanel
-          {...(leadsResult.success
-            ? {
-                initialLeadData: {
-                  leads: leadsResult.data.leads,
-                  total: leadsResult.data.total,
-                  page,
-                  ...tableParams,
-                },
-              }
-            : { error: "Could not load leads" })}
-        />
+        <ErrorBoundary
+          fallback={<LeadsPanelError message="Failed to load leads." />}
+        >
+          <Suspense fallback={<LeadsPanelSkeleton />}>
+            <LeadsSection searchParams={resolvedSearchParams} />
+          </Suspense>
+        </ErrorBoundary>
       </Container>
     </Inset>
   );

@@ -20,6 +20,12 @@ export const cardVariants = cva(
         muted: "surface-muted",
         panel: "surface-panel",
         outline: "border surface-outline",
+        "background-blur": "surface-background-blur",
+        "card-blur": "surface-card-blur",
+        "popover-blur": "surface-popover-blur",
+        "muted-blur": "surface-muted-blur",
+        "panel-blur": "surface-panel-blur",
+        "outline-blur": "border surface-outline-blur",
       },
       size: {
         none: "",

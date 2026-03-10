@@ -8,17 +8,16 @@ import {
   ViewLeadDetails,
 } from "@/components/lead-details/view-lead/states";
 import { useLeadWithRelations } from "@/components/lead-details/lib/hooks/useLeadWithRelations";
+import type { ViewLeadDialogPayload } from "@/types/ui/dialog";
 
-interface ViewLeadStatesProps {
-  leadId: string;
+interface ViewLeadStatesProps extends ViewLeadDialogPayload {
   contentRef: RefObject<HTMLDivElement>;
-  onLeadUpdated: () => void;
 }
 
 export function ViewLeadStates({
   leadId,
   contentRef,
-  onLeadUpdated,
+  onConfirm,
 }: ViewLeadStatesProps) {
   const leadState = useLeadWithRelations(leadId);
 
@@ -32,7 +31,7 @@ export function ViewLeadStates({
         <ViewLeadDetails
           lead={leadState.lead}
           contentRef={contentRef}
-          onLeadUpdated={onLeadUpdated}
+          onConfirm={onConfirm}
         />
       )}
     </LeadTabs>

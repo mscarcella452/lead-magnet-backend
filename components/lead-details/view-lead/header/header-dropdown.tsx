@@ -1,10 +1,9 @@
 "use client";
 
 import { memo, useCallback } from "react";
-import { Ellipsis, Mail, Phone, Trash2, Video, Pencil } from "lucide-react";
+import { Ellipsis, Mail, Phone, Video, Pencil } from "lucide-react";
 import { useDialogs } from "@/components/dialogs/providers/dialog-provider";
-import { AlertDialogTrigger } from "@/components/ui/feedback/alert-dialog";
-import { ALERT_DIALOG_TYPES, DIALOG_TYPES } from "@/types/ui/dialog";
+import { DIALOG_TYPES } from "@/types/ui/dialog";
 import { Button } from "@/components/ui/controls";
 import {
   DropdownMenu,
@@ -14,6 +13,11 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/layout/dropdown-menu";
 import type { LeadWithRelations } from "@/types";
+import type {
+  EditLeadDialogPayload,
+  DeleteLeadAlertPayload,
+} from "@/types/ui/dialog";
+import { DeleteLeadMenuItem } from "@/components/leads/delete/delete-lead-menuItem";
 
 // ============================================================================
 // Types
@@ -21,16 +25,7 @@ import type { LeadWithRelations } from "@/types";
 
 interface LeadHeaderDropdownProps {
   lead: LeadWithRelations;
-  onLeadUpdated: () => void;
-}
-
-interface DeleteLeadTriggerProps {
-  leadId: string;
-}
-
-interface EditLeadTriggerProps {
-  leadId: string;
-  onLeadUpdated: () => void;
+  onConfirm: () => void;
 }
 
 // ============================================================================
@@ -48,24 +43,21 @@ const COMMUNICATION_ACTIONS = [
 // ============================================================================
 
 const DeleteLeadTrigger = memo(function DeleteLeadTrigger({
-  leadId,
-}: DeleteLeadTriggerProps) {
+  leadIds,
+  onConfirm,
+}: DeleteLeadAlertPayload) {
   const { closeDialog } = useDialogs();
 
+  const handleOnDelete = useCallback(() => {
+    onConfirm?.();
+    closeDialog();
+  }, [onConfirm, closeDialog]);
+
   return (
-    <AlertDialogTrigger
-      asChild
-      dialogType={ALERT_DIALOG_TYPES.DELETE_LEAD}
-      payload={{
-        leadId: [leadId],
-        onConfirm: closeDialog,
-      }}
-    >
-      <DropdownMenuItem variant="destructive">
-        <Trash2 aria-hidden="true" />
-        Delete Lead
-      </DropdownMenuItem>
-    </AlertDialogTrigger>
+    <DeleteLeadMenuItem
+      payload={{ leadIds, onConfirm: handleOnDelete }}
+      label="Delete Lead"
+    />
   );
 });
 
@@ -75,16 +67,16 @@ const DeleteLeadTrigger = memo(function DeleteLeadTrigger({
 
 const EditLeadTrigger = memo(function EditLeadTrigger({
   leadId,
-  onLeadUpdated,
-}: EditLeadTriggerProps) {
+  onConfirm,
+}: EditLeadDialogPayload) {
   const { switchActiveDialog } = useDialogs();
 
   const handleEdit = useCallback(() => {
     switchActiveDialog(DIALOG_TYPES.EDIT_LEAD, {
       leadId,
-      onLeadUpdated, // threaded through so table refetches after edit
+      onConfirm,
     });
-  }, [leadId, onLeadUpdated, switchActiveDialog]);
+  }, [leadId, onConfirm, switchActiveDialog]);
 
   return (
     <DropdownMenuItem onClick={handleEdit}>
@@ -100,7 +92,7 @@ const EditLeadTrigger = memo(function EditLeadTrigger({
 
 export const LeadHeaderDropdown = memo(function LeadHeaderDropdown({
   lead,
-  onLeadUpdated,
+  onConfirm,
 }: LeadHeaderDropdownProps) {
   return (
     <DropdownMenu>
@@ -126,11 +118,11 @@ export const LeadHeaderDropdown = memo(function LeadHeaderDropdown({
         </DropdownMenuGroup>
 
         <DropdownMenuGroup>
-          <EditLeadTrigger leadId={lead.id} onLeadUpdated={onLeadUpdated} />
+          <EditLeadTrigger leadId={lead.id} onConfirm={onConfirm} />
         </DropdownMenuGroup>
 
         <DropdownMenuGroup>
-          <DeleteLeadTrigger leadId={lead.id} />
+          <DeleteLeadTrigger leadIds={[lead.id]} onConfirm={onConfirm} />
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

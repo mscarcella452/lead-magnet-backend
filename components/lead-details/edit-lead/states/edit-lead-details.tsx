@@ -32,7 +32,7 @@ import {
 
 interface EditLeadDetailsProps {
   lead: LeadWithRelations;
-  onLeadUpdated: () => void;
+  onConfirm: () => void;
 }
 
 // ============================================================================
@@ -46,7 +46,10 @@ function useEditLeadForm(lead: LeadWithRelations) {
   const sections = buildEditSections(lead, metadata, grouped);
   const initialValues = resolveInitialValues(lead, metadata, grouped);
 
-  const [formState, setFormState] = useState<EditFormState>(initialValues);
+  // Lazy initializer: resolveInitialValues runs only once on mount
+  const [formState, setFormState] = useState<EditFormState>(() =>
+    resolveInitialValues(lead, metadata, grouped),
+  );
 
   const handleChange = useCallback((key: string, value: string | null) => {
     setFormState((prev) => ({ ...prev, [key]: value }));
@@ -59,7 +62,7 @@ function useEditLeadForm(lead: LeadWithRelations) {
 // Component
 // ============================================================================
 
-export function EditLeadDetails({ lead, onLeadUpdated }: EditLeadDetailsProps) {
+export function EditLeadDetails({ lead, onConfirm }: EditLeadDetailsProps) {
   const { closeDialog } = useDialogs();
   const { formState, sections, initialValues, handleChange } =
     useEditLeadForm(lead);
@@ -87,12 +90,12 @@ export function EditLeadDetails({ lead, onLeadUpdated }: EditLeadDetailsProps) {
     if (result.success) {
       toast.success("Lead updated successfully");
       invalidateLeadWithRelationsCache(lead.id);
-      onLeadUpdated();
+      onConfirm();
       closeDialog();
     } else {
       toast.error(result.error);
     }
-  }, [formState, initialValues, lead.id, closeDialog, onLeadUpdated]);
+  }, [formState, initialValues, lead.id, closeDialog, onConfirm]);
 
   return (
     <>

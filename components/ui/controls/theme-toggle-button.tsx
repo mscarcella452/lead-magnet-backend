@@ -19,23 +19,25 @@ interface ThemeToggleButtonProps extends Omit<
 
 function ThemeToggleButton({ className, ...props }: ThemeToggleButtonProps) {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    setIsMounted(true);
   }, []);
 
   const handleToggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
-  const isDark = theme === "dark";
-  const ariaLabel = `Switch to ${isDark ? "light" : "dark"} mode`;
+  const isDark = isMounted && theme === "dark";
+  const ariaLabel = isMounted
+    ? `Switch to ${isDark ? "light" : "dark"} mode`
+    : "Theme toggle";
 
   return (
     <div
       className={className}
-      style={{ visibility: mounted ? "visible" : "hidden" }}
+      style={{ visibility: isMounted ? "visible" : "hidden" }}
     >
       <AnimatePresence mode="popLayout">
         <motion.div
@@ -52,7 +54,15 @@ function ThemeToggleButton({ className, ...props }: ThemeToggleButtonProps) {
             aria-label={ariaLabel}
             {...props}
           >
-            {isDark ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
+            {isMounted ? (
+              isDark ? (
+                <Sun aria-hidden="true" />
+              ) : (
+                <Moon aria-hidden="true" />
+              )
+            ) : (
+              <Sun aria-hidden="true" />
+            )}
           </Button>
         </motion.div>
       </AnimatePresence>

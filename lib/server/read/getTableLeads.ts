@@ -1,9 +1,24 @@
 import "server-only";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/db";
 import { Prisma } from "@prisma/client";
 import { LeadTableRow } from "@/types/lead";
+import { CACHE_TAGS } from "@/lib/server/constants";
 
-export type SortField = "createdAt" | "displayId" | "displayName" | "status" | "source" | "priority" | "score" | "email" | "name";
+// ============================================================================
+// Types
+// ============================================================================
+
+export type SortField =
+  | "createdAt"
+  | "displayId"
+  | "displayName"
+  | "status"
+  | "source"
+  | "priority"
+  | "score"
+  | "email"
+  | "name";
 export type SortOrder = "asc" | "desc";
 
 export interface GetTableLeadsOptions {
@@ -13,11 +28,16 @@ export interface GetTableLeadsOptions {
   sortOrder?: SortOrder;
 }
 
-export async function getTableLeads(options?: GetTableLeadsOptions): Promise<LeadTableRow[]> {
+// ============================================================================
+// Internal fetch functions
+// ============================================================================
+
+async function fetchTableLeads(
+  options?: GetTableLeadsOptions,
+): Promise<LeadTableRow[]> {
   const sortBy = options?.sortBy ?? "createdAt";
   const sortOrder = options?.sortOrder ?? "desc";
 
-  // Map UI field names to database field names
   const fieldMap: Record<SortField, string> = {
     email: "email",
     name: "name",
@@ -30,9 +50,8 @@ export async function getTableLeads(options?: GetTableLeadsOptions): Promise<Lea
     score: "score",
   };
 
-  const dbField = fieldMap[sortBy] || "createdAt";
   const orderBy: Prisma.LeadOrderByWithRelationInput = {
-    [dbField]: sortOrder,
+    [fieldMap[sortBy] || "createdAt"]: sortOrder,
   };
 
   const leads = await prisma.lead.findMany({
@@ -53,7 +72,6 @@ export async function getTableLeads(options?: GetTableLeadsOptions): Promise<Lea
     skip: options?.offset ?? 0,
   });
 
-  // Transform to LeadTableRow format
   return leads.map((lead) => ({
     id: lead.id,
     displayId: lead.displayId,
@@ -69,7 +87,23 @@ export async function getTableLeads(options?: GetTableLeadsOptions): Promise<Lea
   }));
 }
 
-// pagination example:
-// const leads = await getTableLeads({ limit: 20, offset: 0 });  // Page 1
-// const leads = await getTableLeads({ limit: 20, offset: 20 }); // Page 2
-// const leads = await getTableLeads({ limit: 20, offset: 40 }); // Page 3
+async function fetchLeadsCount(): Promise<number> {
+  return prisma.lead.count();
+}
+
+// ============================================================================
+// Cached exports
+// Cache revalidates every 60 seconds or when LEADS tag is invalidated.
+// ============================================================================
+
+export const getTableLeads = unstable_cache(
+  fetchTableLeads,
+  [CACHE_TAGS.LEADS, "table"],
+  { revalidate: 60, tags: [CACHE_TAGS.LEADS] },
+);
+
+export const getTableLeadsCount = unstable_cache(
+  fetchLeadsCount,
+  [CACHE_TAGS.LEADS, "count"],
+  { revalidate: 300, tags: [CACHE_TAGS.LEADS] },
+);

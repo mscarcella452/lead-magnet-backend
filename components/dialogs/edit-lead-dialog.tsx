@@ -7,10 +7,7 @@ import type { EditLeadDialogPayload } from "@/types/ui/dialog";
 // EditLeadDialog
 // ============================================================================
 
-export function EditLeadDialog({
-  leadId,
-  onLeadUpdated,
-}: EditLeadDialogPayload) {
+export function EditLeadDialog(payload: EditLeadDialogPayload) {
   return (
     <DialogContent
       layout="responsiveModal"
@@ -20,7 +17,7 @@ export function EditLeadDialog({
     >
       <DialogTitle className="sr-only">Edit Lead</DialogTitle>
       <Container spacing="block" className="@container">
-        <EditLeadStates leadId={leadId} onLeadUpdated={onLeadUpdated} />
+        <EditLeadStates {...payload} />
       </Container>
     </DialogContent>
   );

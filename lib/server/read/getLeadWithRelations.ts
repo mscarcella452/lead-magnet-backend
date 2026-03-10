@@ -1,9 +1,14 @@
 import "server-only";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/db";
 import { LeadWithRelations } from "@/types/lead";
+import { CACHE_TAGS } from "@/lib/server/constants";
 
-// lib/server/read/getLeadWithRelations.ts
-export async function getLeadWithRelations(
+// ============================================================================
+// Internal fetch functions
+// ============================================================================
+
+async function fetchLeadWithRelations(
   leadId: string,
 ): Promise<LeadWithRelations | null> {
   console.log(
@@ -11,18 +16,29 @@ export async function getLeadWithRelations(
     leadId,
     new Date().toISOString(),
   );
-  const lead = await prisma.lead.findUnique({
+
+  return prisma.lead.findUnique({
     where: { id: leadId },
     include: {
       notes: {
         orderBy: [
           { pinnedAt: "desc" }, // pinned notes at top
-          { createdAt: "desc" }, // unpinned notes in original chronological order
+          { createdAt: "desc" }, // unpinned notes in chronological order
         ],
       },
       activities: { orderBy: { createdAt: "desc" } },
       leadMagnet: true,
     },
   });
-  return lead;
 }
+
+// ============================================================================
+// Cached exports
+// Cache revalidates every 60 seconds or when LEADS tag is invalidated.
+// ============================================================================
+
+export const getLeadWithRelations = unstable_cache(
+  fetchLeadWithRelations,
+  [CACHE_TAGS.LEADS, "detail"],
+  { revalidate: 60, tags: [CACHE_TAGS.LEADS] },
+);

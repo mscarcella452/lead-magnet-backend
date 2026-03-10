@@ -6,7 +6,7 @@ import { PRIORITY_CONFIG } from "@/config/lead-config";
 // Types
 // ============================================================================
 
-interface PriorityBadgeProps extends BadgeProps {
+export interface PriorityBadgeProps extends BadgeProps {
   priority: LeadPriority;
 }
 
@@ -14,7 +14,7 @@ interface PriorityBadgeProps extends BadgeProps {
 // STATUSBADGE
 // ============================================================================
 
-const PriorityBadge = ({ priority, ...props }: PriorityBadgeProps) => {
+export const PriorityBadge = ({ priority, ...props }: PriorityBadgeProps) => {
   const config = PRIORITY_CONFIG[priority];
 
   return (
@@ -29,5 +29,3 @@ const PriorityBadge = ({ priority, ...props }: PriorityBadgeProps) => {
     </Badge>
   );
 };
-
-export { PriorityBadge, type PriorityBadgeProps };

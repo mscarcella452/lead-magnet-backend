@@ -19,7 +19,7 @@ import type { LeadWithRelations } from "@/types";
 interface ViewLeadDetailsProps {
   lead: LeadWithRelations;
   contentRef: RefObject<HTMLDivElement>;
-  onLeadUpdated: () => void;
+  onConfirm: () => void;
 }
 
 // ============================================================================
@@ -29,12 +29,12 @@ interface ViewLeadDetailsProps {
 export function ViewLeadDetails({
   lead,
   contentRef,
-  onLeadUpdated,
+  onConfirm,
 }: ViewLeadDetailsProps) {
   return (
     <LeadTabs>
       <ViewLeadHeader>
-        <LeadHeader lead={lead} onLeadUpdated={onLeadUpdated} />
+        <LeadHeader lead={lead} onConfirm={onConfirm} />
       </ViewLeadHeader>
       <ViewLeadBody>
         <LeadTabsContent lead={lead} contentRef={contentRef} />

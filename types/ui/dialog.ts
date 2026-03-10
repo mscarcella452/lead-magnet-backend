@@ -36,23 +36,22 @@ export type DialogEnterFrom = "left" | "right" | "top" | "bottom";
 // Defines the data each dialog requires when opened.
 // ============================================================================
 
+export type LeadUpdatePayload = {
+  leadId: string;
+  onConfirm: () => void | Promise<void>;
+};
+
 /** Dialog payload types. */
 export type DialogPayloads = {
-  [DIALOG_TYPES.EDIT_LEAD]: {
-    leadId: string;
-    onLeadUpdated: () => void | Promise<void>;
-  };
-  [DIALOG_TYPES.VIEW_LEAD]: {
-    leadId: string;
-    onLeadUpdated: () => void | Promise<void>;
-  };
+  [DIALOG_TYPES.EDIT_LEAD]: LeadUpdatePayload;
+  [DIALOG_TYPES.VIEW_LEAD]: LeadUpdatePayload;
 };
 
 /** Alert dialog payload types. */
 export type AlertDialogPayloads = {
   [ALERT_DIALOG_TYPES.DELETE_LEAD]: {
-    leadId: string[];
-    onConfirm?: () => void;
+    leadIds: string[];
+    onConfirm?: () => void | Promise<void>;
   };
 };
 

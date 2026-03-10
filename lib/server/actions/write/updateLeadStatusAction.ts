@@ -6,7 +6,7 @@ import {
   type UpdateLeadStatusData,
 } from "@/lib/server/write/updateLeadStatus";
 import { ActionResult } from "@/types/server";
-import { Lead, LeadStatus } from "@prisma/client";
+import { Lead } from "@prisma/client";
 import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 
 // ============================================================================
