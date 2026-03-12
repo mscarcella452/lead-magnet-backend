@@ -84,8 +84,9 @@ pnpm dev
 ```
 
 Visit:
-- **Home**: http://localhost:3000
-- **Admin Login**: http://localhost:3000/admin/login
+
+- **Login**: http://localhost:3000 (homepage)
+- **Dashboard**: http://localhost:3000/dashboard
 - **API Health Check**: http://localhost:3000/api/health
 
 ## 📡 API Documentation
@@ -95,12 +96,14 @@ Visit:
 Submit a new lead from external client websites.
 
 **Headers:**
+
 ```
 Content-Type: application/json
 x-api-key: your-api-key (if configured)
 ```
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -114,6 +117,7 @@ x-api-key: your-api-key (if configured)
 ```
 
 **Response (201 Created):**
+
 ```json
 {
   "success": true,
@@ -126,17 +130,18 @@ x-api-key: your-api-key (if configured)
 ```
 
 **Example Usage (JavaScript):**
+
 ```javascript
-const response = await fetch('https://your-backend.com/api/leads', {
-  method: 'POST',
+const response = await fetch("https://your-backend.com/api/leads", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
-    'x-api-key': 'your-api-key',
+    "Content-Type": "application/json",
+    "x-api-key": "your-api-key",
   },
   body: JSON.stringify({
-    email: 'user@example.com',
-    name: 'John Doe',
-    source: 'landing-page-a',
+    email: "user@example.com",
+    name: "John Doe",
+    source: "landing-page-a",
   }),
 });
 
@@ -149,6 +154,7 @@ console.log(data);
 Health check endpoint for monitoring.
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -162,7 +168,7 @@ Health check endpoint for monitoring.
 
 ### Login
 
-Navigate to `/admin/login` and enter your admin password (configured in `.env`).
+Navigate to `/` (homepage) and enter your admin password (configured in `.env`).
 
 ### Features
 
@@ -178,32 +184,41 @@ Navigate to `/admin/login` and enter your admin password (configured in `.env`).
 lead-magnet-backend/
 ├── app/
 │   ├── api/                    # API Routes (External Access)
-│   │   ├── leads/route.ts      # Lead submission endpoint
-│   │   ├── health/route.ts     # Health check
-│   │   └── admin/              # Admin API routes
-│   ├── admin/                  # Admin Dashboard
-│   │   ├── dashboard/          # Dashboard pages & components
-│   │   ├── actions.ts          # Server Actions
-│   │   ├── layout.tsx          # Admin layout
-│   │   └── login/page.tsx      # Login page
+│   │   ├── leads/route.ts      # Lead submission endpoint (POST)
+│   │   ├── health/route.ts     # Health check (GET)
+│   │   └── auth/               # Authentication routes
+│   │       ├── login/route.ts  # Admin login (POST)
+│   │       └── logout/route.ts # Admin logout (POST)
+│   ├── dashboard/              # Admin Dashboard (Protected)
+│   │   ├── layout.tsx          # Dashboard layout
+│   │   ├── page.tsx            # Dashboard home
+│   │   └── ...                 # Other dashboard pages
 │   ├── layout.tsx              # Root layout
-│   ├── page.tsx                # Home page
+│   ├── page.tsx                # Home page (Login form)
 │   └── globals.css             # Global styles
 ├── components/
+│   ├── auth/                   # Auth components
+│   │   ├── login-form.tsx      # Login form
+│   │   └── log-out-button.tsx  # Logout button
+│   ├── dashboard/              # Dashboard components
+│   ├── leads/                  # Lead management components
 │   └── ui/                     # shadcn/ui components
 ├── lib/
 │   ├── db.ts                   # Prisma client singleton
 │   ├── security.ts             # CORS & API key validation
-│   ├── auth.ts                 # Authentication utilities
-│   ├── email.ts                # Email placeholder
-│   ├── utils.ts                # Helper functions
-│   └── validations.ts          # Zod schemas
+│   ├── auth.ts                 # Authentication utilities (Web Crypto API)
+│   ├── email.ts                # Email service (placeholder)
+│   ├── utils/
+│   │   └── validation.ts       # Zod schemas
+│   └── server/                 # Server-only functions
+│       ├── read/               # Read operations
+│       └── write/              # Write operations
 ├── prisma/
-│   └── schema.prisma           # Database schema
+│   ├── schema.prisma           # Database schema
+│   └── seed.ts                 # Database seeding
 ├── types/
-│   ├── lead.ts                 # Lead types
-│   └── index.ts                # Type exports
-├── middleware.ts               # Route protection & CORS
+│   └── lead.ts                 # Lead types
+├── middleware.ts               # Route protection & auth
 ├── .env.example                # Environment template
 └── package.json
 ```
@@ -213,6 +228,7 @@ lead-magnet-backend/
 ### For Each New Client
 
 1. **Clone the repository**
+
    ```bash
    git clone <repo-url> client-name-leads
    cd client-name-leads
@@ -236,6 +252,7 @@ lead-magnet-backend/
 To add custom fields to leads:
 
 1. **Update Prisma schema** (`prisma/schema.prisma`):
+
    ```prisma
    model Lead {
      // ... existing fields
@@ -245,11 +262,13 @@ To add custom fields to leads:
    ```
 
 2. **Push changes**:
+
    ```bash
    pnpm prisma:push
    ```
 
 3. **Update validation** (`lib/validations.ts`):
+
    ```typescript
    export const leadSubmissionSchema = z.object({
      // ... existing fields
@@ -272,17 +291,17 @@ pnpm add resend
 
 ```typescript
 // lib/email.ts
-import { Resend } from 'resend';
+import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendLeadMagnetEmail(email: string, pdfUrl: string) {
   await resend.emails.send({
-    from: 'leads@yourdomain.com',
+    from: "leads@yourdomain.com",
     to: email,
-    subject: 'Your Free Lead Magnet',
-    html: '<h1>Thank you!</h1>',
-    attachments: [{ filename: 'guide.pdf', path: pdfUrl }],
+    subject: "Your Free Lead Magnet",
+    html: "<h1>Thank you!</h1>",
+    attachments: [{ filename: "guide.pdf", path: pdfUrl }],
   });
 }
 ```
@@ -311,6 +330,7 @@ pnpm add nodemailer
 ### Environment Variables for Production
 
 Make sure to set all required environment variables in your deployment platform:
+
 - `DATABASE_URL`
 - `ADMIN_PASSWORD`
 - `NEXTAUTH_SECRET`
@@ -410,3 +430,9 @@ For issues or questions, please open an issue on GitHub.
 ---
 
 **Built with ❤️ using Next.js 15, Prisma, and MongoDB**
+
+---
+
+## 📋 For New Client Setup
+
+See **[SETUP_CHECKLIST.md](./SETUP_CHECKLIST.md)** for a step-by-step guide when cloning this template for a new client.

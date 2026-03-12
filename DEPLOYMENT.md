@@ -43,10 +43,14 @@ ADMIN_PASSWORD=your-secure-production-password
 NEXTAUTH_SECRET=generate-a-new-random-secret
 CLIENT_ALLOWED_ORIGIN=https://clientdomain.com,https://www.clientdomain.com
 CLIENT_API_KEY=generate-a-secure-api-key
+LEAD_MAGNET_PDF_URL=https://yourdomain.com/lead-magnet.pdf (optional)
+RESEND_API_KEY=re_xxxxx (optional, for email)
+EMAIL_FROM_ADDRESS=leads@yourdomain.com (optional, for email)
 NODE_ENV=production
 ```
 
 **Important Security Notes:**
+
 - Use different passwords/secrets than development
 - Never commit `.env` files
 - Rotate API keys regularly
@@ -139,6 +143,7 @@ Railway automatically deploys and provides a URL.
 4. Replace `<dbname>` with `leadmagnet`
 
 Example:
+
 ```
 mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/leadmagnet?retryWrites=true&w=majority
 ```
@@ -152,6 +157,7 @@ curl -X POST https://your-domain.com/api/health
 ```
 
 Should return:
+
 ```json
 {
   "status": "ok",
@@ -185,33 +191,33 @@ Update your client's website to use the production API:
 
 ```javascript
 // In client website
-const response = await fetch('https://your-domain.com/api/leads', {
-  method: 'POST',
+const response = await fetch("https://your-domain.com/api/leads", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
-    'x-api-key': 'production-api-key',
+    "Content-Type": "application/json",
+    "x-api-key": "production-api-key",
   },
   body: JSON.stringify({
     email: userEmail,
     name: userName,
-    source: 'landing-page',
+    source: "landing-page",
   }),
 });
 ```
 
 ## Environment Variables Reference
 
-| Variable | Required | Description | Example |
-|----------|----------|-------------|---------|
-| `DATABASE_URL` | Yes | MongoDB connection string | `mongodb+srv://...` |
-| `ADMIN_PASSWORD` | Yes | Admin dashboard password | `SecurePass123!` |
-| `NEXTAUTH_SECRET` | Yes | Cookie encryption secret | Random 32+ char string |
-| `CLIENT_ALLOWED_ORIGIN` | Yes | Allowed CORS origins | `https://client.com` |
-| `CLIENT_API_KEY` | Recommended | API authentication key | Random string |
-| `EMAIL_SERVICE_API_KEY` | No | Email service API key | When email integrated |
-| `EMAIL_FROM_ADDRESS` | No | Sender email address | `leads@yourdomain.com` |
-| `LEAD_MAGNET_PDF_URL` | No | PDF download URL | `https://...` |
-| `NODE_ENV` | Auto-set | Environment | `production` |
+| Variable                | Required    | Description               | Example                |
+| ----------------------- | ----------- | ------------------------- | ---------------------- |
+| `DATABASE_URL`          | Yes         | MongoDB connection string | `mongodb+srv://...`    |
+| `ADMIN_PASSWORD`        | Yes         | Admin dashboard password  | `SecurePass123!`       |
+| `NEXTAUTH_SECRET`       | Yes         | Cookie encryption secret  | Random 32+ char string |
+| `CLIENT_ALLOWED_ORIGIN` | Yes         | Allowed CORS origins      | `https://client.com`   |
+| `CLIENT_API_KEY`        | Recommended | API authentication key    | Random string          |
+| `EMAIL_SERVICE_API_KEY` | No          | Email service API key     | When email integrated  |
+| `EMAIL_FROM_ADDRESS`    | No          | Sender email address      | `leads@yourdomain.com` |
+| `LEAD_MAGNET_PDF_URL`   | No          | PDF download URL          | `https://...`          |
+| `NODE_ENV`              | Auto-set    | Environment               | `production`           |
 
 ## Monitoring & Maintenance
 
@@ -228,17 +234,20 @@ Monitor: `https://your-domain.com/api/health`
 ### Database Backups
 
 MongoDB Atlas provides automatic backups on paid tiers. For free tier:
+
 - Export leads regularly via admin dashboard (CSV)
 - Consider upgrading for automatic backups
 
 ### Log Monitoring
 
 Check deployment platform logs regularly:
+
 - Vercel: Functions → Logs
 - Netlify: Functions → Logs
 - Railway: Deployments → Logs
 
 Look for:
+
 - Failed lead submissions
 - Authentication attempts
 - Database connection issues
@@ -248,6 +257,7 @@ Look for:
 ### When to Scale
 
 Monitor these metrics:
+
 - Lead submission rate
 - Database size
 - Response times
@@ -270,6 +280,7 @@ Monitor these metrics:
    - Review failed authentication attempts
 
 3. **Keep Dependencies Updated**
+
    ```bash
    pnpm update
    ```
@@ -317,6 +328,7 @@ Monitor these metrics:
 ## Support
 
 For deployment issues:
+
 - Check platform documentation
 - Review deployment logs
 - Test locally first

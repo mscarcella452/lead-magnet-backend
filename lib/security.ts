@@ -1,98 +1,152 @@
 /**
  * Security Layer
- * 
+ *
  * Handles CORS validation and API key authentication for external API routes.
- * These functions protect the public API endpoints from unauthorized access.
+ * These functions protect public endpoints from unauthorized cross-origin requests.
+ *
+ * Environment variables:
+ * - CLIENT_ALLOWED_ORIGIN: Comma-separated list of allowed origins (e.g. "https://mysite.com,https://www.mysite.com")
+ * - CLIENT_API_KEY: Secret key that external clients must send in the x-api-key header
  */
 
+// =============================================================================
+// Allowed Origins
+// =============================================================================
+
 /**
- * Allowed origins for CORS
- * Loaded from environment variable CLIENT_ALLOWED_ORIGIN
- * Format: "https://example.com,https://www.example.com"
+ * Reads CLIENT_ALLOWED_ORIGIN from the environment and returns it as an array.
+ *
+ * Example:
+ * CLIENT_ALLOWED_ORIGIN=https://mysite.com,https://promo.mysite.com
+ * → ["https://mysite.com", "https://promo.mysite.com"]
+ *
+ * Returns an empty array if the variable is not set (development fallback).
  */
 export const getAllowedOrigins = (): string[] => {
-  const origins = process.env.CLIENT_ALLOWED_ORIGIN || '';
-  return origins.split(',').map(origin => origin.trim()).filter(Boolean);
+  const origins = process.env.CLIENT_ALLOWED_ORIGIN || "";
+  return origins
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean);
 };
 
+// =============================================================================
+// Security Error
+// =============================================================================
+
 /**
- * Validate request origin against allowed origins
- * @param request - Incoming request
- * @throws Error if origin is not allowed
+ * Custom error class for security-related rejections.
+ * Carries an HTTP status code so the route can return the correct response.
+ *
+ * 401 - missing or invalid credentials
+ * 403 - origin not permitted
+ */
+export class SecurityError extends Error {
+  constructor(
+    message: string,
+    public statusCode: number = 403,
+  ) {
+    super(message);
+    this.name = "SecurityError";
+  }
+}
+
+// =============================================================================
+// Origin Validation
+// =============================================================================
+
+/**
+ * Validates that the request origin is in the allowed origins list.
+ *
+ * - If CLIENT_ALLOWED_ORIGIN is not configured, all origins are allowed (dev mode).
+ * - Requests with no origin header are allowed through (server-to-server calls,
+ *   Postman, curl — these don't send an origin).
+ * - Browser requests from an unlisted origin are rejected with a 403.
+ *
+ * @throws SecurityError if the origin is present but not in the allowed list
  */
 export function validateOrigin(request: Request): void {
   const allowedOrigins = getAllowedOrigins();
-  
-  // If no origins configured, allow all (development mode)
+
   if (allowedOrigins.length === 0) {
-    console.warn('⚠️  No CLIENT_ALLOWED_ORIGIN configured - allowing all origins');
+    console.warn(
+      "⚠️  No CLIENT_ALLOWED_ORIGIN configured - allowing all origins",
+    );
     return;
   }
 
-  const origin = request.headers.get('origin');
-  
-  // Allow requests without origin (e.g., server-to-server, Postman)
-  if (!origin) {
-    return;
-  }
+  const origin = request.headers.get("origin");
+
+  if (!origin) return;
 
   if (!allowedOrigins.includes(origin)) {
-    throw new Error(`Origin ${origin} not allowed`);
+    throw new SecurityError(`Origin ${origin} not allowed`, 403);
   }
 }
 
+// =============================================================================
+// API Key Validation
+// =============================================================================
+
 /**
- * Validate API key from request header
- * @param request - Incoming request
- * @throws Error if API key is invalid or missing
+ * Validates the API key sent in the x-api-key request header.
+ *
+ * External clients (your lead magnet forms) must include this header:
+ * x-api-key: your-secret-key
+ *
+ * - If CLIENT_API_KEY is not configured, validation is skipped (dev mode).
+ * - Missing or incorrect keys are rejected with a 401.
+ *
+ * @throws SecurityError if the API key is missing or doesn't match
  */
 export function validateApiKey(request: Request): void {
   const apiKey = process.env.CLIENT_API_KEY;
-  
-  // If no API key configured, skip validation (optional security)
+
   if (!apiKey) {
-    console.warn('⚠️  No CLIENT_API_KEY configured - skipping API key validation');
+    console.warn(
+      "⚠️  No CLIENT_API_KEY configured - skipping API key validation",
+    );
     return;
   }
 
-  const requestApiKey = request.headers.get('x-api-key');
+  const requestApiKey = request.headers.get("x-api-key");
 
   if (!requestApiKey) {
-    throw new Error('API key missing');
+    throw new SecurityError("API key missing", 401);
   }
 
   if (requestApiKey !== apiKey) {
-    throw new Error('Invalid API key');
+    throw new SecurityError("Invalid API key", 401);
   }
 }
 
+// =============================================================================
+// CORS Headers
+// =============================================================================
+
 /**
- * Get CORS headers for API responses
- * @param request - Incoming request
+ * Builds the CORS headers to include in every API response.
+ *
+ * Tells the browser which origins, methods, and headers are permitted.
+ * The Access-Control-Allow-Origin is set to the requesting origin if it's
+ * in the allowed list — or falls back to the first allowed origin.
+ *
+ * Access-Control-Max-Age caches the preflight response for 24 hours (86400s)
+ * so browsers don't send an OPTIONS request before every POST.
  */
 export function getCorsHeaders(request: Request): Record<string, string> {
-  const origin = request.headers.get('origin') || '*';
+  const origin = request.headers.get("origin") || "*";
   const allowedOrigins = getAllowedOrigins();
-  
-  // Only allow specific origin if it's in the allowed list
-  const allowOrigin = allowedOrigins.length > 0 && allowedOrigins.includes(origin)
-    ? origin
-    : allowedOrigins[0] || '*';
+
+  const allowOrigin =
+    allowedOrigins.length > 0 && allowedOrigins.includes(origin)
+      ? origin
+      : allowedOrigins[0] || "*";
 
   return {
-    'Access-Control-Allow-Origin': allowOrigin,
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
-    'Access-Control-Max-Age': '86400',
+    "Access-Control-Allow-Origin": allowOrigin,
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, x-api-key",
+    "Access-Control-Max-Age": "86400",
   };
-}
-
-/**
- * Security error class for consistent error handling
- */
-export class SecurityError extends Error {
-  constructor(message: string, public statusCode: number = 403) {
-    super(message);
-    this.name = 'SecurityError';
-  }
 }

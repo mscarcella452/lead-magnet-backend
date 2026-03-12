@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   const from = req.nextUrl.searchParams.get("from") ?? LEADS_DASHBOARD;
 
   if (!verifyAdminPassword(password)) {
-    await new Promise((r) => setTimeout(r, 400));
+    await new Promise((r) => setTimeout(r, 500));
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
 

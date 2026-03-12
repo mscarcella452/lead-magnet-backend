@@ -55,15 +55,6 @@ export const deleteLeadSchema = z.object({
 export type DeleteLeadInput = z.infer<typeof deleteLeadSchema>;
 
 // ============================================================================
-// isValidEmail(email: string): boolean
-// Validates an email address
-// ============================================================================
-export function isValidEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-// ============================================================================
 // sanitizeString(input: string): string
 // Sanitizes a string to prevent XSS
 // ============================================================================
