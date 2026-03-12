@@ -7,9 +7,9 @@ import { ExportAllButton } from "@/components/leads/export/export-all-button";
 
 export function DashboardHeader() {
   return (
-    <Container spacing="group" as="header" className="">
+    <Container spacing="item" as="header" className="@max-lg:space-y-3">
       <Container
-        spacing="item"
+        spacing="group"
         as="hgroup"
         className="flex flex-row items-center justify-between"
       >

@@ -19,7 +19,7 @@ import type { PageProps } from "@/components/dashboard/lib/types";
 
 export default async function DashboardPage({ searchParams }: PageProps) {
   const isAuthenticated = await checkAuth();
-  if (!isAuthenticated) redirect("/admin/login");
+  if (!isAuthenticated) redirect("/");
 
   const resolvedSearchParams = await searchParams;
 

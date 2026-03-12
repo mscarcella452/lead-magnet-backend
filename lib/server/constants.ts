@@ -18,8 +18,8 @@ export type CacheTag = (typeof CACHE_TAGS)[keyof typeof CACHE_TAGS];
 // ============================================================================
 
 export const REVALIDATE_PATHS = {
-  ADMIN_DASHBOARD: "/admin/dashboard",
-  ADMIN_LEADS: "/admin/leads",
+  ADMIN_DASHBOARD: "/dashboard",
+  ADMIN_LEADS: "/dashboard/leads",
 } as const;
 
 // Type for paths

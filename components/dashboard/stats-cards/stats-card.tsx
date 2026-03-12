@@ -47,7 +47,7 @@ function Trend({ value }: TrendProps) {
 
 export function StatsCard({ title, value, icon: Icon, trend }: StatCardData) {
   return (
-    <Card size="md" variant="panel" border className="h-full">
+    <Card size="md" variant="panel" className="h-full shadow-xs">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}

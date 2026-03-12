@@ -15,8 +15,6 @@ import {
   DialogLayoutVariantProps,
   DialogContentVariantProps,
 } from "@/design-system/lib/types/cva-types";
-import { ButtonProps } from "@/components/ui/controls/button";
-import { useDialogs } from "@/components/dialogs/providers";
 
 // ============================================================================
 // DialogOverlay - Backdrop overlay

@@ -1,76 +1,23 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { getAuthFromRequest } from '@/lib/auth';
-import { getCorsHeaders } from '@/lib/security';
+import { type NextRequest, NextResponse } from "next/server";
+import { getAuthFromRequest } from "@/lib/auth";
 
-/**
- * Next.js Middleware
- * 
- * Handles:
- * 1. Admin route protection - checks authentication cookie
- * 2. CORS headers for API routes
- * 
- * Runs on every request matching the config.matcher patterns.
- */
+const PUBLIC_PATHS = ["/api/auth"];
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+export async function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
 
-  // Handle admin routes protection
-  if (pathname.startsWith('/admin')) {
-    // Allow access to login page
-    if (pathname === '/admin/login') {
-      return NextResponse.next();
-    }
+  const homePath = pathname === "/";
 
-    // Check authentication
-    const isAuthenticated = getAuthFromRequest(request);
-    
-    if (!isAuthenticated) {
-      // Redirect to login page
-      const loginUrl = new URL('/admin/login', request.url);
-      loginUrl.searchParams.set('redirect', pathname);
-      return NextResponse.redirect(loginUrl);
-    }
+  const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p)) || homePath;
+  if (isPublic) return NextResponse.next();
 
-    // Allow authenticated access
-    return NextResponse.next();
-  }
-
-  // Handle API routes - add CORS headers
-  if (pathname.startsWith('/api')) {
-    // Handle OPTIONS preflight requests
-    if (request.method === 'OPTIONS') {
-      return NextResponse.json(
-        {},
-        {
-          status: 200,
-          headers: getCorsHeaders(request),
-        }
-      );
-    }
-
-    // For other methods, continue with CORS headers
-    const response = NextResponse.next();
-    const corsHeaders = getCorsHeaders(request);
-    
-    Object.entries(corsHeaders).forEach(([key, value]) => {
-      response.headers.set(key, value);
-    });
-
-    return response;
+  if (!(await getAuthFromRequest(req))) {
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();
 }
 
-/**
- * Middleware configuration
- * Specifies which routes should run through middleware
- */
 export const config = {
-  matcher: [
-    '/admin/:path*',
-    '/api/:path*',
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

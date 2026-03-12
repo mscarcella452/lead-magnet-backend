@@ -21,7 +21,8 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn(plusJakartaSans.variable, roboto.variable)}
     >
-      <body className="font-body">
+      <body className="font-body bg-background relative">
+        <div className="absolute inset-0 dot-grid -z-1 " />
         <AppProvider>{children}</AppProvider>
         <Toaster />
       </body>

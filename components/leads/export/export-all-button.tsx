@@ -7,7 +7,7 @@ import { useExportLeads } from "@/components/leads/export/useExportLeads";
 import { ExportIcon } from "@/components/leads/export/export-icon";
 
 // ============================================================================
-// Component
+// ExportAllButton
 // ============================================================================
 
 export function ExportAllButton({ ...props }: ButtonProps) {

@@ -9,6 +9,7 @@ import { BulkExportButton } from "@/components/leads/export/bulk-export-button";
 import { Card } from "@/components/ui/layout/card";
 import { BulkDeleteLeadsButton } from "@/components/leads/delete/bulk-delete-leads-button";
 import { Button } from "@/components/ui/controls";
+import { Badge } from "@/components/ui/feedback/badge";
 
 // ====================================================
 // Types
@@ -56,25 +57,27 @@ export const SelectionBar = memo(function SelectionBar({
           <Card
             size="sm"
             role="toolbar"
-            variant="popover-blur"
-            border
-            className="flex @2xl:flex-row items-center shadow-xs. border-border!  "
+            variant="panel-blur"
+            border={true}
+            className="flex flex-col @2xl:flex-row items-center shadow-xs border-card!"
             aria-label={`${totalSelectedLeads} ${leadLabel} selected`}
           >
-            <span
+            <Badge
+              variant="brand"
+              intent="soft"
               aria-live="polite"
               aria-atomic="true"
-              className="shrink-0 text-lg @2xl:text-sm font-medium"
+              className="shrink-0 text-lg @2xl:text-sm font-medium capitalize"
             >
-              {totalSelectedLeads} {leadLabel}
-            </span>
+              {totalSelectedLeads} <span>{leadLabel}</span>
+            </Badge>
 
             <SelectionBarSeparator />
 
             <Container
               spacing="group"
               width="full"
-              className="grid grid-cols-2 @2xl:grid-cols-4"
+              className="grid grid-cols-2 @2xl:grid-cols-4  @max-2xl:my-2"
             >
               <BulkStatusDropdown
                 selectedLeads={selectedLeads}
@@ -88,12 +91,11 @@ export const SelectionBar = memo(function SelectionBar({
               />
               <Container
                 spacing="group"
-                className="col-span-2 @max-2xl:mt-2 @max-2xl:flex-row @2xl:grid @2xl:grid-cols-2 justify-end"
+                className="col-span-2 grid @2xl:grid-cols-2 w-full"
               >
                 <BulkExportButton
                   selectedLeads={selectedLeads}
                   className="@max-lg:h-control-h-sm"
-                  intent="soft"
                 />
 
                 <BulkDeleteLeadsButton

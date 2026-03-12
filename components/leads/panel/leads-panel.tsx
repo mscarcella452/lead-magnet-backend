@@ -5,14 +5,18 @@ import { LeadTable, LeadTableHeader } from "@/components/leads/table";
 import { LeadPagination } from "@/components/leads/pagination/lead-pagination";
 import type { InitialLeadData } from "@/components/leads/panel/lib/types";
 import { useLeadsState } from "@/components/leads/panel/lib/useLeadsState";
-import { SelectionBar } from "@/components/dashboard/selection-bar";
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { cn } from "@/lib/utils/classnames";
+
+// ============================================================================
+// types
+// ============================================================================
 
 interface LeadsPanelProps {
   initialLeadData: InitialLeadData;
 }
+
+// ============================================================================
+// LeadsPanel
+// ============================================================================
 
 export function LeadsPanel({ initialLeadData }: LeadsPanelProps) {
   const {
@@ -23,9 +27,6 @@ export function LeadsPanel({ initialLeadData }: LeadsPanelProps) {
     handlePageChange,
     refetch,
   } = useLeadsState(initialLeadData);
-  const [count, setCount] = useState(3);
-
-  const handleAdd = () => setCount(1);
 
   return (
     <Container
@@ -34,7 +35,6 @@ export function LeadsPanel({ initialLeadData }: LeadsPanelProps) {
       aria-busy={isLoading}
       aria-label="Leads panel"
     >
-      <button onClick={handleAdd}>Add</button>
       <LeadTableHeader leads={state.leads} />
       <LeadTable
         leads={state.leads}

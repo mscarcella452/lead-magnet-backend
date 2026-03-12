@@ -63,50 +63,53 @@ export function LeadTable({
 
   return (
     <>
-      <div
-        className={cn("rounded-md border overflow-hidden", className)}
+      {/* <div
+        className={cn(
+          "rounded-md bg-panel shadow-xs  overflow-hidden",
+          className,
+        )}
         role="region"
         aria-label="Leads table"
-      >
-        <Table>
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              <CheckboxHeader
-                checked={allSelected}
-                indeterminate={someSelected}
-                onToggle={handleToggleAll}
-              />
-              {TABLE_COLUMNS.map((column) => (
-                <SortableHeader
-                  key={column.key}
-                  field={column.key}
-                  label={column.label}
-                  onSort={onSort}
-                  sortBy={sortBy}
-                  sortOrder={sortOrder}
-                />
-              ))}
-              <TableHead
-                scope="col"
-                className="text-right text-sm text-foreground"
-              >
-                Actions
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {leads.map((lead) => (
-              <LeadTableRow
-                key={lead.id}
-                lead={lead}
-                isSelected={selectedLeads.has(lead.id)}
-                onToggle={handleToggleLead}
-                refetch={refetch}
+      > */}
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <CheckboxHeader
+              checked={allSelected}
+              indeterminate={someSelected}
+              onToggle={handleToggleAll}
+            />
+            {TABLE_COLUMNS.map((column) => (
+              <SortableHeader
+                key={column.key}
+                field={column.key}
+                label={column.label}
+                onSort={onSort}
+                sortBy={sortBy}
+                sortOrder={sortOrder}
               />
             ))}
-          </TableBody>
-        </Table>
-      </div>
+            <TableHead
+              scope="col"
+              className="text-right text-sm text-foreground"
+            >
+              Actions
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {leads.map((lead) => (
+            <LeadTableRow
+              key={lead.id}
+              lead={lead}
+              isSelected={selectedLeads.has(lead.id)}
+              onToggle={handleToggleLead}
+              refetch={refetch}
+            />
+          ))}
+        </TableBody>
+      </Table>
+      {/* </div> */}
 
       <SelectionBar
         selectedLeads={selectedLeads}

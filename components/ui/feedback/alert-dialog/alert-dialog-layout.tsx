@@ -6,7 +6,6 @@ import { Overlay } from "@/components/ui/feedback/overlay";
 import { cn } from "@/lib/utils/classnames";
 import { alertDialogVariants } from "@/design-system/cva-variants/alert-dialog-variants";
 import { useAlertDialogContext } from "@/components/ui/feedback/alert-dialog/alert-dialog-context";
-import { DIALOG_ANIMATION_MAP } from "@/config/dialog-config";
 import { AlertDialogVariantProps } from "@/design-system/lib/types/cva-types";
 
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";

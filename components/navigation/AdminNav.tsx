@@ -7,6 +7,8 @@ import { LogOut } from "lucide-react";
 import { Container } from "@/components/ui/layout/containers";
 import { cn } from "@/lib/utils/classnames";
 import { LogoAvatar } from "@/components/brand/logo-avatar";
+import { toast } from "sonner";
+import { LogOutButton } from "@/components/auth/log-out-button";
 
 /**
  * Admin Navigation Component (Client Component)
@@ -19,14 +21,13 @@ export function AdminNav() {
 
   const handleLogout = async () => {
     try {
-      // Call logout API
-      await fetch("/api/admin/logout", { method: "POST" });
-
-      // Redirect to login
-      router.push("/admin/login");
+      const res = await fetch("/api/auth/logout", { method: "POST" });
+      if (!res.ok) throw new Error("Logout failed");
+      router.push("/");
       router.refresh();
     } catch (error) {
       console.error("Logout error:", error);
+      toast.error("Failed to log out. Please try again.");
     }
   };
 
@@ -39,23 +40,18 @@ export function AdminNav() {
           width="fit"
           className="flex flex-row items-center"
         >
-          <Link
-            href="/admin/dashboard"
-            intent="text"
-            mode="responsiveIcon"
-            size="sm"
-          >
+          <Link href="/dashboard" intent="text" mode="responsiveIcon" size="sm">
             <LogoAvatar size="sm" />
             <ControlLabel>Lead Magnet Admin</ControlLabel>
           </Link>
 
           <Link
-            href="/admin/dashboard"
+            href="/dashboard"
             intent="text"
             size="sm"
             className={cn({
-              "text-primary": pathname === "/admin/dashboard",
-              "text-muted-foreground": pathname !== "/admin/dashboard",
+              "text-primary": pathname === "/dashboard",
+              "text-muted-foreground": pathname !== "/dashboard",
             })}
           >
             Dashboard
@@ -68,35 +64,10 @@ export function AdminNav() {
           width="fit"
           className="flex flex-row items-center"
         >
-          <LogOutButton handleLogout={handleLogout} />
-          <ThemeToggleButton size="sm" intent="ghost" />
+          <LogOutButton />
+          <ThemeToggleButton size="sm" intent="outline" />
         </Container>
       </div>
     </nav>
   );
 }
-
-const LogOutButton = ({ handleLogout }: { handleLogout: () => void }) => {
-  return (
-    <>
-      <Button
-        intent="outline"
-        size="sm"
-        className="max-sm:hidden"
-        onClick={handleLogout}
-      >
-        <LogOut />
-        Logout
-      </Button>
-      <Button
-        intent="outline"
-        size="sm"
-        mode="iconOnly"
-        className="sm:hidden"
-        onClick={handleLogout}
-      >
-        <LogOut />
-      </Button>
-    </>
-  );
-};

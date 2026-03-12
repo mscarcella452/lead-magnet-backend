@@ -16,6 +16,7 @@ export const BulkDeleteLeadsButton = memo(function BulkDeleteLeadsButton({
   onConfirm,
   label,
   hideLabel,
+  ...props
 }: BulkDeleteLeadsButtonProps) {
   const ariaLabel =
     selectedLeads.size === 1
@@ -37,6 +38,7 @@ export const BulkDeleteLeadsButton = memo(function BulkDeleteLeadsButton({
         size="xs"
         aria-label={ariaLabel}
         className="@max-lg:h-control-h-sm"
+        {...props}
       >
         <Trash2 aria-hidden="true" />
         {!hideLabel && <ControlLabel>{label ?? "Delete"}</ControlLabel>}

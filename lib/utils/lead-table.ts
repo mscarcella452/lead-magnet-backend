@@ -1,6 +1,7 @@
 import { Lead } from "@/types";
 import { LeadStatus } from "@prisma/client";
-import { SortField, SortDirection } from "@/app/admin/dashboard/LeadTable";
+import { SortDirection } from "@/components/leads/table/lib/types";
+import type { SortField } from "@/lib/server/read/getTableLeads";
 
 // ============================================================================
 // Status Ordering

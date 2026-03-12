@@ -1,4 +1,4 @@
-import { AdminNav } from "@/app/admin/AdminNav";
+import { AdminNav } from "@/components/navigation/AdminNav";
 
 export default function DashboardLayout({
   children,
@@ -6,7 +6,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <AdminNav />
       {children}
     </div>

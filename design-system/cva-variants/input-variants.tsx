@@ -18,7 +18,7 @@ export const inputVariants = cva(
         xs: "h-compact-h-lg control-text-sm",
         sm: "h-control-h-sm control-text-sm",
         md: "h-control-h-md control-text-md",
-        lg: "h-control-h-lg control-text-lg",
+        lg: "h-control-h-lg control-text-md",
         "responsive-sm": [
           "@max-lg:h-compact-h-lg",
           "h-control-h-sm control-text-sm",
@@ -29,7 +29,7 @@ export const inputVariants = cva(
         ],
         "responsive-lg": [
           "@max-lg:h-control-h-md @max-lg:control-text-md",
-          "h-control-h-lg control-text-lg",
+          "h-control-h-lg control-text-md",
         ],
       },
 
