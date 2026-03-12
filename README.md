@@ -223,29 +223,9 @@ lead-magnet-backend/
 └── package.json
 ```
 
-## 🔧 Customization Guide
+## 🔧 Setup for New Clients
 
-### For Each New Client
-
-1. **Clone the repository**
-
-   ```bash
-   git clone <repo-url> client-name-leads
-   cd client-name-leads
-   ```
-
-2. **Update environment variables**
-   - Set `CLIENT_ALLOWED_ORIGIN` to client's domain
-   - Generate new `CLIENT_API_KEY`
-   - Set unique `ADMIN_PASSWORD`
-
-3. **Customize branding** (optional)
-   - Update colors in `app/globals.css`
-   - Modify admin dashboard title in `app/admin/AdminNav.tsx`
-
-4. **Deploy**
-   - Deploy to Vercel, Netlify, or your preferred platform
-   - Set environment variables in deployment platform
+See **[CHECKLIST.md](./CHECKLIST.md)** for step-by-step setup instructions when cloning this template for a new client.
 
 ### Adding Custom Fields
 

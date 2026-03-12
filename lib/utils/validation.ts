@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LEAD_SOURCES } from "@/types/lead-constants";
 
 // ============================================================================
 // Lead submission schema
@@ -11,27 +12,14 @@ export const leadSubmissionSchema = z.object({
     .min(3, "Email too short")
     .max(255, "Email too long"),
   name: z.string().min(1, "Name is required").max(255, "Name too long").trim(),
-  source: z
-    .enum([
-      "WEBSITE_HOMEPAGE",
-      "WEBSITE_CONTACT",
-      "WEBSITE_PRICING",
-      "WEBSITE_BLOG",
-      "WEBSITE_DEMO",
-      "LANDING_PAGE_PROMO",
-      "GOOGLE_ADS",
-      "FACEBOOK_AD",
-      "LINKEDIN_POST",
-      "TWITTER_AD",
-      "EMAIL_CAMPAIGN",
-      "WEBINAR",
-      "REFERRAL",
-      "PARTNER_REFERRAL",
-      "ORGANIC_SEARCH",
-      "DIRECT",
-    ])
+  source: z.enum(LEAD_SOURCES).optional(),
+  metadata: z
+    .record(z.string().max(500)) // Only string values, max 500 chars each
+    .refine(
+      (obj) => Object.keys(obj).length <= 20,
+      "Metadata cannot have more than 20 key-value pairs",
+    )
     .optional(),
-  metadata: z.record(z.any()).optional(),
 });
 
 export type LeadSubmissionInput = z.infer<typeof leadSubmissionSchema>;
