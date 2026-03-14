@@ -4,57 +4,13 @@
 
 import { memo, useCallback } from "react";
 import { TableCell, TableRow } from "@/components/ui/layout/table";
-import { Badge } from "@/components/ui/feedback/badge";
+import { SourceBadge } from "@/components/leads/source/source-badge";
 import { Checkbox } from "@/components/ui/controls/checkbox";
-import { StatusDropdown } from "@/components/leads/status/status-dropdown";
 import { ActionsMenu } from "@/components/leads/table/components/actions-menu";
 import { formatDate } from "@/lib/utils/dates";
-import { updateLeadStatusAction } from "@/lib/server/actions/write/updateLeadStatusAction";
-import { invalidateLeadWithRelationsCache } from "@/lib/cache/lead-with-relations-cache";
-import { toast } from "sonner";
-import { LeadStatus } from "@prisma/client";
-import type {
-  LeadTableRowProps,
-  StatusTableCellProps,
-} from "@/components/leads/table/lib/types";
-
-// ============================================================================
-// Status Table Cell
-// ============================================================================
-
-const StatusTableCell = memo(function StatusTableCell({
-  leadId,
-  status,
-  refetch,
-}: StatusTableCellProps) {
-  const onStatusChange = useCallback(
-    async (newStatus: LeadStatus) => {
-      if (newStatus === status) return;
-
-      const result = await updateLeadStatusAction({
-        leadId,
-        newStatus,
-        performedBy: "You",
-      });
-
-      if (result.success) {
-        toast.success(`Lead status updated from ${status} to ${newStatus}`);
-        invalidateLeadWithRelationsCache(leadId);
-        refetch();
-      } else {
-        toast.error(result.error);
-        throw new Error(result.error);
-      }
-    },
-    [leadId, status, refetch],
-  );
-
-  return (
-    <TableCell>
-      <StatusDropdown currentStatus={status} onStatusChange={onStatusChange} />
-    </TableCell>
-  );
-});
+import type { LeadTableRowProps } from "@/components/leads/table/lib/types";
+import { StatusTableCell } from "@/components/leads/table/components/status-table-cell";
+import { PriorityTableCell } from "@/components/leads/table/components/priority-table-cell";
 
 // ============================================================================
 // Lead Table Row
@@ -72,7 +28,7 @@ export const LeadTableRow = memo(function LeadTableRow({
 
   return (
     <TableRow data-state={isSelected ? "selected" : undefined}>
-      <TableCell className="w-12">
+      <TableCell>
         <Checkbox
           checked={isSelected}
           onCheckedChange={handleToggle}
@@ -80,13 +36,13 @@ export const LeadTableRow = memo(function LeadTableRow({
         />
       </TableCell>
 
-      <TableCell className="text-sm">{lead.name || "—"}</TableCell>
+      <TableCell className="text-sm text-muted-foreground">
+        {lead.name || "—"}
+      </TableCell>
 
       <TableCell>
         {lead.source ? (
-          <Badge variant="primary" intent="soft" size="sm">
-            {lead.source}
-          </Badge>
+          <SourceBadge source={lead.source} className="mx-auto" />
         ) : (
           <span
             className="text-muted-foreground text-sm"
@@ -103,13 +59,19 @@ export const LeadTableRow = memo(function LeadTableRow({
         refetch={refetch}
       />
 
+      <PriorityTableCell
+        leadId={lead.id}
+        priority={lead.priority}
+        refetch={refetch}
+      />
+
       <TableCell className="text-xs text-subtle-foreground">
         <time dateTime={new Date(lead.createdAt).toISOString()}>
           {formatDate(lead.createdAt)}
         </time>
       </TableCell>
 
-      <TableCell className="text-right">
+      <TableCell>
         <ActionsMenu lead={lead} refetch={refetch} />
       </TableCell>
     </TableRow>

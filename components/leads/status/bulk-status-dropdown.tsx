@@ -4,7 +4,6 @@ import {
   BulkUpdateDropdown,
   BulkUpdateDropdownProps,
 } from "@/components/leads/shared/bulk-update-dropdown";
-import { CheckCircle2 } from "lucide-react";
 import { ButtonProps } from "@/components/ui/controls";
 import { bulkUpdateLeadStatusAction } from "@/lib/server/actions/write/bulkUpdateLeadStatusAction";
 import { toast } from "sonner";
@@ -41,7 +40,6 @@ export function BulkStatusDropdown({
   };
   return (
     <BulkUpdateDropdown
-      triggerIcon={CheckCircle2}
       triggerLabel="Status"
       config={STATUS_CONFIG}
       onUpdateChange={handleStatusChange}

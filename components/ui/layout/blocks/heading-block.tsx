@@ -1,16 +1,14 @@
 import { cn } from "@/lib/utils/classnames";
 import { Badge } from "@/components/ui/feedback/badge";
-import {
-  Container,
-  type ContainerProps,
-} from "@/components/ui/layout/containers/container";
+import { Container } from "@/components/ui/layout/containers/container";
+import { ContainerVariantProps } from "@/design-system/lib/types/cva-types";
 import { BadgeVariantProps } from "@/design-system/lib/types/cva-types";
 
 export interface HeadingBlockProps {
   badge?: string;
   heading: string;
   description?: string;
-  position?: ContainerProps["position"];
+  position?: ContainerVariantProps["position"];
   badgeProps?: BadgeVariantProps;
   className?: string;
   children?: React.ReactNode;
@@ -42,15 +40,7 @@ export const HeadingBlock = ({
         className,
       )}
     >
-      {badge && (
-        <Badge
-          variant={badgeProps?.variant || "tertiary"}
-          shape={badgeProps?.shape || "default"}
-          size={badgeProps?.size || "lg"}
-        >
-          {badge}
-        </Badge>
-      )}
+      {badge && <Badge {...badgeProps}>{badge}</Badge>}
       <Container spacing="group" position={position} as="div">
         <h2 className="text-4xl @lg:text-5xl font-medium @3xl:text-6xl leading-tight @3xl:leading-[1.05] font-display">
           {heading}

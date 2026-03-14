@@ -1,7 +1,6 @@
 import { LeadPriority } from "@prisma/client";
 import { PRIORITY_CONFIG } from "@/config/lead-config";
 import { BulkUpdateDropdown } from "@/components/leads/shared/bulk-update-dropdown";
-import { Flame } from "lucide-react";
 import { ButtonProps } from "@/components/ui/controls";
 import { bulkUpdateLeadPriorityAction } from "@/lib/server/actions/write/bulkUpdateLeadPriorityAction";
 import { toast } from "sonner";
@@ -39,7 +38,6 @@ export function BulkPriorityDropdown({
 
   return (
     <BulkUpdateDropdown
-      triggerIcon={Flame}
       triggerLabel="Priority"
       config={PRIORITY_CONFIG}
       onUpdateChange={handlePriorityChange}

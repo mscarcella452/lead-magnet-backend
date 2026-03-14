@@ -53,12 +53,13 @@ TableFooter.displayName = "TableFooter";
 
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
-  React.HTMLAttributes<HTMLTableRowElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLTableRowElement> & { hoverable?: boolean }
+>(({ className, hoverable = true, ...props }, ref) => (
   <tr
     ref={ref}
     className={cn(
-      "border-b border-border-soft  transition-colors hover:bg-muted/30 data-[state=selected]:bg-muted/30 ",
+      "border-b border-border-soft  transition-colors data-[state=selected]:bg-muted/30 ",
+      { "hover:bg-muted/30": hoverable },
       className,
     )}
     {...props}
@@ -73,7 +74,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "px-4 py-3 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+      "p-4 text-center align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 border-l  first:border-l-0 border-border-soft",
       className,
     )}
     {...props}
@@ -87,7 +88,10 @@ const TableCell = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <td
     ref={ref}
-    className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
+    className={cn(
+      "p-4 align-middle  text-center [&:has([role=checkbox])]:pr-0 border-l first:border-l-0 border-border-soft",
+      className,
+    )}
     {...props}
   />
 ));

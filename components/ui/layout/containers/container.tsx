@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils/classnames";
-import { ContainerVariantProps } from "@/design-system/lib/types/cva-types";
+import { type ContainerVariantProps } from "@/design-system/lib/types/cva-types";
 import { containerVariants } from "@/design-system/cva-variants/container-variants";
 
 interface ContainerPropsBase extends ContainerVariantProps {
@@ -8,15 +8,13 @@ interface ContainerPropsBase extends ContainerVariantProps {
   className?: string;
 }
 
-type ContainerProps<T extends keyof JSX.IntrinsicElements = "div"> = ContainerPropsBase &
-  React.ComponentPropsWithoutRef<T> & {
-    as?: T;
-  };
+type ContainerProps<T extends keyof JSX.IntrinsicElements = "div"> =
+  ContainerPropsBase &
+    React.ComponentPropsWithoutRef<T> & {
+      as?: T;
+    };
 
-const Container = React.forwardRef<
-  any,
-  ContainerProps<any>
->(
+const Container = React.forwardRef<any, ContainerProps<any>>(
   (
     {
       children,
@@ -27,44 +25,48 @@ const Container = React.forwardRef<
       as: Component = "div",
       ...props
     },
-    ref
+    ref,
   ) => {
-  /**
-   * Container defaults are derived from `spacing`.
-   *
-   * `section` spacing suggests a constrained, centered layout by default,
-   * but explicit `width` or `position` props always override.
-   *
-   * Other spacing values defer entirely to CVA defaults.
-   */
+    /**
+     * Container defaults are derived from `spacing`.
+     *
+     * `section` spacing suggests a constrained, centered layout by default,
+     * but explicit `width` or `position` props always override.
+     *
+     * Other spacing values defer entirely to CVA defaults.
+     */
 
-  const resolvedWidth =
-    spacing === "section" ? (width ?? "constrained") : width;
+    const resolvedWidth =
+      spacing === "section" ? (width ?? "constrained") : width;
 
-  const resolvedPosition =
-    spacing === "section" ? (position ?? "center") : position;
+    const resolvedPosition =
+      spacing === "section" ? (position ?? "center") : position;
 
-  const variants = {
-    spacing: spacing,
-    width: resolvedWidth,
-    position: resolvedPosition,
-  };
-  if (spacing === "section") {
+    const variants = {
+      spacing: spacing,
+      width: resolvedWidth,
+      position: resolvedPosition,
+    };
+    if (spacing === "section") {
+      return (
+        <Component ref={ref} className="@container" {...props}>
+          <div className={cn(containerVariants(variants), className)}>
+            {children}
+          </div>
+        </Component>
+      );
+    }
+
     return (
-      <Component ref={ref} className="@container" {...props}>
-        <div className={cn(containerVariants(variants), className)}>
-          {children}
-        </div>
+      <Component
+        ref={ref}
+        className={cn(containerVariants(variants), className)}
+        {...props}
+      >
+        {children}
       </Component>
     );
-  }
-
-  return (
-    <Component ref={ref} className={cn(containerVariants(variants), className)} {...props}>
-      {children}
-    </Component>
-  );
-  }
+  },
 );
 
 Container.displayName = "Container";

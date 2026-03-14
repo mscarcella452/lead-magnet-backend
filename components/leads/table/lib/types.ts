@@ -1,5 +1,5 @@
 import type { LeadTableRow } from "@/types";
-import type { LeadStatus } from "@prisma/client";
+import type { LeadStatus, LeadPriority } from "@prisma/client";
 
 // ============================================================================
 // Lead Table Types
@@ -47,5 +47,10 @@ export interface LeadTableRowProps {
 export interface StatusTableCellProps {
   leadId: string;
   status: LeadStatus;
+  refetch: () => void;
+}
+export interface PriorityTableCellProps {
+  leadId: string;
+  priority: LeadPriority;
   refetch: () => void;
 }

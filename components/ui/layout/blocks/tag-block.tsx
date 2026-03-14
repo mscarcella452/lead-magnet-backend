@@ -1,6 +1,6 @@
-import { Badge } from '@/components/ui/feedback/badge';
-import { BadgeProps } from '@/components/ui/feedback/badge';
-import { cn } from '@/lib/utils/classnames';
+import { Badge } from "@/components/ui/feedback/badge";
+import { BadgeProps } from "@/components/ui/feedback/badge";
+import { cn } from "@/lib/utils/classnames";
 interface TagBlockProps extends BadgeProps {
   tags: string[];
   className?: string;
@@ -8,9 +8,9 @@ interface TagBlockProps extends BadgeProps {
 
 const TagBlock = ({ tags, className, ...props }: TagBlockProps) => {
   return (
-    <div className={cn('flex flex-wrap gap-2', className)}>
+    <div className={cn("flex flex-wrap gap-2", className)}>
       {tags.map((tag) => (
-        <Badge variant="muted" key={tag} {...props}>
+        <Badge intent="soft" key={tag} {...props}>
           {tag}
         </Badge>
       ))}

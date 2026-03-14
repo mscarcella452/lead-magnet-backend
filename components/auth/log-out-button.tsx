@@ -1,45 +1,28 @@
 "use client";
-import { useRouter } from "next/navigation";
+
+import { signOut } from "next-auth/react";
+import { Button, type ButtonProps } from "@/components/ui/controls";
+import { LogOut } from "lucide-react";
 import { toast } from "sonner";
-import { Button, ButtonProps, ControlLabel } from "@/components/ui/controls";
-import { LogOut, type LucideIcon } from "lucide-react";
 
-interface LogOutButtonProps extends Omit<ButtonProps, "onClick"> {
-  label?: string;
-  hideLabel?: boolean;
-  icon?: LucideIcon;
-}
-
-export function LogOutButton({
-  label = "Logout",
-  hideLabel = false,
-  icon: Icon = LogOut,
-  ...props
-}: LogOutButtonProps) {
-  const router = useRouter();
-
+export function LogoutButton({ children, ...props }: ButtonProps) {
   const handleLogout = async () => {
     try {
-      const res = await fetch("/api/auth/logout", { method: "POST" });
-      if (!res.ok) throw new Error("Logout failed");
-      router.push("/");
-      router.refresh();
+      await signOut({ redirectTo: "/" });
     } catch (error) {
-      console.error("Logout error:", error);
-      toast.error("Failed to log out. Please try again.");
+      console.error("Logout failed:", error);
+      toast.error("Failed to log out");
     }
   };
 
   return (
-    <Button
-      intent="outline"
-      size="sm"
-      mode="responsiveIcon"
-      onClick={handleLogout}
-      {...props}
-    >
-      <Icon />
-      {!hideLabel && <ControlLabel>{label}</ControlLabel>}
+    <Button onClick={handleLogout} intent="outline" size="sm" {...props}>
+      {children || (
+        <>
+          <LogOut className="size-4" />
+          Log out
+        </>
+      )}
     </Button>
   );
 }

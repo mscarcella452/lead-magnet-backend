@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
-import { checkAuth } from "@/lib/auth";
+import { auth } from "@/auth";
 import { LoginForm } from "@/components/auth/login-form";
 
 export default async function HomePage() {
-  const authed = await checkAuth();
-  if (authed) redirect("/dashboard");
+  const session = await auth();
+  if (session) redirect("/dashboard");
   return <LoginForm />;
 }

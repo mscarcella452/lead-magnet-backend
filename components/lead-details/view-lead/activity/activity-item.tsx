@@ -11,7 +11,8 @@ import {
   CardContent,
 } from "@/components/ui/layout/card";
 import { ComponentProps } from "react";
-import { Badge } from "@/components/ui/feedback/badge";
+import { PriorityBadge } from "@/components/leads/priority";
+import { SourceBadge } from "@/components/leads/source/source-badge";
 
 // ============================================================================
 // Types
@@ -49,6 +50,7 @@ const ACTIVITY_LABELS: Record<ActivityType, string> = {
   LEAD_UPDATED: "Lead updated",
   NOTE_UPDATED: "Note updated",
   NOTE_DELETED: "Note deleted",
+  PRIORITY_CHANGED: "Priority changed",
 };
 
 // ============================================================================
@@ -70,6 +72,20 @@ function StatusChangeContent({ metadata }: MetadataContentProps) {
     </Container>
   );
 }
+function PriorityChangeContent({ metadata }: MetadataContentProps) {
+  if (!metadata.from || !metadata.to) return null;
+
+  return (
+    <Container
+      spacing="item"
+      className="flex flex-row items-center text-muted-foreground text-xs"
+    >
+      <PriorityBadge priority={metadata.from} />
+      <span aria-hidden="true">→</span>
+      <PriorityBadge priority={metadata.to} />
+    </Container>
+  );
+}
 
 function TextMetadataContent({ value, className }: TextMetadataContentProps) {
   if (!value) return null;
@@ -82,9 +98,7 @@ function LeadCreatedContent({ metadata }: MetadataContentProps) {
   return (
     <Container spacing="item" className="flex flex-row items-center">
       <span className="text-muted-foreground text-xs ">Source:</span>{" "}
-      <Badge size="sm" intent="soft">
-        {metadata.source}
-      </Badge>
+      <SourceBadge source={metadata.source} />
     </Container>
   );
 }
@@ -123,6 +137,7 @@ const ACTIVITY_RENDERERS: Record<
   NOTE_ADDED: NoteContent,
   NOTE_UPDATED: NoteContent,
   NOTE_DELETED: NoteContent,
+  PRIORITY_CHANGED: PriorityChangeContent,
 };
 
 // ============================================================================

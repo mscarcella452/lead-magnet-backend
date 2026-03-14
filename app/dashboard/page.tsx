@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "@/components/ui/feedback/error-boundary";
-import { checkAuth } from "@/lib/auth";
 import { Inset, Container } from "@/components/ui/layout/containers";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import {
@@ -18,9 +17,6 @@ import type { PageProps } from "@/components/dashboard/lib/types";
 // ============================================================================
 
 export default async function DashboardPage({ searchParams }: PageProps) {
-  const isAuthenticated = await checkAuth();
-  if (!isAuthenticated) redirect("/");
-
   const resolvedSearchParams = await searchParams;
 
   return (

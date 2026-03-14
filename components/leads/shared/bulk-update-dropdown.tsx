@@ -10,19 +10,16 @@ import {
 import { ChevronDown } from "lucide-react";
 import type { OptionConfig } from "@/config/lead-config";
 import { Button, ButtonProps } from "@/components/ui/controls";
-import type { LucideIcon } from "lucide-react";
 
 export interface BulkUpdateDropdownProps<T extends string> extends ButtonProps {
   config: Record<T, OptionConfig>;
   onUpdateChange: (value: T) => void | Promise<void>;
-  triggerIcon: LucideIcon;
   triggerLabel: string;
 }
 
 export function BulkUpdateDropdown<T extends string>({
   config,
   onUpdateChange,
-  triggerIcon: TriggerIcon,
   triggerLabel,
   ...props
 }: BulkUpdateDropdownProps<T>) {
@@ -43,7 +40,6 @@ export function BulkUpdateDropdown<T extends string>({
     <DropdownMenu>
       <DropdownMenuTrigger asChild disabled={isUpdating}>
         <Button intent="outline" size="xs" {...props}>
-          <TriggerIcon aria-hidden="true" />
           {triggerLabel}
           <ChevronDown className="opacity-45" aria-hidden="true" />
         </Button>

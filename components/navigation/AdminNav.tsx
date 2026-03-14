@@ -1,14 +1,12 @@
 "use client";
 
-import { Link, ControlLabel } from "@/components/ui/controls";
-import { usePathname, useRouter } from "next/navigation";
-import { Button, ThemeToggleButton } from "@/components/ui/controls";
-import { LogOut } from "lucide-react";
+import { Link } from "@/components/ui/controls";
+import { usePathname } from "next/navigation";
+import { ThemeToggleButton, ControlLabel } from "@/components/ui/controls";
 import { Container } from "@/components/ui/layout/containers";
 import { cn } from "@/lib/utils/classnames";
 import { LogoAvatar } from "@/components/brand/logo-avatar";
-import { toast } from "sonner";
-import { LogOutButton } from "@/components/auth/log-out-button";
+import { LogoutButton } from "@/components/auth/log-out-button";
 
 /**
  * Admin Navigation Component (Client Component)
@@ -17,19 +15,6 @@ import { LogOutButton } from "@/components/auth/log-out-button";
  */
 export function AdminNav() {
   const pathname = usePathname();
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    try {
-      const res = await fetch("/api/auth/logout", { method: "POST" });
-      if (!res.ok) throw new Error("Logout failed");
-      router.push("/");
-      router.refresh();
-    } catch (error) {
-      console.error("Logout error:", error);
-      toast.error("Failed to log out. Please try again.");
-    }
-  };
 
   return (
     <nav className="border-b surface-card-blur sticky top-0 z-50 px-4 lg:px-8">
@@ -64,7 +49,7 @@ export function AdminNav() {
           width="fit"
           className="flex flex-row items-center"
         >
-          <LogOutButton />
+          <LogoutButton />
           <ThemeToggleButton size="sm" intent="outline" />
         </Container>
       </div>

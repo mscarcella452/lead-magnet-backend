@@ -199,7 +199,7 @@ export type GeneratedLead = {
   campaign: LeadCampaign | null;
   status: LeadStatus;
   priority: LeadPriority;
-  score: number | null;
+  score: number;
   metadata: LeadMetadata;
   magnetType: LeadMagnetType;
   createdAt: Date;
@@ -252,8 +252,7 @@ export function generateLeads(
         campaign,
         status: randomItem(LEAD_STATUS_OPTIONS),
         priority: randomItem(LEAD_PRIORITY_OPTIONS),
-        score:
-          Math.random() > 0.4 ? faker.number.int({ min: 1, max: 100 }) : null,
+        score: faker.number.int({ min: 1, max: 100 }),
         metadata: generateMetadataForMagnet(magnetType),
         magnetType,
         createdAt: randomDate(90),

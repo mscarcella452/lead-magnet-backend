@@ -7,14 +7,9 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/layout/dropdown-menu";
 import { DialogTrigger } from "@/components/ui/feedback/dialog";
-import { AlertDialogTrigger } from "@/components/ui/feedback/alert-dialog";
 import { Button } from "@/components/ui/controls";
-import { Eye, Pencil, MoreHorizontal, Trash2 } from "lucide-react";
-import {
-  DIALOG_TYPES,
-  ALERT_DIALOG_TYPES,
-  LeadUpdatePayload,
-} from "@/types/ui/dialog";
+import { Eye, Pencil, MoreHorizontal } from "lucide-react";
+import { DIALOG_TYPES } from "@/types/ui/dialog";
 import { getLeadWithRelationsAction } from "@/lib/server/actions/read/getLeadWithRelationsAction";
 import { leadWithRelationsCache } from "@/lib/cache/lead-with-relations-cache";
 import type { ActionsMenuProps } from "@/components/leads/table/lib/types";
@@ -90,7 +85,7 @@ export const ActionsMenu = memo(function ActionsMenu({
 
         <DropdownMenuGroup>
           <DeleteLeadMenuItem
-            payload={{ leadId: lead.id, onConfirm: refetch }}
+            payload={{ leadIds: [lead.id], onConfirm: refetch }}
             label="Delete Lead"
           />
         </DropdownMenuGroup>

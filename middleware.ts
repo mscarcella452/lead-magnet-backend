@@ -1,18 +1,34 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { getAuthFromRequest } from "@/lib/auth";
+import { auth } from "@/auth";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const PUBLIC_PATHS = ["/api/auth"];
+// Routes that don't require authentication
+const PUBLIC_ROUTES = ["/", "/api/auth", "/auth/set-password", "/auth/forgot-password", "/auth/reset-password"];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  const homePath = pathname === "/";
+  // Check if route is public
+  const isPublic = PUBLIC_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(route + "/")
+  );
 
-  const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p)) || homePath;
-  if (isPublic) return NextResponse.next();
+  if (isPublic) {
+    // If authenticated user tries to access login page, redirect to dashboard
+    const session = await auth();
+    if (session && pathname === "/") {
+      return NextResponse.redirect(new URL("/dashboard", req.url));
+    }
+    return NextResponse.next();
+  }
 
-  if (!(await getAuthFromRequest(req))) {
-    return NextResponse.redirect(new URL("/", req.url));
+  // Protected routes - require authentication
+  const session = await auth();
+  if (!session) {
+    // Redirect to login, but only if not already there
+    if (pathname !== "/") {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
   }
 
   return NextResponse.next();

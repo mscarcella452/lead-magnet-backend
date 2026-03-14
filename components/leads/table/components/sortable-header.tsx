@@ -26,10 +26,9 @@ export const SortableHeader = memo(function SortableHeader({
     >
       <Button
         intent="ghost"
-        size="sm"
+        size="xs"
         onClick={() => onSort?.(field)}
         aria-label={`Sort by ${label}${isActive ? `, currently ${sortOrder}ending` : ""}`}
-        className={cn({ "text-primary": isActive })}
       >
         {label}
         <ArrowUpDown

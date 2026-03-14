@@ -24,6 +24,7 @@ export function StatusDropdown({
       config={STATUS_CONFIG}
       onUpdateChange={onStatusChange}
       aria-label={`Current status: ${STATUS_CONFIG[currentStatus].label}. Click to change status.`}
+      intent="soft"
       {...props}
     />
   );

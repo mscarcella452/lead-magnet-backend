@@ -1,121 +1,112 @@
-/**
- * Email Service Placeholder
- * 
- * This is a placeholder for future email integration.
- * Replace with actual email service (Resend, SendGrid, Nodemailer, etc.)
- */
+import { Resend } from "resend";
 
-export interface EmailOptions {
-  to: string;
-  subject: string;
-  html?: string;
-  text?: string;
-  attachments?: Array<{
-    filename: string;
-    path: string;
-  }>;
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+/**
+ * Send invite email with magic link for setting password
+ */
+export async function sendInviteEmail(
+  to: string,
+  name: string,
+  token: string
+): Promise<{ success: boolean; error?: string }> {
+  const appUrl = process.env.APP_URL || "http://localhost:3000";
+  const magicLink = `${appUrl}/auth/set-password?token=${token}`;
+
+  try {
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || "noreply@example.com",
+      to,
+      subject: "Welcome! Set your password",
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #333; margin-bottom: 20px;">Welcome, ${name}!</h2>
+          
+          <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
+            You've been invited to join our lead dashboard. Click the button below to set your password and get started.
+          </p>
+          
+          <div style="margin: 30px 0;">
+            <a href="${magicLink}" style="display: inline-block; background-color: #0066cc; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 500;">
+              Set Your Password
+            </a>
+          </div>
+          
+          <p style="color: #999; font-size: 14px; margin-bottom: 10px;">
+            Or copy this link: <code style="background: #f5f5f5; padding: 2px 6px; border-radius: 3px;">${magicLink}</code>
+          </p>
+          
+          <p style="color: #999; font-size: 13px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+            This link expires in 24 hours. If you didn't request this invite, please ignore this email.
+          </p>
+        </div>
+      `,
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to send invite email:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to send email",
+    };
+  }
+}
+
+/**
+ * Send password reset email with reset code
+ * TODO: Implement password reset flow
+ */
+export async function sendPasswordResetEmail(
+  to: string,
+  name: string,
+  token: string
+): Promise<{ success: boolean; error?: string }> {
+  // TODO: Implement password reset email
+  // This is a placeholder for future implementation
+  console.log(`[TODO] Send password reset email to ${to} for ${name}`);
+  return { success: true };
 }
 
 /**
  * Send lead magnet email with PDF attachment
- * 
- * TODO: Integrate with email service provider
- * 
- * Options for integration:
- * 
- * 1. Resend (recommended for modern apps):
- *    - npm install resend
- *    - import { Resend } from 'resend';
- *    - const resend = new Resend(process.env.RESEND_API_KEY);
- *    - await resend.emails.send({ ... });
- * 
- * 2. SendGrid:
- *    - npm install @sendgrid/mail
- *    - import sgMail from '@sendgrid/mail';
- *    - sgMail.setApiKey(process.env.SENDGRID_API_KEY);
- *    - await sgMail.send({ ... });
- * 
- * 3. Nodemailer (SMTP):
- *    - npm install nodemailer
- *    - import nodemailer from 'nodemailer';
- *    - const transporter = nodemailer.createTransport({ ... });
- *    - await transporter.sendMail({ ... });
- * 
- * @param email - Recipient email address
- * @param pdfUrl - URL or path to PDF file
- * @returns Promise resolving to success status
  */
 export async function sendLeadMagnetEmail(
   email: string,
   pdfUrl: string
 ): Promise<{ success: boolean; error?: string }> {
-  console.log('📧 [EMAIL PLACEHOLDER] Would send email to:', email);
-  console.log('📎 [EMAIL PLACEHOLDER] PDF URL:', pdfUrl);
-  
-  // TODO: Replace with actual email sending logic
-  // Example structure:
-  /*
   try {
-    const emailOptions: EmailOptions = {
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || "noreply@example.com",
       to: email,
-      subject: 'Your Free Lead Magnet',
+      subject: "Your Free Lead Magnet",
       html: `
-        <h1>Thank you for your interest!</h1>
-        <p>Please find your requested resource attached.</p>
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #333; margin-bottom: 20px;">Thank you for your interest!</h2>
+          
+          <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
+            Please find your requested resource attached or available at the link below.
+          </p>
+          
+          <div style="margin: 30px 0;">
+            <a href="${pdfUrl}" style="display: inline-block; background-color: #0066cc; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 500;">
+              Download Your Resource
+            </a>
+          </div>
+          
+          <p style="color: #999; font-size: 13px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+            If you have any questions, feel free to reach out.
+          </p>
+        </div>
       `,
-      text: 'Thank you for your interest! Please find your requested resource attached.',
-      attachments: [
-        {
-          filename: 'lead-magnet.pdf',
-          path: pdfUrl,
-        },
-      ],
-    };
+    });
 
-    // Send email using your chosen service
-    await emailService.send(emailOptions);
-    
     return { success: true };
   } catch (error) {
-    console.error('Failed to send email:', error);
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error' 
+    console.error("Failed to send lead magnet email:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to send email",
     };
   }
-  */
-
-  // Mock success response for now
-  return { success: true };
-}
-
-/**
- * Send welcome email to new lead
- * 
- * TODO: Implement welcome email template
- */
-export async function sendWelcomeEmail(
-  email: string,
-  name: string
-): Promise<{ success: boolean; error?: string }> {
-  console.log('📧 [EMAIL PLACEHOLDER] Would send welcome email to:', email, name);
-  
-  // TODO: Implement actual email sending
-  return { success: true };
-}
-
-/**
- * Validate email configuration
- * Checks if required environment variables are set
- */
-export function validateEmailConfig(): boolean {
-  const requiredVars = ['EMAIL_FROM_ADDRESS'];
-  const missingVars = requiredVars.filter(varName => !process.env[varName]);
-  
-  if (missingVars.length > 0) {
-    console.warn('⚠️  Missing email configuration:', missingVars.join(', '));
-    return false;
-  }
-  
-  return true;
 }

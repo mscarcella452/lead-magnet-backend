@@ -63,17 +63,9 @@ export function LeadTable({
 
   return (
     <>
-      {/* <div
-        className={cn(
-          "rounded-md bg-panel shadow-xs  overflow-hidden",
-          className,
-        )}
-        role="region"
-        aria-label="Leads table"
-      > */}
-      <Table>
+      <Table role="region" aria-label="Leads table" className={className}>
         <TableHeader>
-          <TableRow className="hover:bg-transparent">
+          <TableRow hoverable={false}>
             <CheckboxHeader
               checked={allSelected}
               indeterminate={someSelected}
@@ -89,10 +81,7 @@ export function LeadTable({
                 sortOrder={sortOrder}
               />
             ))}
-            <TableHead
-              scope="col"
-              className="text-right text-sm text-foreground"
-            >
+            <TableHead scope="col" className="text-sm text-foreground">
               Actions
             </TableHead>
           </TableRow>
@@ -109,7 +98,6 @@ export function LeadTable({
           ))}
         </TableBody>
       </Table>
-      {/* </div> */}
 
       <SelectionBar
         selectedLeads={selectedLeads}
