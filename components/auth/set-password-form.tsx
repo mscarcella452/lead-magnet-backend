@@ -15,7 +15,7 @@ import { Alert, AlertDescription } from "@/components/ui/feedback/alert";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { Container, Inset } from "@/components/ui/layout/containers";
 import { motion, AnimatePresence } from "motion/react";
-import { siteConfig } from "@/config";
+import { SITE_CONFIG } from "@/config";
 import { LogoAvatar } from "@/components/brand/logo-avatar";
 
 export function SetPasswordForm() {
@@ -41,7 +41,7 @@ export function SetPasswordForm() {
               <LogoAvatar className="size-16!" />
               <Container spacing="item" className="text-center">
                 <CardTitle className="text-2xl @sm:text-3xl font-semibold">
-                  {siteConfig.name}
+                  {SITE_CONFIG.business_name}
                 </CardTitle>
                 <CardDescription className="text-subtle-foreground">
                   Invalid invite link
@@ -107,7 +107,9 @@ export function SetPasswordForm() {
       });
 
       if (!loginResult?.ok) {
-        setError("Password set successfully, but login failed. Please try logging in.");
+        setError(
+          "Password set successfully, but login failed. Please try logging in.",
+        );
         setIsLoading(false);
         return;
       }
@@ -134,7 +136,7 @@ export function SetPasswordForm() {
             <LogoAvatar className="size-16!" />
             <Container spacing="item" className="text-center">
               <CardTitle className="text-2xl @sm:text-3xl font-semibold">
-                {siteConfig.name}
+                {SITE_CONFIG.business_name}
               </CardTitle>
               <CardDescription className="text-subtle-foreground">
                 Set your password to get started

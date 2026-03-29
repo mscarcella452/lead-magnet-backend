@@ -184,7 +184,7 @@ const TabsTrigger = React.forwardRef<
           "relative w-full",
           controlVariants({
             variant: props.variant || "primary",
-            intent: props.intent || "soft",
+            intent: props.intent || "outline",
             size: props.size,
             mode: props.mode,
             radius: props.radius,

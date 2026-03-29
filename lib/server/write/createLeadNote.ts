@@ -2,6 +2,7 @@ import "server-only";
 
 import { Note } from "@prisma/client";
 import { prisma } from "@/lib/db";
+import { getCurrentUser } from "@/lib/auth-helpers";
 
 // ============================================================================
 // createLeadNote(leadId: string, content: string, author?: string): Promise<Note>
@@ -11,10 +12,12 @@ import { prisma } from "@/lib/db";
 export async function createLeadNote(
   leadId: string,
   content: string,
-  author: string = "You",
 ): Promise<Note> {
+  const user = await getCurrentUser();
+  if (!user) throw new Error("Unauthorized");
+
   const note = await prisma.note.create({
-    data: { leadId, content: content.trim(), author },
+    data: { leadId, content: content.trim(), author: user.role },
   });
 
   return note;

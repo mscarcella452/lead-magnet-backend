@@ -19,17 +19,19 @@ export function CreateNotePopoverWindow({
   const onOpenChange = (open: boolean) => setIsCreateNoteOpen(open);
 
   return (
-    <MorphingPopover
-      open={isCreateNoteOpen}
-      onOpenChange={onOpenChange}
-      transition={CARD_MOTION_TRANSITION}
-    >
+    <>
       <AnimatePresence>
         {isCreateNoteOpen && (
           <Overlay className="z-10" transition={CARD_MOTION_TRANSITION} />
         )}
       </AnimatePresence>
-      {children}
-    </MorphingPopover>
+      <MorphingPopover
+        open={isCreateNoteOpen}
+        onOpenChange={onOpenChange}
+        transition={CARD_MOTION_TRANSITION}
+      >
+        {children}
+      </MorphingPopover>
+    </>
   );
 }

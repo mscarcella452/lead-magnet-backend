@@ -1,22 +1,15 @@
-import { Container } from "@/components/ui/layout/containers";
-import { AlertCircle } from "lucide-react";
+"use client";
 
-// ============================================================================
-// Error State
-// ============================================================================
+import { FallbackProps } from "react-error-boundary";
+import { SectionError } from "@/components/ui/feedback/section-error";
 
-export function LeadsPanelError({ message }: { message: string }) {
+export function LeadsPanelError({ error, resetErrorBoundary }: FallbackProps) {
   return (
-    <Container
-      spacing="group"
-      width="full"
-      role="alert"
-      aria-live="assertive"
-      className="flex flex-col items-center justify-center  py-12 px-6 rounded-lg bg-destructive/5 border border-destructive/10! "
-    >
-      <AlertCircle className="size-10 text-destructive-text" />
-
-      <p className="text-lg font-medium text-destructive-text">{message}</p>
-    </Container>
+    <SectionError
+      error={error}
+      resetErrorBoundary={resetErrorBoundary}
+      fallbackErrorMessage="Leads unavailable"
+      description="We couldn't load your leads. Check your connection and try again."
+    />
   );
 }

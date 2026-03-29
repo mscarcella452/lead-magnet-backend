@@ -11,6 +11,7 @@ import { StatsSection } from "@/components/dashboard/stats-section";
 import { LeadsSection } from "@/components/dashboard/leads-section";
 import { LeadsPanelSkeleton, LeadsPanelError } from "@/components/leads/panel";
 import type { PageProps } from "@/components/dashboard/lib/types";
+import { ExportAllButton } from "@/components/leads/export/export-all-button";
 
 // ============================================================================
 // Dashboard Page
@@ -21,20 +22,20 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
   return (
     <Inset as="main" variant="content">
-      <Container spacing="section" width="constrained">
+      <Container as="section" spacing="section" width="constrained">
         <Container spacing="content" position="start" width="full">
-          <DashboardHeader />
-          <ErrorBoundary
-            fallback={<StatsCardsError message="Stats unavailable" />}
-          >
+          <DashboardHeader
+            header="Dashboard"
+            subheader="Track and manage leads from your fitness campaigns"
+            action={<ExportAllButton />}
+          />
+          <ErrorBoundary fallbackRender={StatsCardsError}>
             <Suspense fallback={<StatsCardsSkeleton />}>
               <StatsSection />
             </Suspense>
           </ErrorBoundary>
         </Container>
-        <ErrorBoundary
-          fallback={<LeadsPanelError message="Failed to load leads." />}
-        >
+        <ErrorBoundary fallbackRender={LeadsPanelError}>
           <Suspense fallback={<LeadsPanelSkeleton />}>
             <LeadsSection searchParams={resolvedSearchParams} />
           </Suspense>

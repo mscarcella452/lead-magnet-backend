@@ -72,7 +72,10 @@ async function main() {
     // Notes — pre-generated in seed-utils, unique and source-appropriate
     for (let i = 0; i < notes.length; i++) {
       const noteDate = new Date(
-        createdLead.createdAt.getTime() + i * 24 * 60 * 60 * 1000,
+        Math.min(
+          createdLead.createdAt.getTime() + i * 24 * 60 * 60 * 1000,
+          new Date().getTime(),
+        ),
       );
       const isPinned = Math.random() > 0.8;
       const hasBeenUpdated = Math.random() > 0.8;
@@ -87,6 +90,7 @@ async function main() {
           author: randomItem(PERFORMERS),
           isPinned,
           pinnedAt: isPinned ? noteDate : null,
+          updatedBy: hasBeenUpdated ? randomItem(PERFORMERS) : null,
           contentUpdatedAt,
           createdAt: noteDate,
         },

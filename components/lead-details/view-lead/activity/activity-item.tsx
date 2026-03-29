@@ -13,21 +13,17 @@ import {
 import { ComponentProps } from "react";
 import { PriorityBadge } from "@/components/leads/priority";
 import { SourceBadge } from "@/components/leads/source/source-badge";
+import { Badge } from "@/components/ui/feedback/badge";
 
 // ============================================================================
 // Types
 // ============================================================================
 
 interface ActivityItemProps extends ComponentProps<typeof Card> {
-  relation: Activity;
+  activity: Activity;
 }
 
 type ActivityMetadata = Record<string, any>;
-
-interface TextMetadataContentProps {
-  value?: string;
-  className?: string;
-}
 
 interface MetadataContentProps {
   metadata: ActivityMetadata;
@@ -37,37 +33,33 @@ interface MetadataContentProps {
 // Constants
 // ============================================================================
 
-// type ActivityType =
-//   | "STATUS_CHANGED"
-//   | "LEAD_CREATED"
-//   | "LEAD_UPDATED"
-//   | "NOTE_ADDED";
-
 const ACTIVITY_LABELS: Record<ActivityType, string> = {
   LEAD_CREATED: "Lead created",
   STATUS_CHANGED: "Status changed",
-  NOTE_ADDED: "Note added",
   LEAD_UPDATED: "Lead updated",
-  NOTE_UPDATED: "Note updated",
-  NOTE_DELETED: "Note deleted",
   PRIORITY_CHANGED: "Priority changed",
 };
+
+const labelClassName = "capitalize text-caption";
 
 // ============================================================================
 // Metadata Renderers
 // Renders type-specific content based on activity metadata
 // ============================================================================
 
+const ArrowIcon = () => (
+  <span aria-hidden="true" className="text-caption">
+    →
+  </span>
+);
+
 function StatusChangeContent({ metadata }: MetadataContentProps) {
   if (!metadata.from || !metadata.to) return null;
 
   return (
-    <Container
-      spacing="item"
-      className="flex flex-row items-center text-muted-foreground text-xs"
-    >
+    <Container spacing="item" className="flex flex-row items-center">
       <StatusBadge status={metadata.from} />
-      <span aria-hidden="true">→</span>
+      <ArrowIcon />
       <StatusBadge status={metadata.to} />
     </Container>
   );
@@ -76,20 +68,12 @@ function PriorityChangeContent({ metadata }: MetadataContentProps) {
   if (!metadata.from || !metadata.to) return null;
 
   return (
-    <Container
-      spacing="item"
-      className="flex flex-row items-center text-muted-foreground text-xs"
-    >
+    <Container spacing="item" className="flex flex-row items-center">
       <PriorityBadge priority={metadata.from} />
-      <span aria-hidden="true">→</span>
+      <ArrowIcon />
       <PriorityBadge priority={metadata.to} />
     </Container>
   );
-}
-
-function TextMetadataContent({ value, className }: TextMetadataContentProps) {
-  if (!value) return null;
-  return <span className={className}>{value}</span>;
 }
 
 function LeadCreatedContent({ metadata }: MetadataContentProps) {
@@ -97,29 +81,47 @@ function LeadCreatedContent({ metadata }: MetadataContentProps) {
 
   return (
     <Container spacing="item" className="flex flex-row items-center">
-      <span className="text-muted-foreground text-xs ">Source:</span>{" "}
-      <SourceBadge source={metadata.source} />
-    </Container>
-  );
-}
+      <span className={labelClassName}>source:</span>
 
-function NoteContent({ metadata }: MetadataContentProps) {
-  return (
-    <TextMetadataContent
-      value={metadata.noteContent}
-      className="line-clamp-1"
-    />
+      <SourceBadge intent="soft" source={metadata.source} />
+    </Container>
   );
 }
 
 function LeadUpdatedContent({ metadata }: MetadataContentProps) {
   if (!metadata.fields || metadata.fields.length === 0) return null;
 
-  const fieldChanges = metadata.fields
-    .map((field: { change: string }) => field.change)
-    .join(", ");
+  return (
+    <Container as="dl" spacing="group" className="flex flex-col ">
+      {metadata.fields.map(
+        (field: { field: string; change: string; from: any; to: any }) => (
+          <Container spacing="item" key={field.field} className="flex flex-col">
+            <dt className={labelClassName}>{field.field}:</dt>
 
-  return <TextMetadataContent value={fieldChanges} />;
+            <Container
+              as="dd"
+              spacing="item"
+              className="flex flex-row flex-wrap items-center min-w-0"
+            >
+              <Badge
+                intent="outline"
+                size="sm"
+                className="opacity-70 min-w-0 truncate"
+              >
+                <span className="truncate">{field.from}</span>
+              </Badge>
+              <span className="sr-only">changed to</span>
+              <ArrowIcon />
+
+              <Badge intent="outline" size="sm" className="min-w-0">
+                <span className="truncate">{field.to}</span>
+              </Badge>
+            </Container>
+          </Container>
+        ),
+      )}
+    </Container>
+  );
 }
 
 // ============================================================================
@@ -134,9 +136,6 @@ const ACTIVITY_RENDERERS: Record<
   LEAD_CREATED: LeadCreatedContent,
   LEAD_UPDATED: LeadUpdatedContent,
   STATUS_CHANGED: StatusChangeContent,
-  NOTE_ADDED: NoteContent,
-  NOTE_UPDATED: NoteContent,
-  NOTE_DELETED: NoteContent,
   PRIORITY_CHANGED: PriorityChangeContent,
 };
 
@@ -144,7 +143,7 @@ const ACTIVITY_RENDERERS: Record<
 // Component
 // ============================================================================
 
-function ActivityItem({ relation: activity, ...props }: ActivityItemProps) {
+function ActivityItem({ activity, ...props }: ActivityItemProps) {
   const metadata = activity.metadata as ActivityMetadata;
   const label = ACTIVITY_LABELS[activity.type as ActivityType] || activity.type;
   const formattedDate = formatDate(activity.createdAt);

@@ -27,35 +27,55 @@ export function formatFieldChange(
 export function trackLeadChanges(
   currentLead: Lead,
   updates: UpdateLeadData,
-): string[] {
-  const changes: string[] = [];
+): { field: string; change: string; from: any; to: any }[] {
+  const metadata: { field: string; change: string; from: any; to: any }[] = [];
 
   if (updates.name && updates.name !== currentLead.name) {
-    changes.push(formatFieldChange("name", currentLead.name, updates.name));
+    metadata.push({
+      field: "name",
+      change: formatFieldChange("name", currentLead.name, updates.name),
+      from: currentLead.name,
+      to: updates.name,
+    });
   }
-
   if (updates.email && updates.email !== currentLead.email) {
-    changes.push(formatFieldChange("email", currentLead.email, updates.email));
+    metadata.push({
+      field: "email",
+      change: formatFieldChange("email", currentLead.email, updates.email),
+      from: currentLead.email,
+      to: updates.email,
+    });
   }
-
   if (updates.source !== undefined && updates.source !== currentLead.source) {
-    changes.push(
-      formatFieldChange("source", currentLead.source, updates.source),
-    );
+    metadata.push({
+      field: "source",
+      change: formatFieldChange("source", currentLead.source, updates.source),
+      from: currentLead.source,
+      to: updates.source,
+    });
   }
-
   if (updates.status && updates.status !== currentLead.status) {
-    changes.push(
-      formatFieldChange("status", currentLead.status, updates.status),
-    );
+    metadata.push({
+      field: "status",
+      change: formatFieldChange("status", currentLead.status, updates.status),
+      from: currentLead.status,
+      to: updates.status,
+    });
   }
   if (updates.priority && updates.priority !== currentLead.priority) {
-    changes.push(
-      formatFieldChange("priority", currentLead.priority, updates.priority),
-    );
+    metadata.push({
+      field: "priority",
+      change: formatFieldChange(
+        "priority",
+        currentLead.priority,
+        updates.priority,
+      ),
+      from: currentLead.priority,
+      to: updates.priority,
+    });
   }
 
-  return changes;
+  return metadata;
 }
 
 /**
@@ -65,8 +85,13 @@ export function trackLeadChanges(
 export function formatStatusChange(
   oldStatus: LeadStatus,
   newStatus: LeadStatus,
-): string {
-  return formatFieldChange("status", oldStatus, newStatus);
+): { change: string; from: LeadStatus; to: LeadStatus } {
+  // return formatFieldChange("status", oldStatus, newStatus);
+  return {
+    change: formatFieldChange("status", oldStatus, newStatus),
+    from: oldStatus,
+    to: newStatus,
+  };
 }
 /**
  * Formats a priority change specifically
@@ -75,6 +100,10 @@ export function formatStatusChange(
 export function formatPriorityChange(
   oldPriority: LeadPriority,
   newPriority: LeadPriority,
-): string {
-  return formatFieldChange("priority", oldPriority, newPriority);
+): { change: string; from: LeadPriority; to: LeadPriority } {
+  return {
+    change: formatFieldChange("priority", oldPriority, newPriority),
+    from: oldPriority,
+    to: newPriority,
+  };
 }

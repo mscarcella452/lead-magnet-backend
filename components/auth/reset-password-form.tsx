@@ -14,7 +14,7 @@ import { Alert, AlertDescription } from "@/components/ui/feedback/alert";
 import { AlertCircle } from "lucide-react";
 import { Container, Inset } from "@/components/ui/layout/containers";
 import { motion, AnimatePresence } from "motion/react";
-import { siteConfig } from "@/config";
+import { SITE_CONFIG } from "@/config";
 import { LogoAvatar } from "@/components/brand/logo-avatar";
 
 export function ResetPasswordForm() {
@@ -54,7 +54,10 @@ export function ResetPasswordForm() {
     // 4. Delete the reset code from database
     // 5. Log user in automatically
 
-    console.log("TODO: Implement password reset with code:", { code, password });
+    console.log("TODO: Implement password reset with code:", {
+      code,
+      password,
+    });
     setError("Password reset feature coming soon");
     setIsLoading(false);
   };
@@ -74,7 +77,7 @@ export function ResetPasswordForm() {
             <LogoAvatar className="size-16!" />
             <Container spacing="item" className="text-center">
               <CardTitle className="text-2xl @sm:text-3xl font-semibold">
-                {siteConfig.name}
+                {SITE_CONFIG.business_name}
               </CardTitle>
               <CardDescription className="text-subtle-foreground">
                 Enter your reset code and new password

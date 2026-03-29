@@ -6,55 +6,68 @@ import {
   DialogClose,
 } from "@/components/ui/feedback/dialog";
 import { Container } from "@/components/ui/layout/containers";
-import { Button } from "@/components/ui/controls";
-import { useDialogs } from "@/components/dialogs/providers/dialog-provider";
+import { Card, CardTitle, CardDescription } from "@/components/ui/layout/card";
 
 // ============================================================================
 // ViewLeadError
 // ============================================================================
 
 interface ViewLeadErrorProps {
-  message: string;
+  message?: string;
 }
 
 export function ViewLeadError({ message }: ViewLeadErrorProps) {
-  const { closeDialog } = useDialogs();
-
   return (
-    <div role="alert" aria-live="assertive" className="h-screen flex flex-col">
-      <DialogHeader className="px-dialog-x-md pt-dialog-y-md">
+    <div
+      role="alert"
+      aria-live="assertive"
+      className="h-screen max-h-full flex flex-col relative"
+    >
+      <div className="absolute inset-0 dot-grid" />
+      <DialogHeader className="px-dialog-x-md pt-dialog-y-md flex flex-row items-center justify-between">
         <span className="text-lg @lg:text-xl">View Lead</span>
-        <DialogClose />
+        <DialogClose className="static" />
       </DialogHeader>
 
-      <DialogBody className="px-dialog-x-md flex flex-1">
-        <Container
-          spacing="block"
-          className="flex flex-col items-center justify-center text-center"
+      <DialogBody className="px-dialog-x-md flex items-center justify-center flex-1">
+        <Card
+          variant="panel"
+          border
+          className="flex items-center max-w-[400px] "
         >
           <AlertCircle
             aria-hidden="true"
-            className="size-10 text-destructive-text"
+            className="size-10 @lg:size-12 text-destructive"
           />
-          <div className="flex flex-col gap-1">
-            <p className="text-lg font-medium text-destructive-text">
-              Failed to load lead
-            </p>
-            <p className="text-sm text-muted-foreground">{message}</p>
-          </div>
-        </Container>
-      </DialogBody>
-
-      <DialogFooter className="px-dialog-x-md pb-dialog-y-md pt-dialog-y-sm">
-        <Button
-          type="button"
-          size="sm"
-          onClick={closeDialog}
-          className="@max-lg:h-11 w-full"
+          <Container spacing="item" className="text-center">
+            <CardTitle className="text-lg @lg:text-xl">
+              {message ?? "Failed to load lead."}
+            </CardTitle>
+            <CardDescription className="text-xs @lg:text-sm text-muted-foreground">
+              Something went wrong. <br />
+              Please try again or contact support.
+            </CardDescription>
+          </Container>
+        </Card>
+        {/* <Container
+          spacing="block"
+          className="my-auto place-items-center text-center"
         >
-          Close
-        </Button>
-      </DialogFooter>
+          <AlertCircle
+            aria-hidden="true"
+            className="size-10 @lg:size-12 text-destructive-text"
+          />
+          <Container spacing="item">
+            <p className="text-lg @lg:text-xl font-semibold text-destructive-text">
+              {message ?? "Failed to load lead"}
+            </p>
+            <p className="text-xs @lg:text-sm text-muted-foreground">
+              Something went wrong. <br />
+              Please try again or contact support.
+            </p>
+          </Container>
+        </Container> */}
+      </DialogBody>
     </div>
   );
 }

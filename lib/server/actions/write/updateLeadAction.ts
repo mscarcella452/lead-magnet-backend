@@ -15,10 +15,9 @@ import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 export async function updateLeadAction(
   id: string,
   data: UpdateLeadData,
-  editedBy?: string,
 ): Promise<ActionResult<Lead>> {
   try {
-    const lead = await updateLead(id, data, editedBy);
+    const lead = await updateLead(id, data);
 
     // Revalidate both cache and path
     revalidateTag(CACHE_TAGS.LEADS);

@@ -1,3 +1,5 @@
+import "server-only";
+
 import { getDashboardStats } from "@/lib/server/read/getDashboardStats";
 import { StatsCard } from "@/components/dashboard/stats-cards";
 import { Container } from "@/components/ui/layout/containers";

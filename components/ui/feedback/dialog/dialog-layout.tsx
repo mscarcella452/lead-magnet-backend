@@ -115,17 +115,16 @@ const DialogContent = React.forwardRef<
             className,
           )}
         >
-          <div
+          {/* layoutScroll: accounts for scroll offset during Motion/React layout animations
+    (e.g. animating an item to a new position in a list without the scroll jumping).
+   Use generic div if no layout animations are used inside this dialog. */}
+          <motion.div
             ref={resolvedContentRef}
-            className={cn(
-              dialogContentVariants({
-                spacing,
-              }),
-              contentClassName,
-            )}
+            layoutScroll
+            className={cn(dialogContentVariants({ spacing }), contentClassName)}
           >
             {children}
-          </div>
+          </motion.div>
         </DialogPrimitive.Content>
       </motion.div>
     );

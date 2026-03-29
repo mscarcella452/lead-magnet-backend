@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils/classnames";
 import { plusJakartaSans, roboto } from "./fonts";
 import { AppProvider } from "@/components/providers/app-provider";
 import { Toaster } from "@/components/ui/feedback/sonner";
+import { MotionConfig } from "motion/react";
 
 export const metadata: Metadata = {
   title: "Lead Magnet Backend",
@@ -23,7 +24,9 @@ export default function RootLayout({
     >
       <body className="font-body bg-background relative">
         <div className="absolute inset-0 dot-grid -z-1 " />
-        <AppProvider>{children}</AppProvider>
+        <MotionConfig reducedMotion="user">
+          <AppProvider>{children}</AppProvider>
+        </MotionConfig>
         <Toaster />
       </body>
     </html>

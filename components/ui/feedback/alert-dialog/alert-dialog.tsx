@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { useAlertDialogs } from "@/components/dialogs/providers";
-import { ActiveAlertDialog } from "@/types/ui/dialog";
+import { ActiveAlertDialog, AlertDialogType, AlertDialogPayloads } from "@/types/ui/dialog";
 import {
   AlertDialogContext,
   alertDialogReducer,
@@ -70,12 +70,21 @@ AlertDialog.displayName = "AlertDialog";
 // AlertDialogTrigger - Smart trigger that opens alert dialogs via context
 // ============================================================================
 
-type AlertDialogTriggerProps = (
-  | ActiveAlertDialog
-  | {
-      dialogType?: undefined;
-      payload?: never;
-    }
+type AlertDialogTriggerProps<T extends AlertDialogType | undefined = AlertDialogType | undefined> = (
+  T extends AlertDialogType
+    ? AlertDialogPayloads[T] extends never
+      ? {
+          dialogType: T;
+          payload?: never;
+        }
+      : {
+          dialogType: T;
+          payload: AlertDialogPayloads[T];
+        }
+    : {
+        dialogType?: undefined;
+        payload?: never;
+      }
 ) &
   Omit<
     React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Trigger>,

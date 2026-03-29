@@ -15,12 +15,12 @@ export async function getLeadWithRelationsAction(
     const lead = await getLeadWithRelations(leadId);
 
     if (!lead) {
-      return { success: false, error: "Lead not found" };
+      return { success: false, error: "Lead not found." };
     }
 
     return { success: true, data: lead };
   } catch (error) {
     console.error("Error fetching lead:", error);
-    return { success: false, error: "Failed to fetch lead" };
+    return { success: false, error: "Failed to fetch lead." };
   }
 }

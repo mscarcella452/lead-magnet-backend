@@ -18,7 +18,7 @@ import { invalidateLeadWithRelationsCache } from "@/lib/cache/lead-with-relation
 import { updateLeadNoteAction } from "@/lib/server/actions/write/updateLeadNoteAction";
 import { useNoteItemState } from "@/components/lead-details/view-lead/notes/providers/note-item-state-provider";
 import { NotePinButton } from "@/components/lead-details/view-lead/notes/shared/note-pin-button";
-import { AnimatePresence, motion, Variants } from "motion/react";
+import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { CARD_MOTION_TRANSITION } from "@/components/lead-details/view-lead/notes/lib/constants";
 import { formatDate } from "@/lib/utils/dates";
 
@@ -87,7 +87,7 @@ function NoteCardHeader({ note }: { note: Note }) {
   };
 
   return (
-    <CardHeader className="flex flex-row items-baseline gap-2 text-xs relative">
+    <CardHeader className="flex flex-row items-baseline gap-2 text-xs relative mb-card-y-xs">
       <CardTitle className="font-medium">
         <span className="sr-only">Note by </span>
         {note.author}
@@ -116,31 +116,17 @@ function NoteCardHeader({ note }: { note: Note }) {
 // NoteCardFooter
 // ============================================================================
 
-const FooterMotionVariants = {
-  variants: {
-    rest: { opacity: 0, height: 0 },
-    motion: { height: "auto", opacity: 1 },
-  } as Variants,
-  initial: "rest",
-  animate: "motion",
-  exit: "rest",
-
-  transition: CARD_MOTION_TRANSITION,
-};
-
 function NoteCardFooter({ note }: { note: Note }) {
   if (!note.contentUpdatedAt) return null;
 
   const formattedContentUpdatedDate = formatDate(note.contentUpdatedAt);
 
   return (
-    <motion.div {...FooterMotionVariants}>
-      <CardFooter className="mt-card-y-md gap-2 text-caption">
-        <span>Last updated by {note.author}</span>
-        <span aria-hidden="true">•</span>
-        <span>{formattedContentUpdatedDate}</span>
-      </CardFooter>
-    </motion.div>
+    <CardFooter className="gap-2 text-caption mt-card-y-sm">
+      <span>Last updated by {note.updatedBy}</span>
+      <span aria-hidden="true">•</span>
+      <span>{formattedContentUpdatedDate}</span>
+    </CardFooter>
   );
 }
 
@@ -155,35 +141,44 @@ interface NoteCardProps extends CardProps {
 
 export function NoteCard({ note, cardRef, ...props }: NoteCardProps) {
   const { isOpen, isTranslated } = useNoteItemState();
-
   const { className, ...rest } = props;
-
   return (
-    <Card
-      ref={cardRef}
-      size="sm"
-      variant={isOpen ? "muted" : "card"}
-      className={cn(
-        "group overflow-hidden relative transition-colors gap-0!",
-        { "z-50": isTranslated },
-        className,
-      )}
-      {...rest}
-    >
-      <NoteCardHeader note={note} />
-
-      <CardContent
+    <LayoutGroup id={`note-card-${note.id}`}>
+      <Card
+        ref={cardRef}
+        size="sm"
+        variant={isOpen ? "muted" : "card"}
         className={cn(
-          "text-xs @lg:text-sm leading-relaxed whitespace-pre-wrap transition-colors duration-300 mt-card-y-xs",
-          { "text-muted-foreground": isOpen },
+          "group relative transition-colors gap-0!",
+          // z-50 on isTranslated is so card stays above the delete or update popover.
+          // This way popover can tuck in nicely behind it on close.
+          { "z-50": isTranslated, "text-muted-foreground!": isOpen },
+          className,
         )}
+        {...rest}
       >
-        {note.content}
-      </CardContent>
+        <motion.div layout>
+          <NoteCardHeader note={note} />
+        </motion.div>
+        <motion.div layout key={note.content}>
+          <CardContent className="text-xs @lg:text-sm leading-relaxed whitespace-pre-wrap">
+            {note.content}
+          </CardContent>
+        </motion.div>
 
-      <AnimatePresence initial={false}>
-        {note.contentUpdatedAt && <NoteCardFooter note={note} />}
-      </AnimatePresence>
-    </Card>
+        <AnimatePresence initial={false}>
+          {note.contentUpdatedAt && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={CARD_MOTION_TRANSITION}
+            >
+              <NoteCardFooter note={note} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Card>
+    </LayoutGroup>
   );
 }

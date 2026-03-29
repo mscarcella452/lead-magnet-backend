@@ -8,13 +8,13 @@ interface ContainerPropsBase extends ContainerVariantProps {
   className?: string;
 }
 
-type ContainerProps<T extends keyof JSX.IntrinsicElements = "div"> =
+export type ContainerProps<T extends keyof JSX.IntrinsicElements = "div"> =
   ContainerPropsBase &
     React.ComponentPropsWithoutRef<T> & {
       as?: T;
     };
 
-const Container = React.forwardRef<any, ContainerProps<any>>(
+export const Container = React.forwardRef<any, ContainerProps<any>>(
   (
     {
       children,
@@ -70,5 +70,3 @@ const Container = React.forwardRef<any, ContainerProps<any>>(
 );
 
 Container.displayName = "Container";
-
-export { Container };

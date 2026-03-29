@@ -8,11 +8,10 @@ import { ActionResult } from "@/types/server";
 import { Lead } from "@prisma/client";
 import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 
-// ============================================================================
-// updateLeadPriorityAction(id: string, priority: LeadPriority): Promise<ActionResult<Lead>>
+// ============================================================
 // Server action to update a lead's priority
 // Revalidates cache and dashboard
-// ============================================================================
+// ============================================================
 
 export async function updateLeadPriorityAction(
   data: UpdateLeadPriorityData,

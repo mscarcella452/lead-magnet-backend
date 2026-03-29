@@ -13,7 +13,7 @@ import { Alert, AlertDescription } from "@/components/ui/feedback/alert";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { Container, Inset } from "@/components/ui/layout/containers";
 import { motion, AnimatePresence } from "motion/react";
-import { siteConfig } from "@/config";
+import { SITE_CONFIG } from "@/config";
 import { LogoAvatar } from "@/components/brand/logo-avatar";
 
 export function ForgotPasswordForm() {
@@ -54,7 +54,7 @@ export function ForgotPasswordForm() {
             <LogoAvatar className="size-16!" />
             <Container spacing="item" className="text-center">
               <CardTitle className="text-2xl @sm:text-3xl font-semibold">
-                {siteConfig.name}
+                {SITE_CONFIG.business_name}
               </CardTitle>
               <CardDescription className="text-subtle-foreground">
                 Reset your password
@@ -79,7 +79,10 @@ export function ForgotPasswordForm() {
                     className="overflow-hidden"
                   >
                     <Alert variant="default" className="mb-3">
-                      <Container spacing="item" className="flex-row items-center">
+                      <Container
+                        spacing="item"
+                        className="flex-row items-center"
+                      >
                         <CheckCircle className="size-4" aria-hidden="true" />
                         <AlertDescription>{message}</AlertDescription>
                       </Container>

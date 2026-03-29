@@ -82,22 +82,25 @@ function NoteFormCard({
   }, []);
 
   return (
-    <Card size="sm" className="bg-input!" border={true}>
+    <Card size="sm" variant="input" border={true}>
       <CardTitle className="sr-only">{placeholderLabel}</CardTitle>
 
-      <form className="flex h-full w-full flex-col" onSubmit={handleSubmit}>
+      <Container
+        as="form"
+        spacing="item"
+        className="flex h-full w-full flex-col"
+        onSubmit={handleSubmit}
+      >
         <motion.span
           layoutId={context?.labelId}
           aria-hidden="true"
-          style={{
-            opacity: newNote ? 0 : 1,
-          }}
+          animate={{ opacity: newNote ? 0 : 1 }}
           className="absolute top-card-y-sm left-card-x-sm text-sm text-subtle-foreground select-none"
         >
           {placeholderLabel}
         </motion.span>
         <textarea
-          className="w-full resize-none h-[100px] rounded-md bg-transparent text-xs @lg:text-sm leading-relaxed outline-hidden z-50"
+          className="w-full resize-none h-[100px] rounded-md  text-xs @lg:text-sm leading-relaxed outline-hidden z-50"
           ref={textareaRef}
           value={newNote}
           onChange={(e) => setNewNote(e.target.value)}
@@ -114,7 +117,7 @@ function NoteFormCard({
             intent="ghost"
             size="responsive-sm"
             mode="iconOnly"
-            className="-translate-x-2"
+            className="-translate-x-1/4"
             onClick={context?.close}
             aria-label="Close popover"
           >
@@ -127,12 +130,14 @@ function NoteFormCard({
             size="responsive-sm"
             aria-label={placeholderLabel}
             className="ml-auto"
-            disabled={newNote.trim() === initialNote || isSubmitting}
+            disabled={
+              !newNote.trim() || newNote.trim() === initialNote || isSubmitting
+            }
           >
             {submitLabel}
           </Button>
         </Container>
-      </form>
+      </Container>
     </Card>
   );
 }

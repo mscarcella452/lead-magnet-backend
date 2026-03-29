@@ -1,26 +1,46 @@
 import { Container } from "@/components/ui/layout/containers";
-import { ExportAllButton } from "@/components/leads/export/export-all-button";
+import { cn } from "@/lib/utils";
+
+// ============================================================================
+// Types
+// ============================================================================
+
+interface DashboardHeaderProps {
+  header: string;
+  subheader: string;
+  action?: React.ReactNode;
+  className?: string;
+}
 
 // ============================================================================
 // Component
 // ============================================================================
 
-export function DashboardHeader() {
+export function DashboardHeader({
+  header,
+  subheader,
+  action,
+  className,
+}: DashboardHeaderProps) {
   return (
-    <Container spacing="item" as="header" className="@max-lg:space-y-3">
+    <header>
       <Container
         spacing="group"
         as="hgroup"
-        className="flex flex-row items-center justify-between"
+        className={cn(
+          "grid items-center",
+          { "grid-cols-[1fr_auto]": action },
+          className,
+        )}
       >
         <h1 className="text-2xl @3xl:text-3xl font-bold tracking-tight text-display truncate">
-          Dashboard
+          {header}
         </h1>
-        <ExportAllButton />
+        {action}
+        <p className="text-sm @3xl:text-base text-muted-foreground col-span-full">
+          {subheader}
+        </p>
       </Container>
-      <p className="text-sm @3xl:text-base text-muted-foreground">
-        Track and manage leads from your fitness campaigns
-      </p>
-    </Container>
+    </header>
   );
 }

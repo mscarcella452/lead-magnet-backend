@@ -24,7 +24,7 @@ const CreateNotePopover = () => {
 
   const handleCreateNote = async (content: string) => {
     try {
-      const result = await createLeadNoteAction(leadId, content, "You");
+      const result = await createLeadNoteAction(leadId, content);
       if (!result.success) {
         toast.error(result.error || "Failed to add note");
         return;
@@ -42,15 +42,15 @@ const CreateNotePopover = () => {
 
   return (
     <>
-      <MorphingPopoverTrigger intent="ghost" size="sm" mode="responsiveIcon">
+      <MorphingPopoverTrigger intent="text" size="sm" mode="responsiveIcon">
         <PlusIcon />
         <ControlLabel>Add Note</ControlLabel>
       </MorphingPopoverTrigger>
       <MorphingPopoverContent
         align="right"
         side="fromTop"
-        className="w-full bg-transparent border-none z-50"
-        onClickOutside={handleClose}
+        className="w-full  border-none z-10"
+        // onClickOutside={handleClose}
       >
         <NoteFormCard
           onSubmit={handleCreateNote}

@@ -54,7 +54,7 @@ const compoundThemeVariants = flattenFieldClasses(filteredTheme, {
 // ============================================================================
 export const badgeVariants = cva(
   [
-    "flex items-center justify-center gap-1",
+    "flex items-center justify-center gap-1 min-w-0",
     "border border-transparent",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-[1em]",
     "leading-none w-fit font-display font-medium",

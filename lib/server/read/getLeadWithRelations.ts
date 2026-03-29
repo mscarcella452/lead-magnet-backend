@@ -37,8 +37,8 @@ async function fetchLeadWithRelations(
 // Cache revalidates every 60 seconds or when LEADS tag is invalidated.
 // ============================================================================
 
-export const getLeadWithRelations = unstable_cache(
-  fetchLeadWithRelations,
-  [CACHE_TAGS.LEADS, "detail"],
-  { revalidate: 60, tags: [CACHE_TAGS.LEADS] },
-);
+export const getLeadWithRelations = (leadId: string) =>
+  unstable_cache(fetchLeadWithRelations, [CACHE_TAGS.LEADS, "detail", leadId], {
+    revalidate: 60,
+    tags: [CACHE_TAGS.LEADS],
+  })(leadId);

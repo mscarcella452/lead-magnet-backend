@@ -24,7 +24,6 @@ export const StatusTableCell = memo(function StatusTableCell({
       const result = await updateLeadStatusAction({
         leadId,
         newStatus,
-        performedBy: "You",
       });
 
       if (result.success) {

@@ -20,7 +20,6 @@ export function BulkPriorityDropdown({
     const result = await bulkUpdateLeadPriorityAction({
       leadIds: Array.from(selectedLeads),
       newPriority: priority,
-      performedBy: "current-user-id",
     });
 
     if (result.success) {

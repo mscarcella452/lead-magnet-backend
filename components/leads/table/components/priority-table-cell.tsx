@@ -23,7 +23,6 @@ export const PriorityTableCell = memo(function PriorityTableCell({
       const result = await updateLeadPriorityAction({
         leadId,
         newPriority,
-        performedBy: "You",
       });
 
       if (result.success) {

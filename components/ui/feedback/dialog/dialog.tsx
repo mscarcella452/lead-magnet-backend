@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useDialogs } from "@/components/dialogs/providers";
-import { ActiveDialog } from "@/types/ui/dialog";
+import { ActiveDialog, DialogType, DialogPayloads } from "@/types/ui/dialog";
 import {
   DialogContext,
   dialogReducer,
@@ -79,12 +79,21 @@ Dialog.displayName = "Dialog";
 // DialogTrigger - Smart trigger that opens dialogs via context
 // ============================================================================
 
-type DialogTriggerProps = (
-  | ActiveDialog
-  | {
-      dialogType?: undefined;
-      payload?: never;
-    }
+type DialogTriggerProps<T extends DialogType | undefined = DialogType | undefined> = (
+  T extends DialogType
+    ? DialogPayloads[T] extends never
+      ? {
+          dialogType: T;
+          payload?: never;
+        }
+      : {
+          dialogType: T;
+          payload: DialogPayloads[T];
+        }
+    : {
+        dialogType?: undefined;
+        payload?: never;
+      }
 ) &
   Omit<
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Trigger>,

@@ -2,6 +2,7 @@ import { LeadWithRelations } from "@/types";
 import { Container } from "@/components/ui/layout/containers";
 import { LeadNotes } from "@/components/lead-details/view-lead/notes/lead-notes";
 import { LeadActivity } from "@/components/lead-details/view-lead/activity/lead-activity";
+import { motion, LayoutGroup } from "motion/react";
 
 interface LeadOverviewProps {
   lead: LeadWithRelations;
@@ -9,10 +10,15 @@ interface LeadOverviewProps {
 
 const LeadOverview = ({ lead }: LeadOverviewProps) => {
   return (
-    <Container spacing="block">
-      <LeadNotes limit={3} />
-      <LeadActivity lead={lead} limit={3} />
-    </Container>
+    <LayoutGroup>
+      <Container spacing="block">
+        <LeadNotes limit={3} />
+
+        <motion.div layout="position">
+          <LeadActivity lead={lead} limit={3} />
+        </motion.div>
+      </Container>
+    </LayoutGroup>
   );
 };
 

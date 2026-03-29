@@ -18,7 +18,7 @@ import { DIALOG_CONTENT_MAP } from "@/config/dialog-config";
 
 export type SetActiveDialog = <T extends DialogType>(
   dialogType: T,
-  payload: DialogPayloads[T] extends undefined ? never : DialogPayloads[T],
+  payload?: DialogPayloads[T] extends never ? never : DialogPayloads[T],
 ) => void;
 
 interface DialogsContextType {

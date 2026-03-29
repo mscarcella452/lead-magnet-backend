@@ -46,7 +46,7 @@ PRIMARY
   color: theme("colors.primary.text");
 }
 .tone-primary-ghost-hover:hover {
-  background-color: theme("colors.primary.soft.hover");
+  background-color: theme("colors.primary.soft");
   color: theme("colors.primary.soft-foreground");
 }
 

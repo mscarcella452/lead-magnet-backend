@@ -7,7 +7,7 @@ import { Note } from "@prisma/client";
 import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 
 // ============================================================================
-// createLeadNoteAction(leadId: string, content: string, author?: string): Promise<ActionResult<Note>>
+// createLeadNoteAction(leadId: string, content: string): Promise<ActionResult<Note>>
 // Server action to create a new lead note
 // Revalidates dashboard to update activity feed
 // ============================================================================
@@ -15,10 +15,9 @@ import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 export async function createLeadNoteAction(
   leadId: string,
   content: string,
-  author: string = "You",
 ): Promise<ActionResult<Note>> {
   try {
-    const note = await createLeadNote(leadId, content, author);
+    const note = await createLeadNote(leadId, content);
 
     revalidateTag(CACHE_TAGS.LEADS);
     revalidatePath(REVALIDATE_PATHS.ADMIN_DASHBOARD);

@@ -81,11 +81,7 @@ export function EditLeadDetails({ lead, onConfirm }: EditLeadDetailsProps) {
 
     setIsSubmitting(true);
 
-    const result = await updateLeadAction(
-      lead.id,
-      diffToUpdateData(diff),
-      "You",
-    );
+    const result = await updateLeadAction(lead.id, diffToUpdateData(diff));
 
     setIsSubmitting(false);
 

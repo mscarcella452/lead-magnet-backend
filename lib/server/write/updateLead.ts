@@ -1,39 +1,49 @@
-// /lib/server/write/updateLead.ts
 import "server-only";
-import { Lead } from "@prisma/client";
+import { Lead, ActivityType } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { trackLeadChanges } from "@/lib/helpers/lead-changes";
-import { ActivityType } from "@prisma/client";
+import {
+  trackLeadChanges,
+  formatStatusChange,
+  formatPriorityChange,
+} from "@/lib/helpers/lead-changes";
+import { getCurrentUser } from "@/lib/auth-helpers";
 import { LeadMetadataUpdate } from "@/types/lead-fields";
+
+// ============================================================
+// Types
+// ============================================================
 
 export type UpdateLeadData = Partial<
   Pick<Lead, "name" | "email" | "source" | "status" | "priority" | "metadata">
 >;
 
-// ============================================================================
-// updateLead(id: string, data: UpdateLeadData): Promise<Lead>
-// Updates a lead and logs activity for each changed field as side effect
-// ============================================================================
+// ============================================================
+// updateLead
+// ============================================================
 
+/**
+ * Updates a lead and logs activity for each changed field.
+ * Requires an authenticated user — performedBy is derived from session.
+ */
 export async function updateLead(
   id: string,
   data: UpdateLeadData,
-  editedBy?: string,
 ): Promise<Lead> {
-  // Get current lead to compare changes
-  const currentLead = await prisma.lead.findUnique({
-    where: { id },
-  });
+  const currentUser = await getCurrentUser();
+  if (!currentUser) throw new Error("Unauthorized");
 
-  if (!currentLead) {
-    throw new Error("Lead not found");
-  }
+  const currentLead = await prisma.lead.findUnique({ where: { id } });
+  if (!currentLead) throw new Error("Lead not found.");
 
-  // Track what changed using helper
   const changes = trackLeadChanges(currentLead, data);
 
-  // Update lead and log activity in transaction
-  const [updatedLead, _activity] = await prisma.$transaction([
+  const statusChange = changes.find((c) => c.field === "status");
+  const priorityChange = changes.find((c) => c.field === "priority");
+  const otherChanges = changes.filter(
+    (c) => c.field !== "status" && c.field !== "priority",
+  );
+
+  const [updatedLead] = await prisma.$transaction([
     prisma.lead.update({
       where: { id },
       data: {
@@ -42,24 +52,53 @@ export async function updateLead(
         ...(data.source !== undefined && { source: data.source }),
         ...(data.status && { status: data.status }),
         ...(data.priority && { priority: data.priority }),
-        ...(data.metadata && {
-          metadata: data.metadata as LeadMetadataUpdate,
-        }),
+        ...(data.metadata && { metadata: data.metadata as LeadMetadataUpdate }),
       },
     }),
-    // Only log activity if something actually changed
-    ...(changes.length > 0
+    ...(statusChange
+      ? [
+          prisma.activity.create({
+            data: {
+              leadId: id,
+              type: ActivityType.STATUS_CHANGED,
+              performedBy: currentUser.role,
+              metadata: {
+                change: formatStatusChange(statusChange.from, statusChange.to),
+                from: statusChange.from,
+                to: statusChange.to,
+              },
+            },
+          }),
+        ]
+      : []),
+    ...(priorityChange
+      ? [
+          prisma.activity.create({
+            data: {
+              leadId: id,
+              type: ActivityType.PRIORITY_CHANGED,
+              performedBy: currentUser.role,
+              metadata: {
+                change: formatPriorityChange(
+                  priorityChange.from,
+                  priorityChange.to,
+                ),
+                from: priorityChange.from,
+                to: priorityChange.to,
+              },
+            },
+          }),
+        ]
+      : []),
+    ...(otherChanges.length > 0
       ? [
           prisma.activity.create({
             data: {
               leadId: id,
               type: ActivityType.LEAD_UPDATED,
-              performedBy: editedBy || "You",
+              performedBy: currentUser.role,
               metadata: {
-                fields: changes.map((change) => {
-                  const [field, ...rest] = change.split(" from ");
-                  return { field, change };
-                }),
+                fields: otherChanges,
               },
             },
           }),

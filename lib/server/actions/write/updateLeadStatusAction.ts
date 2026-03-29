@@ -10,7 +10,6 @@ import { Lead } from "@prisma/client";
 import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 
 // ============================================================================
-// updateLeadStatusAction(id: string, status: LeadStatus): Promise<ActionResult<Lead>>
 // Server action to update a lead's status
 // Revalidates cache and dashboard
 // ============================================================================

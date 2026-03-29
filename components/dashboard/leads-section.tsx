@@ -1,3 +1,5 @@
+import "server-only";
+
 import { parseSearchParams } from "@/components/dashboard/lib/helpers";
 import {
   getTableLeads,

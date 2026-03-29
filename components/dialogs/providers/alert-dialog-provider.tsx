@@ -27,7 +27,7 @@ import { ALERT_DIALOG_CONTENT_MAP } from "@/config/dialog-config";
 
 export type SetActiveAlertDialog = <T extends AlertDialogType>(
   dialogType: T,
-  payload: AlertDialogPayloads[T] extends undefined
+  payload?: AlertDialogPayloads[T] extends never
     ? never
     : AlertDialogPayloads[T],
 ) => void;

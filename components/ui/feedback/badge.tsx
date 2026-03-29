@@ -24,14 +24,19 @@ function Badge({
   mode,
   ...props
 }: BadgeProps) {
+  const { children, ...restProps } = props;
   return (
     <div
       className={cn(
         badgeVariants({ variant, intent, size, radius, mode }),
         className,
       )}
-      {...props}
-    />
+      {...restProps}
+    >
+      <span className="truncate flex items-center justify-center gap-1">
+        {children}
+      </span>
+    </div>
   );
 }
 

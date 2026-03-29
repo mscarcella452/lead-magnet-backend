@@ -10,7 +10,7 @@ import { Container } from "@/components/ui/layout/containers";
 
 export function ViewLeadHeader({ children }: { children: React.ReactNode }) {
   return (
-    <DialogHeader className="px-dialog-x-md pt-dialog-y-md pb-dialog-y-sm sticky top-0 z-10 surface-background-blur border-b border-card">
+    <DialogHeader className="px-dialog-x-md pt-dialog-y-md pb-dialog-y-lg sticky top-0 z-10 surface-background-blur">
       <Container spacing="content">{children}</Container>
     </DialogHeader>
   );

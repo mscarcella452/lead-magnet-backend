@@ -23,7 +23,6 @@ export function BulkStatusDropdown({
     const result = await bulkUpdateLeadStatusAction({
       leadIds: Array.from(selectedLeads),
       newStatus: status,
-      performedBy: "current-user-id",
     });
 
     if (result.success) {

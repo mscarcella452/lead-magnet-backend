@@ -48,16 +48,17 @@ model LeadMagnet {
 }
 
 model Note {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  leadId           String   @db.ObjectId
-  lead             Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  leadId           String    @db.ObjectId
+  lead             Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
   content          String
-  author           String   @default("You") // Default to "You" or "System"
-  isPinned         Boolean  @default(false)
-  pinnedAt         DateTime? // Set when note is pinned, cleared when unpinned
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  contentUpdatedAt DateTime? // Only set when content is edited, null on creation
+  author           String   
+  updatedBy        String?
+  isPinned         Boolean   @default(false)
+  pinnedAt         DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  contentUpdatedAt DateTime?
 
   @@index([leadId, pinnedAt, createdAt])
   @@map("notes")
@@ -77,9 +78,6 @@ model Activity {
 }
 
 enum ActivityType {
-  NOTE_ADDED
-  NOTE_UPDATED
-  NOTE_DELETED
   STATUS_CHANGED
   PRIORITY_CHANGED
   LEAD_CREATED
@@ -128,6 +126,7 @@ model UserInvite {
 }
 
 enum UserRole {
+  OWNER
   ADMIN
   MARKETING
   SUPPORT

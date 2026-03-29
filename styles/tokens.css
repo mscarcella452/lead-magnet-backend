@@ -198,9 +198,9 @@
   --primary-hover: oklch(83% 0 0);
   /* --primary-hover: oklch(87% 0 0); */
   /* SUBTLE/SURFACE variant */
-  --primary-soft: oklch(30% 0 0);
+  --primary-soft: oklch(28% 0 0);
   --primary-soft-foreground: oklch(94% 0 0);
-  --primary-soft-hover: oklch(32% 0 0);
+  --primary-soft-hover: oklch(33% 0 0);
   /* STANDALONE TEXT/LINKS */
   --primary-text: oklch(94% 0 0);
   --primary-text-hover: oklch(87% 0 0);
@@ -231,7 +231,7 @@
   */
   /* SOLID/FILLED variant */
   --info: oklch(45% 0.15 250);
-  --info-hover: oklch(55% 0.16 250);
+  --info-hover: oklch(50% 0.16 250);
   --info-foreground: oklch(98% 0 0);
   /* SOFT variant - BRIGHTER */
   --info-soft: oklch(30% 0.06 250);
@@ -247,7 +247,7 @@
   ==================================== 
   /* SOLID/FILLED variant */
   --success: oklch(45% 0.15 145);
-  --success-hover: oklch(55% 0.16 145);
+  --success-hover: oklch(50% 0.16 145);
   --success-foreground: oklch(98% 0 0);
   /* SOFT variant - BRIGHTER */
   --success-soft: oklch(30% 0.06 145);
@@ -263,7 +263,7 @@
   ==================================== 
   /* SOLID/FILLED variant */
   --warning: oklch(45% 0.15 85);
-  --warning-hover: oklch(55% 0.16 85);
+  --warning-hover: oklch(50% 0.16 85);
   --warning-foreground: oklch(98% 0 0);
   /* SOFT variant - BRIGHTER */
   --warning-soft: oklch(30% 0.06 85);
@@ -279,7 +279,7 @@
   ==================================== 
   /* SOLID/FILLED variant */
   --destructive: oklch(45% 0.15 25);
-  --destructive-hover: oklch(55% 0.16 25);
+  --destructive-hover: oklch(50% 0.16 25);
   --destructive-foreground: oklch(98% 0 0);
   /* SOFT variant - BRIGHTER */
   --destructive-soft: oklch(38% 0.09 25);
@@ -295,7 +295,7 @@
   ==================================== 
   /* SOLID/FILLED variant */
   --purple: oklch(45% 0.15 290);
-  --purple-hover: oklch(55% 0.16 290);
+  --purple-hover: oklch(50% 0.16 290);
   --purple-foreground: oklch(98% 0 0);
   /* SOFT variant - BRIGHTER */
   --purple-soft: oklch(30% 0.06 290);

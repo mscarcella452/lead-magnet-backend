@@ -1,29 +1,38 @@
 import "server-only";
-import { Lead, LeadPriority } from "@prisma/client";
+import { Lead, LeadPriority, ActivityType } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { formatPriorityChange } from "@/lib/helpers/lead-changes";
+import { getCurrentUser } from "@/lib/auth-helpers";
 
-// ============================================================================
-// updateLeadPriority(id: string, priority: LeadPriority): Promise<Lead>
-// Updates a lead's priority and logs activity as side effect
-// Only logs activity if priority actually changed
-// ============================================================================
+// ============================================================
+// Types
+// ============================================================
 
 export interface UpdateLeadPriorityData {
   leadId: string;
   newPriority: LeadPriority;
-  performedBy: string;
 }
 
+// ============================================================
+// updateLeadPriority
+// ============================================================
+
+/**
+ * Updates a lead's priority and logs activity as a side effect.
+ * No-ops if the priority hasn't changed.
+ * Requires an authenticated user — performedBy is derived from session.
+ */
 export async function updateLeadPriority(
   data: UpdateLeadPriorityData,
 ): Promise<Lead> {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) throw new Error("Unauthorized");
+
   const currentLead = await prisma.lead.findUnique({
     where: { id: data.leadId },
     select: { id: true, priority: true },
   });
-
-  if (!currentLead) throw new Error("Lead not found");
+  if (!currentLead) throw new Error("Lead not found.");
 
   if (currentLead.priority === data.newPriority) {
     return prisma.lead.findUniqueOrThrow({ where: { id: data.leadId } });
@@ -37,13 +46,9 @@ export async function updateLeadPriority(
     prisma.activity.create({
       data: {
         leadId: data.leadId,
-        type: "PRIORITY_CHANGED",
-        performedBy: data.performedBy,
-        metadata: {
-          change: formatPriorityChange(currentLead.priority, data.newPriority),
-          from: currentLead.priority,
-          to: data.newPriority,
-        },
+        type: ActivityType.PRIORITY_CHANGED,
+        performedBy: currentUser.role,
+        metadata: formatPriorityChange(currentLead.priority, data.newPriority),
       },
     }),
   ]);

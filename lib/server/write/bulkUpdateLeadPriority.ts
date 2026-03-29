@@ -2,16 +2,19 @@ import "server-only";
 import { Lead, LeadPriority } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { formatPriorityChange } from "@/lib/helpers/lead-changes";
+import { getCurrentUser } from "@/lib/auth-helpers";
 
 export interface BulkUpdateLeadPriorityData {
   leadIds: string[];
   newPriority: LeadPriority;
-  performedBy: string;
 }
 
 export async function bulkUpdateLeadPriority(
   data: BulkUpdateLeadPriorityData,
 ): Promise<Lead[]> {
+  const user = await getCurrentUser();
+  if (!user) throw new Error("Unauthorized");
+
   const currentLeads = await prisma.lead.findMany({
     where: { id: { in: data.leadIds } },
     select: { id: true, priority: true },
@@ -32,7 +35,7 @@ export async function bulkUpdateLeadPriority(
   const activityRecords = leadsToUpdate.map((lead) => ({
     leadId: lead.id,
     type: "PRIORITY_CHANGED" as const,
-    performedBy: data.performedBy,
+    performedBy: user.role,
     metadata: {
       change: formatPriorityChange(lead.priority, data.newPriority),
       from: lead.priority,

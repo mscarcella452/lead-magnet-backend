@@ -17,7 +17,7 @@ async function seedUsers() {
   // Define users to seed from environment variables
   const usersToSeed: UserSeedData[] = [];
 
-  // Admin user
+  // Owner user (initial admin with full privileges)
   if (
     process.env.ADMIN_NAME &&
     process.env.ADMIN_USERNAME &&
@@ -29,10 +29,10 @@ async function seedUsers() {
       username: process.env.ADMIN_USERNAME,
       email: process.env.ADMIN_EMAIL,
       password: process.env.ADMIN_PASSWORD,
-      role: "ADMIN" as UserRole,
+      role: "OWNER" as UserRole,
     });
   } else {
-    console.warn("⚠️  Admin user environment variables not fully set");
+    console.warn("⚠️  Owner user environment variables not fully set");
   }
 
   // Dev user

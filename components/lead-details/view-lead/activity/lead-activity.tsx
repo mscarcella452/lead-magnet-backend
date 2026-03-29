@@ -1,6 +1,7 @@
 import { LeadWithRelations } from "@/types";
-import { RelationsHistory } from "@/components/lead-details/view-lead/shared/relations-history";
+import { RelationsSection } from "@/components/lead-details/view-lead/shared/relations-section";
 import { ActivityItem } from "@/components/lead-details/view-lead/activity/activity-item";
+import { Container } from "@/components/ui/layout/containers";
 
 // ============================================================================
 // types
@@ -19,13 +20,28 @@ const LeadActivity = ({ lead, limit }: LeadActivityProps) => {
   // Display either limited activities or all activities
   const displayedActivities = lead.activities.slice(0, limit);
 
+  const hasActivities = displayedActivities.length > 0;
+
+  const isFiltered = displayedActivities.length < lead.activities.length;
+
   return (
-    <RelationsHistory
+    <RelationsSection
       label="Activity"
-      relations={displayedActivities}
       totalRelations={lead.activities.length}
-      Item={ActivityItem}
-    />
+      isFiltered={isFiltered}
+    >
+      <Container spacing="item" className="relative">
+        {hasActivities ? (
+          displayedActivities.map((activity, index) => (
+            <ActivityItem key={activity.id} activity={activity} />
+          ))
+        ) : (
+          <p className="text-sm text-muted-foreground italic">
+            No activities yet
+          </p>
+        )}
+      </Container>
+    </RelationsSection>
   );
 };
 

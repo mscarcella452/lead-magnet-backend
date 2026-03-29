@@ -1,28 +1,18 @@
-import { Card } from "@/components/ui/layout/card";
-import { AlertCircle } from "lucide-react";
-import { Container } from "@/components/ui/layout/containers";
+"use client";
+import { FallbackProps } from "react-error-boundary";
+import { SectionError } from "@/components/ui/feedback/section-error";
 
 // ============================================================================
 // StatsCardsError
 // ============================================================================
 
-export function StatsCardsError({ message }: { message: string }) {
+export function StatsCardsError({ error, resetErrorBoundary }: FallbackProps) {
   return (
-    <Card
-      size="md"
-      variant="panel"
-      border={true}
-      className="w-full"
-      role="alert"
-      aria-live="assertive"
-    >
-      <Container
-        spacing="item"
-        className="flex flex-row items-center  text-sm text-destructive-text"
-      >
-        <AlertCircle aria-hidden="true" className="size-4 shrink-0" />
-        <p>{message}</p>
-      </Container>
-    </Card>
+    <SectionError
+      error={error}
+      resetErrorBoundary={resetErrorBoundary}
+      fallbackErrorMessage="Stats unavailable"
+      description="We couldn't load your dashboard statistics. Please try again."
+    />
   );
 }
