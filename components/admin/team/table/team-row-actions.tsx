@@ -2,6 +2,7 @@ import { TeamMember } from "@/lib/server/read/getTeamMembers";
 import { Button } from "@/components/ui/controls";
 import { useState, memo } from "react";
 import { Trash2, RotateCcw, Ellipsis, Pencil } from "lucide-react";
+import { isAdminRole, isProtectedRole } from "@/lib/auth/constants";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -18,45 +19,20 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 
 // ============================================================
-// Types
-// ============================================================
-
-interface TeamRowActionsProps {
-  member: TeamMember;
-  isCurrentUser: boolean;
-}
-
-// ============================================================
-// Utilities
-// ============================================================
-
-function isInviteExpired(expiresAt: string): boolean {
-  return new Date(expiresAt) < new Date();
-}
-
-// ============================================================
 // Team Row Actions
 // ============================================================
 
 export const TeamRowActions = memo(function TeamRowActions({
   member,
-  isCurrentUser,
-}: TeamRowActionsProps) {
+}: {
+  member: TeamMember;
+}) {
   const { data: session } = useSession();
   const currentUserRole = session?.user?.role;
   const [isResending, setIsResending] = useState(false);
 
-  const isProtectedRole = member.role === "OWNER";
-
-  const optionsAuth = !["ADMIN", "OWNER"].includes(currentUserRole ?? "");
-
-  const canDelete =
-    !isCurrentUser && member.role !== "DEV" && member.role !== "OWNER";
-  const canResendInvite =
-    !member.password &&
-    !!member.invite &&
-    isInviteExpired(member.invite.expiresAt);
-  const canEdit = !isCurrentUser && member.role !== "DEV";
+  const isProtected = isProtectedRole(member.role);
+  const optionsAuth = !isAdminRole(currentUserRole);
 
   const handleResendInvite = async () => {
     setIsResending(true);
@@ -87,10 +63,6 @@ export const TeamRowActions = memo(function TeamRowActions({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
-          {/* <DropdownMenuItem onClick={handleEdit}>
-            <Pencil className="size-4" />
-            Edit Member
-          </DropdownMenuItem> */}
           <DialogTrigger
             asChild
             dialogType={DIALOG_TYPES.EDIT_MEMBER}
@@ -106,35 +78,32 @@ export const TeamRowActions = memo(function TeamRowActions({
           >
             <DropdownMenuItem>
               <Pencil aria-hidden="true" />
-              Edit {isProtectedRole ? "Owner" : "Member"}
+              Edit {isProtected ? "Owner" : "Member"}
             </DropdownMenuItem>
           </DialogTrigger>
 
-          {!isProtectedRole && (
-            <DropdownMenuItem
-              onClick={handleResendInvite}
-              disabled={isResending}
-            >
-              <RotateCcw className="size-4" />
-              Resend Invite
-            </DropdownMenuItem>
-          )}
+          <DropdownMenuItem
+            onClick={handleResendInvite}
+            disabled={isResending || isProtected}
+          >
+            <RotateCcw className="size-4" />
+            Resend Invite
+          </DropdownMenuItem>
         </DropdownMenuGroup>
 
-        {!isProtectedRole && (
-          <DropdownMenuGroup>
-            <AlertDialogTrigger
-              asChild
-              dialogType={ALERT_DIALOG_TYPES.DELETE_MEMBER}
-              payload={{ userId: member.id }}
-            >
-              <DropdownMenuItem variant="destructive">
-                <Trash2 aria-hidden="true" />
-                Delete Member
-              </DropdownMenuItem>
-            </AlertDialogTrigger>
-          </DropdownMenuGroup>
-        )}
+        <DropdownMenuGroup>
+          <AlertDialogTrigger
+            asChild
+            dialogType={ALERT_DIALOG_TYPES.DELETE_MEMBER}
+            payload={{ userId: member.id }}
+            disabled={isProtected}
+          >
+            <DropdownMenuItem variant="destructive">
+              <Trash2 aria-hidden="true" />
+              Delete Member
+            </DropdownMenuItem>
+          </AlertDialogTrigger>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );

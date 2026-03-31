@@ -4,15 +4,13 @@ import { prisma } from "@/lib/db";
 import { revalidateTag } from "next/cache";
 import { CACHE_TAGS } from "@/lib/server/constants";
 import { getCurrentUser } from "@/lib/auth-helpers";
+import { ADMIN_ROLES, PROTECTED_ROLES } from "@/lib/auth/constants";
 
 interface EditTeamMemberInput {
   name?: string;
   email?: string;
   role?: UserRole;
 }
-
-const ALLOWED_ROLES = ["ADMIN", "OWNER"] as const;
-const PROTECTED_ROLES = ["DEV", "OWNER"] as const;
 
 export async function editTeamMember(
   targetUserId: string,
@@ -21,7 +19,7 @@ export async function editTeamMember(
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error("Unauthorized");
 
-  if (!ALLOWED_ROLES.includes(currentUser.role as never)) {
+  if (!ADMIN_ROLES.includes(currentUser.role.toLowerCase() as never)) {
     throw new Error("Unauthorized");
   }
 
@@ -30,7 +28,7 @@ export async function editTeamMember(
   });
   if (!targetUser) throw new Error("User not found");
 
-  if (PROTECTED_ROLES.includes(targetUser.role as never)) {
+  if (targetUser.role === "OWNER" || targetUser.role === "DEV") {
     throw new Error(`Cannot edit ${targetUser.role} users`);
   }
 

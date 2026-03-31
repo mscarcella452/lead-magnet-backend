@@ -23,9 +23,15 @@ export const SortableHeader = memo(function SortableHeader({
     <TableHead
       scope="col"
       aria-sort={isActive ? (isAscending ? "ascending" : "descending") : "none"}
+      className={cn({
+        "@5xl:w-36": label.toLowerCase() === "created",
+        "@5xl:w-48":
+          label.toLowerCase() === "priority" ||
+          label.toLowerCase() === "status",
+      })}
     >
       <Button
-        intent="ghost"
+        intent="text"
         size="xs"
         onClick={() => onSort?.(field)}
         aria-label={`Sort by ${label}${isActive ? `, currently ${sortOrder}ending` : ""}`}

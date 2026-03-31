@@ -11,7 +11,7 @@ SURFACE - Overlay
 }
 
 .surface-overlay-blur {
-  background-color: color-mix(in oklch, var(--overlay), transparent 50%);
+  background-color: color-mix(in oklch, var(--overlay), transparent 25%);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   color: theme("colors.foreground");
@@ -30,7 +30,7 @@ SURFACE - BACKGROUND
 }
 
 .surface-background-blur {
-  background-color: color-mix(in oklch, var(--background), transparent 50%);
+  background-color: color-mix(in oklch, var(--background), transparent 25%);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   color: theme("colors.foreground");
@@ -50,7 +50,7 @@ SURFACE - CARD
 }
 
 .surface-card-blur {
-  background-color: color-mix(in oklch, var(--card), transparent 50%);
+  background-color: color-mix(in oklch, var(--card), transparent 25%);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   color: theme("colors.foreground");
@@ -70,7 +70,7 @@ SURFACE - POPOVER
 }
 
 .surface-popover-blur {
-  background-color: color-mix(in oklch, var(--popover), transparent 50%);
+  background-color: color-mix(in oklch, var(--popover), transparent 25%);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   color: theme("colors.foreground");
@@ -90,7 +90,7 @@ SURFACE - HYBRID
 }
 
 .surface-panel-blur {
-  background-color: color-mix(in oklch, var(--panel), transparent 50%);
+  background-color: color-mix(in oklch, var(--panel), transparent 25%);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   color: theme("colors.foreground");
@@ -110,7 +110,7 @@ SURFACE - SIDEBAR
 }
 
 .surface-sidebar-blur {
-  background-color: color-mix(in oklch, var(--sidebar), transparent 50%);
+  background-color: color-mix(in oklch, var(--sidebar), transparent 25%);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   color: theme("colors.foreground");
@@ -130,7 +130,7 @@ SURFACE - MUTED
 }
 
 .surface-muted-blur {
-  background-color: color-mix(in oklch, var(--muted), transparent 50%);
+  background-color: color-mix(in oklch, var(--muted), transparent 25%);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   color: theme("colors.foreground");
@@ -150,7 +150,7 @@ SURFACE - OUTLINE
 }
 
 .surface-outline-blur {
-  background-color: color-mix(in oklch, var(--outline), transparent 50%);
+  background-color: color-mix(in oklch, var(--outline), transparent 25%);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   color: theme("colors.foreground");
@@ -170,7 +170,7 @@ SURFACE - INPUT
 }
 
 .surface-input-blur {
-  background-color: color-mix(in oklch, var(--input), transparent 50%);
+  background-color: color-mix(in oklch, var(--input), transparent 25%);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   color: theme("colors.foreground");

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { FallbackProps } from "react-error-boundary";
 import { AlertCircle } from "lucide-react";
 import {
@@ -11,14 +12,17 @@ import {
 } from "@/components/ui/layout/card";
 import { Container } from "@/components/ui/layout/containers";
 import { Button, ButtonProps } from "@/components/ui/controls";
+import * as Sentry from "@sentry/nextjs";
 
 // ============================================================================
 // Types
 // ============================================================================
 
 interface SectionErrorProps extends FallbackProps {
-  fallbackErrorMessage: string;
-  description?: string;
+  errorMessage: {
+    title: string;
+    description?: string;
+  };
   cardProps?: CardProps;
   buttonProps?: Omit<ButtonProps, "onClick"> & {
     label?: string;
@@ -32,12 +36,19 @@ interface SectionErrorProps extends FallbackProps {
 export function SectionError({
   error,
   resetErrorBoundary,
-  fallbackErrorMessage,
-  description,
+  errorMessage,
   cardProps,
   buttonProps,
 }: SectionErrorProps) {
   const { label, ...restButtonProps } = buttonProps ?? {};
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") {
+      Sentry.captureException(error);
+    } else {
+      console.error("[SectionError]", error);
+    }
+  }, [error]);
 
   return (
     <Card
@@ -56,11 +67,11 @@ export function SectionError({
         <CardHeader className=" text-base text-destructive-text grid grid-cols-[auto_1fr]">
           <AlertCircle aria-hidden="true" className="size-[1.25em] shrink-0" />
           <CardTitle className="flex items-center gap-2">
-            {error instanceof Error ? error.message : fallbackErrorMessage}
+            {errorMessage.title}
           </CardTitle>
-          {description && (
+          {errorMessage.description && (
             <CardDescription className="text-sm text-subtle-foreground col-start-2">
-              {description}
+              {errorMessage.description}
             </CardDescription>
           )}
         </CardHeader>

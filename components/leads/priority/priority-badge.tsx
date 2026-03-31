@@ -20,7 +20,7 @@ export const PriorityBadge = ({ priority, ...props }: PriorityBadgeProps) => {
   return (
     <Badge
       variant={config.variant}
-      intent="outline"
+      intent="soft"
       size="sm"
       aria-label={`Priority: ${config.label}`}
       {...props}

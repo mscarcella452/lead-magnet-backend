@@ -23,7 +23,7 @@ export function PriorityDropdown({
       current={currentPriority}
       config={PRIORITY_CONFIG}
       onUpdateChange={onPriorityChange}
-      intent="outline"
+      intent="soft"
       aria-label={`Current priority: ${PRIORITY_CONFIG[currentPriority].label}. Click to change priority.`}
       {...props}
     />

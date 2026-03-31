@@ -64,7 +64,7 @@ export const UserStatusBadge = memo(function UserStatusBadge({
     <Badge
       size="sm"
       variant={config.variant}
-      intent="outline"
+      intent="soft"
       aria-label={`Status: ${config.label}`}
       className="mx-auto"
     >

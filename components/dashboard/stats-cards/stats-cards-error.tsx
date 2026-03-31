@@ -11,8 +11,11 @@ export function StatsCardsError({ error, resetErrorBoundary }: FallbackProps) {
     <SectionError
       error={error}
       resetErrorBoundary={resetErrorBoundary}
-      fallbackErrorMessage="Stats unavailable"
-      description="We couldn't load your dashboard statistics. Please try again."
+      errorMessage={{
+        title: "Stats unavailable",
+        description:
+          "We couldn't load your dashboard statistics. Please try again.",
+      }}
     />
   );
 }

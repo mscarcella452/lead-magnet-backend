@@ -15,7 +15,7 @@ export const TeamHeader = () => {
         <DialogTrigger dialogType={DIALOG_TYPES.CREATE_NEW_MEMBER} asChild>
           <Button size="sm" mode="responsiveIcon">
             <Plus aria-hidden="true" />
-            <ControlLabel> Add Team Member</ControlLabel>
+            <ControlLabel>Add Team Member</ControlLabel>
           </Button>
         </DialogTrigger>
       }

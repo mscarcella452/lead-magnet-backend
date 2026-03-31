@@ -3,67 +3,78 @@ import { formatDate } from "@/lib/utils/dates";
 import { TeamRowActions } from "./team-row-actions";
 import { memo } from "react";
 import { TableRow, TableCell } from "@/components/ui/layout/table";
-import { Badge } from "@/components/ui/feedback/badge";
-import { UserStatusBadge } from "@/components/admin/team/table/team-status-badge";
-import { UserRole } from "@prisma/client";
+import {
+  UserStatusBadge,
+  UserRoleBadge,
+} from "@/components/admin/team/table/badges";
+import { Container } from "@/components/ui/layout/containers";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/layout/avatar";
+import { Checkbox } from "@/components/ui/controls/checkbox";
 
 // ============================================================
-// Types
+// Utils
+// ============================================================
+const getInitials = (name: string) => {
+  const parts = name.trim().split(/\s+/);
+  return parts.length > 1 ? parts[0][0] + parts[1][0] : name[0];
+};
+// ============================================================
+// types
 // ============================================================
 
 interface TeamTableRowProps {
   member: TeamMember;
-  isCurrentUser: boolean;
 }
-
-// ============================================================
-// Role Badge
-// ============================================================
-
-interface RoleBadgeProps {
-  role: UserRole;
-}
-
-const RoleBadge = ({ role }: RoleBadgeProps) => {
-  const isOwner = role === "OWNER";
-  const isAdmin = role === "ADMIN";
-  return (
-    <Badge
-      size="sm"
-      variant={isOwner ? "brand" : isAdmin ? "info" : "primary"}
-      intent={isOwner || isAdmin ? "solid" : "soft"}
-      className="mx-auto"
-    >
-      {role}
-    </Badge>
-  );
-};
-
 // ============================================================
 // Team Table Row
 // ============================================================
 
 export const TeamTableRow = memo(function TeamTableRow({
   member,
-  isCurrentUser,
 }: TeamTableRowProps) {
   return (
     <TableRow>
-      <TableCell className="truncate max-w-[200px]">{member.name}</TableCell>
-      <TableCell className="min-w-[150px]">
-        <RoleBadge role={member.role} />
+      <TableCell>
+        <Container
+          spacing="group"
+          className="text-start flex flex-row items-center min-w-0"
+        >
+          <Avatar>
+            <AvatarImage src={member?.avatar} alt={member.name} />
+            <AvatarFallback delayMs={600}>
+              {getInitials(member.name)}
+            </AvatarFallback>
+          </Avatar>
+
+          <div className="flex flex-col gap-1 min-w-0 overflow-hidden">
+            <span className="font-medium">{member.name}</span>
+            <span className="text-muted-foreground col-start-2 truncate">
+              {member.email}
+            </span>
+          </div>
+        </Container>
       </TableCell>
-      <TableCell className="truncate max-w-[250px]">{member.email}</TableCell>
-      <TableCell className="min-w-[150px]">
+      <TableCell>
+        <UserRoleBadge role={member.role} />
+      </TableCell>
+      {/* <TableCell className="truncate max-w-[50px]">{member.email}</TableCell> */}
+      <TableCell>
         <UserStatusBadge member={member} />
       </TableCell>
       <TableCell>
-        <time className="text-sm" dateTime={member.createdAt}>
+        <time
+          className="text-xs text-subtle-foreground"
+          dateTime={member.createdAt}
+        >
           {formatDate(member.createdAt)}
         </time>
       </TableCell>
       <TableCell>
-        <TeamRowActions member={member} isCurrentUser={isCurrentUser} />
+        <TeamRowActions member={member} />
       </TableCell>
     </TableRow>
   );

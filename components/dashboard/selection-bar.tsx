@@ -59,64 +59,60 @@ export const SelectionBar = memo(function SelectionBar({
             role="toolbar"
             variant="panel-blur"
             border={true}
-            className="flex flex-col @2xl:flex-row items-center shadow-xs border-card!"
+            className="shadow-xs border-card!"
             aria-label={`${totalSelectedLeads} ${leadLabel} selected`}
           >
-            <Badge
-              variant="brand"
-              intent="soft"
-              aria-live="polite"
-              aria-atomic="true"
-              className="shrink-0 text-lg @2xl:text-sm font-medium capitalize"
-            >
-              {totalSelectedLeads} <span>{leadLabel}</span>
-            </Badge>
-
-            <SelectionBarSeparator />
-
             <Container
               spacing="group"
-              width="full"
-              className="grid grid-cols-2 @2xl:grid-cols-4  @max-2xl:my-2"
+              className="flex flex-col @2xl:flex-row items-center"
             >
-              <BulkStatusDropdown
-                selectedLeads={selectedLeads}
-                onSuccess={refetch}
-                className="@max-lg:h-control-h-sm"
-              />
-              <BulkPriorityDropdown
-                selectedLeads={selectedLeads}
-                onSuccess={refetch}
-                className="@max-lg:h-control-h-sm"
-              />
+              <span className="shrink-0 @max-2xl:text-sm! text-xs font-medium capitalize">
+                {totalSelectedLeads} <span>{leadLabel}</span> Selected
+              </span>
+
+              <SelectionBarSeparator />
+
               <Container
                 spacing="group"
-                className="col-span-2 grid @2xl:grid-cols-2 w-full"
+                width="full"
+                className="grid @xs:grid-cols-2 @md:grid-cols-4"
               >
+                <BulkStatusDropdown
+                  selectedLeads={selectedLeads}
+                  onSuccess={refetch}
+                  className="@max-lg:h-control-h-sm"
+                />
+                <BulkPriorityDropdown
+                  selectedLeads={selectedLeads}
+                  onSuccess={refetch}
+                  className="@max-lg:h-control-h-sm"
+                />
+
                 <BulkExportButton
                   selectedLeads={selectedLeads}
-                  className="@max-lg:h-control-h-sm"
+                  className="@max-lg:h-control-h-sm "
                 />
 
                 <BulkDeleteLeadsButton
                   selectedLeads={selectedLeads}
                   onConfirm={handleDelete}
+                  className="@max-lg:h-control-h-sm"
                 />
               </Container>
+
+              <SelectionBarSeparator />
+
+              <Button
+                intent="ghost"
+                size="xs"
+                mode="iconOnly"
+                onClick={onClear}
+                aria-label="Clear selection"
+                className="@max-2xl:absolute @max-2xl:top-2 @max-2xl:right-2 "
+              >
+                <X aria-hidden="true" />
+              </Button>
             </Container>
-
-            <SelectionBarSeparator />
-
-            <Button
-              intent="ghost"
-              size="xs"
-              mode="iconOnly"
-              onClick={onClear}
-              aria-label="Clear selection"
-              className="@max-2xl:absolute @max-2xl:top-2 @max-2xl:right-2 "
-            >
-              <X aria-hidden="true" />
-            </Button>
           </Card>
         </motion.div>
       )}
@@ -127,7 +123,7 @@ export const SelectionBar = memo(function SelectionBar({
 const SelectionBarSeparator = () => (
   <Separator
     orientation="vertical"
-    className="h-4 @max-2xl:hidden"
+    className="h-4 @max-2xl:hidden bg-border-strong"
     aria-hidden="true"
   />
 );

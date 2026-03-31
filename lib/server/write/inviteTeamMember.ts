@@ -7,6 +7,7 @@ import { CACHE_TAGS } from "@/lib/server/constants";
 import { sendInviteEmail } from "@/lib/email";
 import { getCurrentUser } from "@/lib/auth-helpers";
 import { generateInviteToken } from "@/lib/server/utils";
+import { ADMIN_ROLES } from "@/lib/auth/constants";
 
 // ============================================================
 // Types
@@ -22,7 +23,7 @@ export interface InviteTeamMemberInput {
 // constants
 // ============================================================
 
-const ALLOWED_ROLES = ["ADMIN", "OWNER"] as const;
+// Use ADMIN_ROLES from constants (owner, admin)
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // ============================================================
@@ -48,7 +49,7 @@ export async function inviteTeamMember(
 ): Promise<void> {
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error("Unauthorized");
-  if (!ALLOWED_ROLES.includes(currentUser.role as never))
+  if (!ADMIN_ROLES.includes(currentUser.role as never))
     throw new Error("Unauthorized");
 
   const { name, email, role } = data;

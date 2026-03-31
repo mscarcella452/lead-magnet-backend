@@ -1,6 +1,10 @@
 "use client";
 
-import { Button, type ButtonProps } from "@/components/ui/controls";
+import {
+  Button,
+  type ButtonProps,
+  ControlLabel,
+} from "@/components/ui/controls";
 import { useExportLeads } from "@/components/leads/export/useExportLeads";
 import { ExportIcon } from "@/components/leads/export/export-icon";
 

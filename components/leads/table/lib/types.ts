@@ -11,7 +11,6 @@ export type SortDirection = "asc" | "desc";
 
 export interface LeadTableProps {
   leads: LeadTableRow[];
-  className?: string;
   onSort?: (field: SortField) => void;
   sortBy?: SortField;
   sortOrder?: SortDirection;

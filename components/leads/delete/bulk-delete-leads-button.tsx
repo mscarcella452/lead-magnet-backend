@@ -37,7 +37,6 @@ export const BulkDeleteLeadsButton = memo(function BulkDeleteLeadsButton({
         intent="solid"
         size="xs"
         aria-label={ariaLabel}
-        className="@max-lg:h-control-h-sm"
         {...props}
       >
         <Trash2 aria-hidden="true" />

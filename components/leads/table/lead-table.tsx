@@ -23,7 +23,6 @@ import { SelectionBar } from "@/components/dashboard/selection-bar";
 
 export function LeadTable({
   leads,
-  className,
   onSort,
   sortBy,
   sortOrder,
@@ -63,7 +62,11 @@ export function LeadTable({
 
   return (
     <>
-      <Table role="region" aria-label="Leads table" className={className}>
+      <Table
+        role="region"
+        aria-label="Leads table"
+        className="@5xl:table-fixed"
+      >
         <TableHeader>
           <TableRow hoverable={false}>
             <CheckboxHeader
@@ -81,7 +84,7 @@ export function LeadTable({
                 sortOrder={sortOrder}
               />
             ))}
-            <TableHead scope="col" className="text-sm text-foreground">
+            <TableHead scope="col" className="text-sm text-foreground w-24">
               Actions
             </TableHead>
           </TableRow>

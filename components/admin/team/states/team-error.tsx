@@ -11,8 +11,10 @@ export function TeamError({ error, resetErrorBoundary }: FallbackProps) {
     <SectionError
       error={error}
       resetErrorBoundary={resetErrorBoundary}
-      fallbackErrorMessage="Failed to load team members"
-      description="We couldn't load your team members. Please try again."
+      errorMessage={{
+        title: "Failed to load team members",
+        description: "We couldn't load your team members. Please try again.",
+      }}
     />
   );
 }

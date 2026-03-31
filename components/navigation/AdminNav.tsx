@@ -7,13 +7,14 @@ import { Container } from "@/components/ui/layout/containers";
 import { cn } from "@/lib/utils/classnames";
 import { LogoAvatar } from "@/components/brand/logo-avatar";
 import { LogoutButton } from "@/components/auth/log-out-button";
+import { SITE_CONFIG } from "@/config";
 
 /**
  * Admin Navigation Component (Client Component)
  *
  * Navigation bar for admin panel.
  */
-export function AdminNav() {
+export function AdminNav({ isAdmin }: { isAdmin: boolean }) {
   const pathname = usePathname();
 
   return (
@@ -25,22 +26,33 @@ export function AdminNav() {
           width="fit"
           className="flex flex-row items-center"
         >
-          <Link href="/dashboard" intent="text" mode="responsiveIcon" size="sm">
-            <LogoAvatar size="sm" />
-            <ControlLabel>Lead Magnet Admin</ControlLabel>
-          </Link>
+          {isAdmin ? (
+            <>
+              <Link
+                href="/dashboard"
+                intent="text"
+                mode="responsiveIcon"
+                size="sm"
+              >
+                <LogoAvatar size="sm" />
+                <ControlLabel>{SITE_CONFIG.business_name} </ControlLabel>
+              </Link>
 
-          <Link
-            href="/dashboard"
-            intent="text"
-            size="sm"
-            className={cn({
-              "text-primary": pathname === "/dashboard",
-              "text-muted-foreground": pathname !== "/dashboard",
-            })}
-          >
-            Dashboard
-          </Link>
+              <Link href="/dashboard/admin/team" intent="text" size="sm">
+                Admin
+              </Link>
+            </>
+          ) : (
+            <Container
+              spacing="group"
+              position="start"
+              width="fit"
+              className="flex flex-row items-center"
+            >
+              <LogoAvatar size="sm" />
+              {SITE_CONFIG.business_name}
+            </Container>
+          )}
         </Container>
 
         <Container

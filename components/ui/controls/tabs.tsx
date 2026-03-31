@@ -54,6 +54,7 @@ interface TabsTriggerExtendedProps
   isActive?: boolean;
   activeVariant?: ControlVariantProps["variant"];
   activeIntent?: ControlVariantProps["intent"];
+  activeClassName?: string;
 }
 
 // ==========================================================================
@@ -160,6 +161,7 @@ const TabsTrigger = React.forwardRef<
   (
     {
       className,
+      activeClassName,
       value,
       isActive,
       activeVariant = "brand",
@@ -176,6 +178,9 @@ const TabsTrigger = React.forwardRef<
       registerTab(value);
     }, [value, registerTab]);
 
+    const variant = props.variant ?? "primary";
+    const intent = props.intent ?? "outline";
+
     return (
       <TabsPrimitive.Trigger
         ref={ref}
@@ -183,14 +188,18 @@ const TabsTrigger = React.forwardRef<
         className={cn(
           "relative w-full",
           controlVariants({
-            variant: props.variant || "primary",
-            intent: props.intent || "outline",
+            variant: variant,
+            intent: intent,
             size: props.size,
             mode: props.mode,
             radius: props.radius,
             focus: "outline",
           }),
           className,
+          {
+            "border-transparent!": isActive && intent === "outline",
+            "pointer-events-none": isActive,
+          },
         )}
         {...props}
       >
@@ -206,7 +215,9 @@ const TabsTrigger = React.forwardRef<
                   size: props.size,
                   radius: props.radius,
                 }),
+
                 "absolute inset-0 h-full z-1",
+                activeClassName,
               )}
               aria-hidden="true"
             >
@@ -216,8 +227,8 @@ const TabsTrigger = React.forwardRef<
         </AnimatePresence>
 
         <span
-          className="absolute inset-0 flex flex-row items-center gap-2 justify-center"
           aria-hidden="true"
+          className="absolute inset-0 flex flex-row items-center gap-2 justify-center z-0"
         >
           {children}
         </span>

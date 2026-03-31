@@ -8,8 +8,11 @@ export function LeadsPanelError({ error, resetErrorBoundary }: FallbackProps) {
     <SectionError
       error={error}
       resetErrorBoundary={resetErrorBoundary}
-      fallbackErrorMessage="Leads unavailable"
-      description="We couldn't load your leads. Check your connection and try again."
+      errorMessage={{
+        title: "Leads unavailable",
+        description:
+          "We couldn't load your leads. Check your connection and try again.",
+      }}
     />
   );
 }

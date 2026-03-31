@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/layout/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import type { OptionConfig } from "@/config/lead-config";
-import { Button, ButtonProps } from "@/components/ui/controls";
+import { Button, type ButtonProps } from "@/components/ui/controls";
 
 export interface BulkUpdateDropdownProps<T extends string> extends ButtonProps {
   config: Record<T, OptionConfig>;

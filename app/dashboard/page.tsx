@@ -12,6 +12,7 @@ import { LeadsSection } from "@/components/dashboard/leads-section";
 import { LeadsPanelSkeleton, LeadsPanelError } from "@/components/leads/panel";
 import type { PageProps } from "@/components/dashboard/lib/types";
 import { ExportAllButton } from "@/components/leads/export/export-all-button";
+import { auth } from "@/auth";
 
 // ============================================================================
 // Dashboard Page

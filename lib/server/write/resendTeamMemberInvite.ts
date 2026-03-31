@@ -5,12 +5,13 @@ import { CACHE_TAGS } from "@/lib/server/constants";
 import { sendInviteEmail } from "@/lib/email";
 import { getCurrentUser } from "@/lib/auth-helpers";
 import { generateInviteToken } from "@/lib/server/utils";
+import { ADMIN_ROLES } from "@/lib/auth/constants";
 
 // ============================================================
 // constants
 // ============================================================
 
-const ALLOWED_ROLES = ["ADMIN", "OWNER"] as const;
+// ADMIN_ROLES imported from @/lib/auth/constants
 
 // ============================================================
 // resendTeamMemberInvite
@@ -19,7 +20,7 @@ const ALLOWED_ROLES = ["ADMIN", "OWNER"] as const;
 export async function resendTeamMemberInvite(targetUserId: string) {
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error("Unauthorized");
-  if (!ALLOWED_ROLES.includes(currentUser.role as never))
+  if (!ADMIN_ROLES.includes(currentUser.role.toLowerCase() as never))
     throw new Error("Unauthorized");
 
   const targetUser = await prisma.user.findUnique({

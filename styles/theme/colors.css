@@ -2,6 +2,7 @@
   /* Expose color scale as CSS variables */
   --color-border: var(--border);
   --color-border-soft: var(--border-soft);
+  --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-background: var(--background);

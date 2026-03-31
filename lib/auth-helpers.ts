@@ -1,5 +1,6 @@
 import "server-only";
 import { auth } from "@/auth";
+import { isAdminRole, isProtectedRole } from "@/lib/auth/constants";
 
 export interface CurrentUser {
   id: string;
@@ -28,4 +29,22 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     email: session.user.email || "",
     role: session.user.role as string,
   };
+}
+
+/**
+ * Check if the current user has admin access
+ * Admin roles: owner, admin
+ */
+export async function isCurrentUserAdmin(): Promise<boolean> {
+  const user = await getCurrentUser();
+  return isAdminRole(user?.role);
+}
+
+/**
+ * Check if the current user's role is protected
+ * Protected roles: owner
+ */
+export async function isCurrentUserProtected(): Promise<boolean> {
+  const user = await getCurrentUser();
+  return isProtectedRole(user?.role);
 }

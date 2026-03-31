@@ -36,8 +36,8 @@ export const LeadTableRow = memo(function LeadTableRow({
         />
       </TableCell>
 
-      <TableCell className="text-sm text-muted-foreground">
-        {lead.name || "—"}
+      <TableCell className="text-sm text-muted-foreground min-w-0 @max-2xl:max-w-36 overflow-hidden">
+        <span className="block truncate">{lead.name || "—"}</span>
       </TableCell>
 
       <TableCell>
