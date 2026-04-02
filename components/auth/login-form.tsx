@@ -1,172 +1,108 @@
 "use client";
-import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
-import { Input, Button } from "@/components/ui/controls";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/layout/card";
+
+import { Button, Link } from "@/components/ui/controls";
 import { Container, Inset } from "@/components/ui/layout/containers";
 import { SITE_CONFIG } from "@/config";
-import { LogoAvatar } from "@/components/brand/logo-avatar";
-import { ERROR_MESSAGES, type AuthErrorCode } from "@/lib/auth-errors";
 import { FormMotionAlertContainer } from "@/components/ui/controls/form";
+import { UsernameInput, PasswordInput } from "./shared/auth-inputs";
+import { loginAction } from "@/lib/server/actions/write/loginAction";
+import { validateLogin } from "@/components/auth/lib/utils";
+import { AuthCard } from "./shared/auth-card";
+import { useAuthForm } from "@/components/auth/lib/useAuthForm";
 
-type FormStatus =
-  | { state: "idle" }
-  | { state: "loading" }
-  | { state: "error"; error: string };
+// ==============================================
+// Constants
+// ==============================================
 
-export function LoginForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [status, setStatus] = useState<FormStatus>({ state: "idle" });
-  const router = useRouter();
-  const params = useSearchParams();
+const FORM_ERROR_ID = "login-form-error";
 
-  const hasError = status.state === "error";
+// ==============================================
+// LoginForm
+// ==============================================
 
-  const handleInputChange = (valueUpdate: () => void) => {
-    valueUpdate();
-    if (hasError) setStatus({ state: "idle" });
-  };
+export function LoginForm({ defaultRedirect }: { defaultRedirect: string }) {
+  const {
+    isPending,
+    errorMessage,
+    fieldHasError,
+    clearFieldError,
+    setFormError,
+    submit,
+  } = useAuthForm();
+
+  // ---------------------------------------------
+  // Error Check
+  // ---------------------------------------------
+
+  const usernameError = fieldHasError("username");
+  const passwordError = fieldHasError("password");
+
+  // ---------------------------------------------
+  // Handle Submit
+  // ---------------------------------------------
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!username.trim()) {
-      setStatus({ state: "error", error: "Username is required." });
-      return;
-    }
-    if (!password) {
-      setStatus({ state: "error", error: "Password is required." });
-      return;
-    }
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const username = (formData.get("username") as string)?.trim();
+    const password = formData.get("password") as string;
 
-    setStatus({ state: "loading" });
-
-    const result = await signIn("credentials", {
-      username,
-      password,
-      redirect: false,
-    });
-
-    if (result?.error) {
-      const code = (result.code as AuthErrorCode) ?? "default";
-      setStatus({
-        state: "error",
-        error: ERROR_MESSAGES[code] ?? ERROR_MESSAGES.default,
-      });
+    // Validation
+    const validationError = validateLogin({ username, password });
+    if (validationError) {
+      setFormError(validationError);
       return;
     }
 
-    const from = params.get("from") ?? "/dashboard";
-    router.push(from);
+    // action submit
+    await submit(() => loginAction(defaultRedirect, formData));
   };
 
   return (
     <Inset className="flex min-h-screen @container">
       <h1 className="sr-only">{SITE_CONFIG.business_name} Admin Login</h1>
-      <Card
-        size="lg"
-        variant="panel"
-        className="w-full aspect-square flex flex-col items-center justify-center space-y-6 max-w-md m-auto shadow-sm"
-      >
-        {/*=========== Header ===========*/}
-        <CardHeader>
-          <Container spacing="block" className="items-center">
-            <LogoAvatar className="size-16!" />
-            <Container spacing="item" className="text-center">
-              <CardTitle className="text-2xl @sm:text-3xl font-semibold">
-                {SITE_CONFIG.business_name}
-              </CardTitle>
-              <CardDescription className="text-subtle-foreground">
-                Sign in to your account
-              </CardDescription>
-            </Container>
-          </Container>
-        </CardHeader>
 
-        {/*=========== Content ===========*/}
-        <CardContent className="w-full">
-          {/*------------- Form Container -------------*/}
-          <Container
-            as="form"
-            onSubmit={handleSubmit}
-            spacing="block"
-            noValidate
+      <AuthCard description="Sign in to your account">
+        <Container as="form" onSubmit={handleSubmit} spacing="block" noValidate>
+          <FormMotionAlertContainer
+            error={errorMessage}
+            spacing="group"
+            alertProps={{ id: FORM_ERROR_ID, spacing: "block" }}
           >
-            <FormMotionAlertContainer
-              error={status.state === "error" ? status.error : undefined}
-              spacing="group"
-              alertProps={{
-                id: "invite-form-error",
-                spacing: "block",
-              }}
+            <Container spacing="item">
+              <UsernameInput
+                id="username"
+                name="username"
+                onChange={() => clearFieldError("username")}
+                aria-describedby={usernameError ? FORM_ERROR_ID : undefined}
+                aria-invalid={usernameError}
+                required
+                autoFocus
+              />
+              <PasswordInput
+                id="password"
+                name="password"
+                onChange={() => clearFieldError("password")}
+                aria-describedby={passwordError ? FORM_ERROR_ID : undefined}
+                aria-invalid={passwordError}
+                required
+              />
+            </Container>
+            <Link
+              variant="brand"
+              intent="ghost-text"
+              href="/auth/forgot-password"
             >
-              <Container spacing="group">
-                {/*------------- Username Field -------------*/}
-                <label
-                  htmlFor="username"
-                  className="text-sm font-medium sr-only"
-                >
-                  Username
-                </label>
-                <Input
-                  size="md"
-                  id="username"
-                  type="text"
-                  placeholder="Enter your username"
-                  value={username}
-                  onChange={(e) =>
-                    handleInputChange(() => setUsername(e.target.value))
-                  }
-                  aria-describedby={hasError ? "login-form-error" : undefined}
-                  aria-invalid={hasError}
-                  required
-                  autoFocus
-                />
+              Forgot Password?
+            </Link>
+          </FormMotionAlertContainer>
 
-                {/*------------- Password Field -------------*/}
-                <label
-                  htmlFor="password"
-                  className="text-sm font-medium sr-only"
-                >
-                  Password
-                </label>
-                <Input
-                  size="md"
-                  id="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) =>
-                    handleInputChange(() => setPassword(e.target.value))
-                  }
-                  aria-describedby={hasError ? "login-error" : undefined}
-                  aria-invalid={hasError}
-                  required
-                />
-              </Container>
-            </FormMotionAlertContainer>
-
-            {/*------------- Submit Button -------------*/}
-            <Button
-              size="md"
-              type="submit"
-              className="w-full"
-              disabled={status.state === "loading"}
-              aria-busy={status.state === "loading"}
-            >
-              {status.state === "loading" ? "Logging in…" : "Log In"}
-            </Button>
-          </Container>
-        </CardContent>
-      </Card>
+          <Button type="submit" disabled={isPending}>
+            {isPending ? "Logging in…" : "Log In"}
+          </Button>
+        </Container>
+      </AuthCard>
     </Inset>
   );
 }

@@ -3,14 +3,20 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // Routes that don't require authentication
-const PUBLIC_ROUTES = ["/", "/api/auth", "/auth/set-password", "/auth/forgot-password", "/auth/reset-password"];
+const PUBLIC_ROUTES = [
+  "/",
+  "/api/auth",
+  "/auth/complete-invite",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Check if route is public
   const isPublic = PUBLIC_ROUTES.some(
-    (route) => pathname === route || pathname.startsWith(route + "/")
+    (route) => pathname === route || pathname.startsWith(route + "/"),
   );
 
   if (isPublic) {
@@ -35,5 +41,7 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.svg|.*\\.webp).*)",
+  ],
 };

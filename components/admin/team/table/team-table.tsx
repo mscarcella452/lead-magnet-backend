@@ -1,7 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { Container } from "@/components/ui/layout/containers";
 import {
   Table,
   TableBody,
@@ -11,19 +9,6 @@ import {
 } from "@/components/ui/layout/table";
 import { TeamMember } from "@/lib/server/read/getTeamMembers";
 import { TeamTableRow } from "@/components/admin/team/table/team-table-row";
-import { Checkbox } from "@/components/ui/controls/checkbox";
-import { memo, useCallback, useState } from "react";
-
-import { X } from "lucide-react";
-import { Separator } from "@/components/ui/layout/separator";
-import { motion, AnimatePresence } from "motion/react";
-import { BulkStatusDropdown } from "@/components/leads/status/bulk-status-dropdown";
-import { BulkPriorityDropdown } from "@/components/leads/priority/bulk-priority-dropdown";
-import { BulkExportButton } from "@/components/leads/export/bulk-export-button";
-import { Card } from "@/components/ui/layout/card";
-import { BulkDeleteLeadsButton } from "@/components/leads/delete/bulk-delete-leads-button";
-import { Button, ControlLabel } from "@/components/ui/controls";
-import { Badge } from "@/components/ui/feedback/badge";
 
 // ============================================================
 // types
@@ -31,6 +16,7 @@ import { Badge } from "@/components/ui/feedback/badge";
 
 interface TeamTableProps {
   initialMembers: TeamMember[];
+  currentUserRole?: string;
 }
 
 // ============================================================
@@ -48,7 +34,7 @@ const TABLE_HEADERS = [
 // Team Table
 // ============================================================
 
-export function TeamTable({ initialMembers }: TeamTableProps) {
+export function TeamTable({ initialMembers, currentUserRole }: TeamTableProps) {
   return (
     <Table role="region" aria-label="Team table" className="@5xl:table-fixed">
       <TableHeader>
@@ -68,7 +54,7 @@ export function TeamTable({ initialMembers }: TeamTableProps) {
       </TableHeader>
       <TableBody>
         {initialMembers.map((member) => (
-          <TeamTableRow key={member.id} member={member} />
+          <TeamTableRow key={member.id} member={member} currentUserRole={currentUserRole} />
         ))}
       </TableBody>
     </Table>

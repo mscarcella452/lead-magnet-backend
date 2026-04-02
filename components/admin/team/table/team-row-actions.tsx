@@ -16,7 +16,6 @@ import { ALERT_DIALOG_TYPES, DIALOG_TYPES } from "@/types/ui/dialog";
 import { UserRole } from "@prisma/client";
 import { resendTeamMemberInviteAction } from "@/lib/server/actions/write/resendTeamMemberInviteAction";
 import { toast } from "sonner";
-import { useSession } from "next-auth/react";
 
 // ============================================================
 // Team Row Actions
@@ -24,11 +23,11 @@ import { useSession } from "next-auth/react";
 
 export const TeamRowActions = memo(function TeamRowActions({
   member,
+  currentUserRole,
 }: {
   member: TeamMember;
+  currentUserRole?: string;
 }) {
-  const { data: session } = useSession();
-  const currentUserRole = session?.user?.role;
   const [isResending, setIsResending] = useState(false);
 
   const isProtected = isProtectedRole(member.role);

@@ -1,6 +1,7 @@
 export * from "./button";
 export * from "./link";
 export * from "./input";
+export * from "./input-group";
 export * from "./textarea";
 export * from "./theme-toggle-button";
 export * from "./checkbox";

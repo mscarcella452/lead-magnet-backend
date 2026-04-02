@@ -2,8 +2,24 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { LoginForm } from "@/components/auth/login-form";
 
-export default async function HomePage() {
-  const session = await auth();
+// ==============================================
+// Types
+// ==============================================
+
+interface HomePageProps {
+  searchParams: Promise<{ from?: string }>;
+}
+
+// ==============================================
+// Page
+// ==============================================
+
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const [session, { from }] = await Promise.all([auth(), searchParams]);
+
   if (session) redirect("/dashboard");
-  return <LoginForm />;
+
+  const safeRedirect = from?.startsWith("/") ? from : "/dashboard";
+
+  return <LoginForm defaultRedirect={safeRedirect} />;
 }

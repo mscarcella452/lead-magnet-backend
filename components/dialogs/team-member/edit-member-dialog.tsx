@@ -34,7 +34,6 @@ export const EditMemberDialog = ({
   initialFormData,
   hasPendingInvite,
 }: EditMemberDialogPayload) => {
-  const isOwner = initialFormData.role === "OWNER";
   const [formData, setFormData] = useState<TeamMemberFormData>(initialFormData);
   const { closeDialog } = useDialogs();
   const formRef = useRef<TeamMemberFormRef>(null);
@@ -64,34 +63,10 @@ export const EditMemberDialog = ({
         toast.success("Member updated successfully.");
       }
     } else {
-      toast.error("Failed to update member.");
+      toast.error(result.error);
+      // toast.error("Failed to update member.");
     }
   };
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setIsSubmitting(true);
-  //   try {
-  //     const result = await editTeamMemberAction(userId, {
-  //       name: formData.name,
-  //       email: formData.email,
-  //       role: formData.role as UserRole,
-  //     });
-
-  //     if (result.success) {
-  //       toast.success(
-  //         result.data.inviteResent
-  //           ? "Member updated. Invite sent to new email."
-  //           : "Member updated.",
-  //       );
-  //       closeDialog();
-  //     } else {
-  //       toast.error(result.error);
-  //     }
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
 
   return (
     <DialogContent layout="responsiveModal">
@@ -109,7 +84,6 @@ export const EditMemberDialog = ({
             formData={formData}
             onChange={setFormData}
             onSubmit={handleSubmit}
-            isOwner={isOwner}
           />
         </DialogBody>
         <DialogFooter>

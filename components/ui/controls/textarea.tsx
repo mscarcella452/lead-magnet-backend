@@ -6,18 +6,14 @@ import { type InputVariantProps } from "@/design-system/lib/types/cva-types";
 export interface TextareaProps
   extends
     Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "size">,
-    InputVariantProps {
-  hideFocus?: boolean;
-}
+    InputVariantProps {}
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, size, radius, hideFocus = false, ...props }, ref) => {
+  ({ className, size, radius, focus = "default", ...props }, ref) => {
     return (
       <textarea
         className={cn(
-          inputVariants({ size, radius }),
-          { "focus-visible:outline-none focus-visible:ring-0": hideFocus },
-          "h-auto min-h-[80px] resize-y",
+          inputVariants({ size, radius, focus, variant: "text-area" }),
           className,
         )}
         ref={ref}

@@ -1,7 +1,7 @@
 import "server-only";
 import { prisma } from "@/lib/db";
-import { revalidateTag } from "next/cache";
-import { CACHE_TAGS } from "@/lib/server/constants";
+import { revalidateTag, revalidatePath } from "next/cache";
+import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 import { getCurrentUser } from "@/lib/auth-helpers";
 
 const PROTECTED_ROLES = ["DEV", "OWNER"] as const;
@@ -22,5 +22,6 @@ export async function deleteTeamMember(targetUserId: string) {
   }
 
   await prisma.user.delete({ where: { id: targetUserId } });
-  revalidateTag(CACHE_TAGS.TEAM_MEMBERS);
+  revalidateTag(CACHE_TAGS.TEAM_MEMBERS, {});
+  revalidatePath(REVALIDATE_PATHS.ADMIN_TEAM);
 }

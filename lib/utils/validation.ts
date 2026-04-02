@@ -46,9 +46,15 @@ export type DeleteLeadInput = z.infer<typeof deleteLeadSchema>;
 // sanitizeString(input: string): string
 // Sanitizes a string to prevent XSS
 // ============================================================================
-export function sanitizeString(input: string): string {
-  return input.replace(/[<>]/g, "").trim().slice(0, 500);
-}
+export const sanitizeString = (input: string): string =>
+  input.replace(/[<>]/g, "").trim().slice(0, 500);
+
+// ============================================================================
+// isValidEmail(input: string): boolean
+// Validates an email address
+// ============================================================================
+export const isValidEmail = (email: string): boolean =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 // Room to grow:
 // export function isValidPhone(phone: string): boolean { ... }

@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { Input, Button } from "@/components/ui/controls";
 import {
   Card,
@@ -12,62 +11,25 @@ import {
   CardTitle,
 } from "@/components/ui/layout/card";
 import { Alert, AlertDescription } from "@/components/ui/feedback/alert";
-import { AlertCircle, CheckCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { Container, Inset } from "@/components/ui/layout/containers";
 import { motion, AnimatePresence } from "motion/react";
 import { SITE_CONFIG } from "@/config";
 import { LogoAvatar } from "@/components/brand/logo-avatar";
 
-export function SetPasswordForm() {
+export function ResetPasswordForm() {
+  const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const params = useSearchParams();
-  const token = params.get("token");
-
-  // Validate token on mount
-  if (!token) {
-    return (
-      <Inset className="flex min-h-screen">
-        <Card
-          size="lg"
-          variant="panel"
-          className="@container w-full aspect-square flex flex-col items-center justify-center space-y-6 max-w-md m-auto shadow-sm"
-        >
-          <CardHeader>
-            <Container spacing="block" className="items-center">
-              <LogoAvatar className="size-16!" />
-              <Container spacing="item" className="text-center">
-                <CardTitle className="text-2xl @sm:text-3xl font-semibold">
-                  {SITE_CONFIG.business_name}
-                </CardTitle>
-                <CardDescription className="text-subtle-foreground">
-                  Invalid invite link
-                </CardDescription>
-              </Container>
-            </Container>
-          </CardHeader>
-          <CardContent className="w-full text-center">
-            <p className="text-sm text-muted-foreground mb-4">
-              This invite link is invalid or has expired.
-            </p>
-            <Button onClick={() => router.push("/")} className="w-full">
-              Back to Login
-            </Button>
-          </CardContent>
-        </Card>
-      </Inset>
-    );
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    // Validate passwords
-    if (!password || !confirmPassword) {
+    if (!code || !password || !confirmPassword) {
       setError("Please fill in all fields");
       return;
     }
@@ -84,46 +46,25 @@ export function SetPasswordForm() {
 
     setIsLoading(true);
 
-    try {
-      const res = await fetch("/api/auth/set-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, password }),
-      });
+    // TODO: Implement password reset with code
+    // This should:
+    // 1. Validate the reset code
+    // 2. Hash the new password
+    // 3. Update user password
+    // 4. Delete the reset code from database
+    // 5. Log user in automatically
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Failed to set password");
-        setIsLoading(false);
-        return;
-      }
-
-      // Auto-login after password set
-      const loginResult = await signIn("credentials", {
-        username: data.username,
-        password,
-        redirect: false,
-      });
-
-      if (!loginResult?.ok) {
-        setError(
-          "Password set successfully, but login failed. Please try logging in.",
-        );
-        setIsLoading(false);
-        return;
-      }
-
-      router.push("/dashboard");
-    } catch (err) {
-      setError("An error occurred. Please try again.");
-      setIsLoading(false);
-    }
+    console.log("TODO: Implement password reset with code:", {
+      code,
+      password,
+    });
+    setError("Password reset feature coming soon");
+    setIsLoading(false);
   };
 
   return (
     <Inset className="flex min-h-screen">
-      <h1 className="sr-only">Set Your Password</h1>
+      <h1 className="sr-only">Reset Password</h1>
 
       <Card
         size="lg"
@@ -139,7 +80,7 @@ export function SetPasswordForm() {
                 {SITE_CONFIG.business_name}
               </CardTitle>
               <CardDescription className="text-subtle-foreground">
-                Set your password to get started
+                Enter your reset code and new password
               </CardDescription>
             </Container>
           </Container>
@@ -162,7 +103,7 @@ export function SetPasswordForm() {
                   >
                     <Alert
                       variant="destructive"
-                      id="set-password-error"
+                      id="reset-password-error"
                       aria-live="polite"
                       className="mb-3"
                     >
@@ -178,25 +119,45 @@ export function SetPasswordForm() {
                 )}
               </AnimatePresence>
 
+              {/*------------- Reset Code Field -------------*/}
+              <label htmlFor="code" className="text-sm font-medium sr-only">
+                Reset Code
+              </label>
+              <Input
+                size="responsive-lg"
+                id="code"
+                type="text"
+                placeholder="Enter your reset code"
+                value={code}
+                onChange={(e) => {
+                  if (error) setError("");
+                  setCode(e.target.value);
+                }}
+                aria-describedby={error ? "reset-password-error" : undefined}
+                aria-invalid={!!error}
+                disabled={isLoading}
+                required
+                autoFocus
+              />
+
               {/*------------- Password Field -------------*/}
               <label htmlFor="password" className="text-sm font-medium sr-only">
-                Password
+                New Password
               </label>
               <Input
                 size="responsive-lg"
                 id="password"
                 type="password"
-                placeholder="Enter a strong password"
+                placeholder="Enter your new password"
                 value={password}
                 onChange={(e) => {
                   if (error) setError("");
                   setPassword(e.target.value);
                 }}
-                aria-describedby={error ? "set-password-error" : undefined}
+                aria-describedby={error ? "reset-password-error" : undefined}
                 aria-invalid={!!error}
                 disabled={isLoading}
                 required
-                autoFocus
               />
 
               {/*------------- Confirm Password Field -------------*/}
@@ -210,36 +171,17 @@ export function SetPasswordForm() {
                 size="responsive-lg"
                 id="confirmPassword"
                 type="password"
-                placeholder="Confirm your password"
+                placeholder="Confirm your new password"
                 value={confirmPassword}
                 onChange={(e) => {
                   if (error) setError("");
                   setConfirmPassword(e.target.value);
                 }}
-                aria-describedby={error ? "set-password-error" : undefined}
+                aria-describedby={error ? "reset-password-error" : undefined}
                 aria-invalid={!!error}
                 disabled={isLoading}
                 required
               />
-
-              {/*------------- Password Requirements -------------*/}
-              <div className="text-xs text-muted-foreground space-y-1">
-                <p>Password must be:</p>
-                <ul className="list-disc list-inside space-y-0.5">
-                  <li className={password.length >= 8 ? "text-green-600" : ""}>
-                    At least 8 characters
-                  </li>
-                  <li
-                    className={
-                      password === confirmPassword && password
-                        ? "text-green-600"
-                        : ""
-                    }
-                  >
-                    Passwords must match
-                  </li>
-                </ul>
-              </div>
             </motion.div>
 
             {/*------------- Submit Button -------------*/}
@@ -250,7 +192,7 @@ export function SetPasswordForm() {
               disabled={isLoading}
               aria-busy={isLoading}
             >
-              {isLoading ? "Setting password…" : "Set Password"}
+              {isLoading ? "Resetting password…" : "Reset Password"}
             </Button>
           </Container>
         </CardContent>

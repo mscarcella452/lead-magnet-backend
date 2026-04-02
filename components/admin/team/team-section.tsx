@@ -1,10 +1,16 @@
 import "server-only";
 
+import { auth } from "@/auth";
 import { getTeamMembers } from "@/lib/server/read/getTeamMembers";
 import { TeamTable } from "@/components/admin/team/table/team-table";
 
 export async function TeamSection() {
-  const members = await getTeamMembers();
+  const [session, members] = await Promise.all([
+    auth(),
+    getTeamMembers(),
+  ]);
 
-  return <TeamTable initialMembers={members} />;
+  const currentUserRole = session?.user?.role;
+
+  return <TeamTable initialMembers={members} currentUserRole={currentUserRole} />;
 }

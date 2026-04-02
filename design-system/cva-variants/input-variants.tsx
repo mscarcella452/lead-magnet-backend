@@ -14,6 +14,17 @@ export const inputVariants = cva(
   ],
   {
     variants: {
+      variant: {
+        default: "",
+        "text-area": "h-auto min-h-[80px] resize-y",
+      },
+      focus: {
+        default:
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "input-group":
+          "has-[[data-slot=input-group-control]:focus-visible]:ring-2 has-[[data-slot=input-group-control]:focus-visible]:ring-ring",
+        none: "focus-visible:outline-none focus-visible:ring-0",
+      },
       size: {
         xs: "h-compact-h-lg control-text-sm",
         sm: "h-control-h-sm control-text-sm",
@@ -39,6 +50,8 @@ export const inputVariants = cva(
     defaultVariants: {
       size: "md",
       radius: "rounded",
+      focus: "default",
+      variant: "default",
     },
   },
 );

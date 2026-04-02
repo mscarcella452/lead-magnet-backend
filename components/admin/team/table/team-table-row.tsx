@@ -13,21 +13,15 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/layout/avatar";
-import { Checkbox } from "@/components/ui/controls/checkbox";
+import { getInitials } from "@/lib/utils/strings";
 
-// ============================================================
-// Utils
-// ============================================================
-const getInitials = (name: string) => {
-  const parts = name.trim().split(/\s+/);
-  return parts.length > 1 ? parts[0][0] + parts[1][0] : name[0];
-};
 // ============================================================
 // types
 // ============================================================
 
 interface TeamTableRowProps {
   member: TeamMember;
+  currentUserRole?: string;
 }
 // ============================================================
 // Team Table Row
@@ -35,6 +29,7 @@ interface TeamTableRowProps {
 
 export const TeamTableRow = memo(function TeamTableRow({
   member,
+  currentUserRole,
 }: TeamTableRowProps) {
   return (
     <TableRow>
@@ -44,14 +39,14 @@ export const TeamTableRow = memo(function TeamTableRow({
           className="text-start flex flex-row items-center min-w-0"
         >
           <Avatar>
-            <AvatarImage src={member?.avatar} alt={member.name} />
+            <AvatarImage src={member?.avatar ?? undefined} alt={member.name} />
             <AvatarFallback delayMs={600}>
               {getInitials(member.name)}
             </AvatarFallback>
           </Avatar>
 
           <div className="flex flex-col gap-1 min-w-0 overflow-hidden">
-            <span className="font-medium">{member.name}</span>
+            <span className="font-medium capitalize">{member.name}</span>
             <span className="text-muted-foreground col-start-2 truncate">
               {member.email}
             </span>
@@ -74,7 +69,7 @@ export const TeamTableRow = memo(function TeamTableRow({
         </time>
       </TableCell>
       <TableCell>
-        <TeamRowActions member={member} />
+        <TeamRowActions member={member} currentUserRole={currentUserRole} />
       </TableCell>
     </TableRow>
   );

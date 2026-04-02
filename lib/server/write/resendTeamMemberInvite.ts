@@ -1,7 +1,7 @@
 import "server-only";
 import { prisma } from "@/lib/db";
-import { revalidateTag } from "next/cache";
-import { CACHE_TAGS } from "@/lib/server/constants";
+import { revalidateTag, revalidatePath } from "next/cache";
+import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 import { sendInviteEmail } from "@/lib/email";
 import { getCurrentUser } from "@/lib/auth-helpers";
 import { generateInviteToken } from "@/lib/server/utils";
@@ -48,5 +48,6 @@ export async function resendTeamMemberInvite(targetUserId: string) {
     throw new Error("Failed to send invite email");
   }
 
-  revalidateTag(CACHE_TAGS.TEAM_MEMBERS);
+  revalidateTag(CACHE_TAGS.TEAM_MEMBERS, {});
+  revalidatePath(REVALIDATE_PATHS.ADMIN_TEAM);
 }

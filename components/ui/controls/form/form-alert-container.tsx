@@ -57,9 +57,9 @@ const alertVariants: Variants = {
   exit: { opacity: 0, height: 0 },
 };
 const listVariants: Variants = {
-  initial: { opacity: 0, height: 0, filter: "blur(4px)", scale: 0.95 },
-  animate: { opacity: 1, height: "auto", filter: "blur(0px)", scale: 1 },
-  exit: { opacity: 0, height: 0, filter: "blur(4px)", scale: 0.95 },
+  initial: { opacity: 0, filter: "blur(4px)", scale: 0.95 },
+  animate: { opacity: 1, filter: "blur(0px)", scale: 1 },
+  exit: { opacity: 0, filter: "blur(4px)", scale: 0.95 },
 };
 
 const transition: Transition = {
@@ -98,11 +98,7 @@ export const FormMotionAlertContainer = ({
               className="overflow-hidden"
             >
               <Container spacing={alertProps?.spacing ?? "block"}>
-                <Alert
-                  variant="destructive"
-                  aria-live="polite"
-                  id={alertProps?.id}
-                >
+                <Alert variant="brand" aria-live="polite" id={alertProps?.id}>
                   {hasTitle && <AlertTitle>{alertProps.title}</AlertTitle>}
                   <ul
                     className={cn("space-y-2", {

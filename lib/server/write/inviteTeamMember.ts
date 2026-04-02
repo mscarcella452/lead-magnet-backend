@@ -2,12 +2,13 @@ import "server-only";
 import { UserRole } from "@prisma/client";
 import crypto from "crypto";
 import { prisma } from "@/lib/db";
-import { revalidateTag } from "next/cache";
-import { CACHE_TAGS } from "@/lib/server/constants";
+import { revalidateTag, revalidatePath } from "next/cache";
+import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 import { sendInviteEmail } from "@/lib/email";
 import { getCurrentUser } from "@/lib/auth-helpers";
 import { generateInviteToken } from "@/lib/server/utils";
 import { ADMIN_ROLES } from "@/lib/auth/constants";
+import { isValidEmail } from "@/lib/utils/validation";
 
 // ============================================================
 // Types
@@ -24,7 +25,6 @@ export interface InviteTeamMemberInput {
 // ============================================================
 
 // Use ADMIN_ROLES from constants (owner, admin)
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // ============================================================
 // utilities
@@ -55,10 +55,19 @@ export async function inviteTeamMember(
   const { name, email, role } = data;
 
   if (role === "DEV") throw new Error("Cannot create DEV users from admin UI");
-  if (!EMAIL_REGEX.test(email)) throw new Error("Invalid email address");
+  if (!isValidEmail(email)) throw new Error("Invalid email address");
 
   const existingUser = await prisma.user.findFirst({ where: { email } });
   if (existingUser) throw new Error("Email already exists");
+
+  const pendingInvite = await prisma.userInvite.findFirst({
+    where: {
+      user: { email },
+      expiresAt: { gt: new Date() },
+    },
+  });
+  if (pendingInvite)
+    throw new Error("A pending invite already exists for this email");
 
   const username = await generateUniqueUsername(name);
   const user = await prisma.user.create({
@@ -70,12 +79,13 @@ export async function inviteTeamMember(
     data: { userId: user.id, token, expiresAt },
   });
 
-  try {
-    await sendInviteEmail(email, name, token);
-  } catch {
+  const emailResult = await sendInviteEmail(email, name, token);
+  if (!emailResult.success) {
     await prisma.userInvite.delete({ where: { id: invite.id } });
-    throw new Error("Failed to send invite email");
+    await prisma.user.delete({ where: { id: user.id } });
+    throw new Error(emailResult.error || "Failed to send invite email");
   }
 
-  revalidateTag(CACHE_TAGS.TEAM_MEMBERS);
+  revalidateTag(CACHE_TAGS.TEAM_MEMBERS, {});
+  revalidatePath(REVALIDATE_PATHS.ADMIN_TEAM);
 }

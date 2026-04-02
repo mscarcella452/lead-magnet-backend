@@ -20,7 +20,6 @@ export interface TeamMemberFormRef {
 
 export interface TeamMemberFormProps {
   id: string;
-  isOwner?: boolean;
   formData: TeamMemberFormData;
   onChange: (data: TeamMemberFormData) => void;
   onSubmit: (e: React.FormEvent) => void;

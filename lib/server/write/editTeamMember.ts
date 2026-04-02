@@ -1,10 +1,10 @@
 import "server-only";
 import { UserRole } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { revalidateTag } from "next/cache";
-import { CACHE_TAGS } from "@/lib/server/constants";
+import { revalidateTag, revalidatePath } from "next/cache";
+import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 import { getCurrentUser } from "@/lib/auth-helpers";
-import { ADMIN_ROLES, PROTECTED_ROLES } from "@/lib/auth/constants";
+import { isAdminRole } from "@/lib/auth/constants";
 
 interface EditTeamMemberInput {
   name?: string;
@@ -17,9 +17,10 @@ export async function editTeamMember(
   data: EditTeamMemberInput,
 ) {
   const currentUser = await getCurrentUser();
+  console.log(currentUser);
   if (!currentUser) throw new Error("Unauthorized");
 
-  if (!ADMIN_ROLES.includes(currentUser.role.toLowerCase() as never)) {
+  if (!isAdminRole(currentUser.role)) {
     throw new Error("Unauthorized");
   }
 
@@ -50,6 +51,7 @@ export async function editTeamMember(
     },
   });
 
-  revalidateTag(CACHE_TAGS.TEAM_MEMBERS);
+  revalidateTag(CACHE_TAGS.TEAM_MEMBERS, {});
+  revalidatePath(REVALIDATE_PATHS.ADMIN_TEAM);
   return updatedUser;
 }

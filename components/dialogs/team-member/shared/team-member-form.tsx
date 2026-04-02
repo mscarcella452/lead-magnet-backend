@@ -34,12 +34,13 @@ import { UserRole } from "@prisma/client";
 export const TeamMemberForm = forwardRef<
   TeamMemberFormRef,
   TeamMemberFormProps
->(function TeamMemberForm({ id, formData, onChange, onSubmit, isOwner }, ref) {
+>(function TeamMemberForm({ id, formData, onChange, onSubmit }, ref) {
   const [errors, setErrors] = useState<FormErrors>({});
+  const [confirmEmail, setConfirmEmail] = useState(formData.email);
 
   useImperativeHandle(ref, () => ({
     validate: () => {
-      const newErrors = validateForm(formData);
+      const newErrors = validateForm(formData, confirmEmail);
       setErrors(newErrors);
       return Object.keys(newErrors).length === 0;
     },
@@ -49,6 +50,13 @@ export const TeamMemberForm = forwardRef<
     onChange(data);
     setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
+
+  const handleConfirmEmailChange = (value: string) => {
+    setConfirmEmail(value);
+    setErrors((prev) => ({ ...prev, confirmEmail: undefined }));
+  };
+
+  const isOwner = formData.role === "OWNER";
 
   const allowedRoles = isOwner
     ? ROLES
@@ -90,7 +98,6 @@ export const TeamMemberForm = forwardRef<
             required
           />
         </Container>
-
         <Container spacing="item">
           <label
             htmlFor={`${id}-email`}
@@ -106,6 +113,25 @@ export const TeamMemberForm = forwardRef<
             onChange={(e) =>
               handleChange({ ...formData, email: e.target.value }, "email")
             }
+            maxLength={254}
+            required
+          />
+        </Container>
+        {/* Confirm Email */}
+        <Container spacing="item">
+          <label
+            htmlFor={`${id}-confirm-email`}
+            className="text-xs font-medium text-subtle-foreground"
+          >
+            Confirm Email
+          </label>
+          <Input
+            id={`${id}-confirm-email`}
+            type="email"
+            placeholder="Re-enter email address"
+            value={confirmEmail}
+            onChange={(e) => handleConfirmEmailChange(e.target.value)}
+            onPaste={(e) => e.preventDefault()}
             maxLength={254}
             required
           />
