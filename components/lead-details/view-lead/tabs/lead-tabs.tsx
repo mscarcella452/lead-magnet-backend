@@ -25,7 +25,7 @@ interface LeadTabsProps {
 
 interface LeadTabsContentProps {
   lead: LeadWithRelations;
-  contentRef: RefObject<HTMLDivElement>;
+  contentRef: RefObject<HTMLDivElement | null>;
   className?: string;
 }
 
@@ -69,6 +69,7 @@ export const LeadTabsList = memo(function LeadTabsList({
           value={value}
           isActive={activeTab === value}
           size="responsive-sm"
+          intent="outline"
           aria-label={label}
           aria-selected={activeTab === value}
         >

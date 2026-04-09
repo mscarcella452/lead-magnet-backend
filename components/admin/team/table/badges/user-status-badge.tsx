@@ -1,5 +1,5 @@
 "use client";
-import { TeamMember } from "@/lib/server/read/getTeamMembers";
+import { TeamMember } from "@/lib/server/team/read/getTeamMembers";
 import { memo } from "react";
 import { Badge } from "@/components/ui/feedback/badge";
 

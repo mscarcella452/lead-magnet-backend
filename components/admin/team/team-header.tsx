@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { SectionHeading } from "@/components/ui/layout/blocks";
 import { Button, ControlLabel } from "@/components/ui/controls";
 import { Plus } from "lucide-react";
 import { DialogTrigger } from "@/components/ui/feedback/dialog";
@@ -8,7 +8,7 @@ import { DIALOG_TYPES } from "@/types/ui/dialog";
 
 export const TeamHeader = () => {
   return (
-    <DashboardHeader
+    <SectionHeading
       header="Team Management"
       subheader="Manage team members and their roles"
       action={

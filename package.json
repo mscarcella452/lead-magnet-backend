@@ -12,7 +12,8 @@
     "prisma:push": "prisma db push",
     "prisma:studio": "prisma studio",
     "seed": "tsx prisma/seed.ts",
-    "seed:users": "tsx prisma/seedUsers.ts"
+    "seed:users": "tsx prisma/seedUsers.ts",
+    "email": "email dev"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -34,6 +35,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@react-email/components": "^1.0.11",
     "@sentry/nextjs": "^10.46.0",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.37.0",
@@ -59,6 +61,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@react-email/preview-server": "5.2.10",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^22.0.0",
     "@types/react": "^19.2.14",
@@ -66,6 +69,7 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.0.0",
     "prisma": "^5.22.0",
+    "react-email": "^5.2.10",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.21.0",
     "typescript": "^5.6.0"

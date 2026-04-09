@@ -1,73 +1,62 @@
 "use client";
-
 import { useTheme } from "next-themes";
-import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Button, ButtonProps } from "@/components/ui/controls/button";
 import { Sun, Moon } from "lucide-react";
-
-// ============================================================================
-// Theme Toggle Component -- Dark/light theme switcher with animated icon transition
-// ============================================================================
+import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils/classnames";
 
 interface ThemeToggleButtonProps extends Omit<
   ButtonProps,
-  "className" | "aria-label" | "onClick" | "children"
-> {
-  className?: string;
+  "aria-label" | "onClick" | "children"
+> {}
+
+export function ThemeToggleButton({ ...props }: ThemeToggleButtonProps) {
+  const { resolvedTheme, setTheme } = useTheme();
+
+  const isDark = resolvedTheme === "dark";
+
+  const handleToggleTheme = () => {
+    setTheme(isDark ? "light" : "dark");
+  };
+
+  return (
+    <Button
+      onClick={handleToggleTheme}
+      mode="iconOnly"
+      aria-label="Toggle theme"
+      className="relative"
+      {...props}
+    >
+      <IconDisplay resolvedTheme={resolvedTheme} />
+    </Button>
+  );
 }
 
-function ThemeToggleButton({ className, ...props }: ThemeToggleButtonProps) {
-  const { theme, setTheme } = useTheme();
+const IconDisplay = ({
+  resolvedTheme,
+}: {
+  resolvedTheme: string | undefined;
+}) => {
+  const isDark = resolvedTheme === "dark";
   const [isMounted, setIsMounted] = useState(false);
-
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const handleToggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
-  const isDark = isMounted && theme === "dark";
-  const ariaLabel = isMounted
-    ? `Switch to ${isDark ? "light" : "dark"} mode`
-    : "Theme toggle";
+  if (!isMounted) return null;
 
   return (
-    <div
-      className={className}
-      style={{ visibility: isMounted ? "visible" : "hidden" }}
-    >
-      <AnimatePresence mode="popLayout">
-        <motion.div
-          key={theme}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          exit={{ scale: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <Button
-            onClick={handleToggleTheme}
-            size="sm"
-            mode="iconOnly"
-            aria-label={ariaLabel}
-            {...props}
-          >
-            {isMounted ? (
-              isDark ? (
-                <Sun aria-hidden="true" />
-              ) : (
-                <Moon aria-hidden="true" />
-              )
-            ) : (
-              <Sun aria-hidden="true" />
-            )}
-          </Button>
-        </motion.div>
-      </AnimatePresence>
-    </div>
+    <AnimatePresence mode="popLayout" initial={false}>
+      <motion.span
+        key={resolvedTheme}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        {isDark ? <Moon aria-hidden="true" /> : <Sun aria-hidden="true" />}
+      </motion.span>
+    </AnimatePresence>
   );
-}
-
-export { ThemeToggleButton };
+};

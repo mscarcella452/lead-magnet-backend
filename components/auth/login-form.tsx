@@ -3,12 +3,13 @@
 import { Button, Link } from "@/components/ui/controls";
 import { Container, Inset } from "@/components/ui/layout/containers";
 import { SITE_CONFIG } from "@/config";
-import { FormMotionAlertContainer } from "@/components/ui/controls/form";
-import { UsernameInput, PasswordInput } from "./shared/auth-inputs";
-import { loginAction } from "@/lib/server/actions/write/loginAction";
+import { FormMotionAlertContainer } from "@/components/ui/forms";
+import { UsernameInput, PasswordInput } from "./inputs/auth-inputs";
+import { loginAction } from "@/lib/server/auth/actions/write/loginAction";
 import { validateLogin } from "@/components/auth/lib/utils";
-import { AuthCard } from "./shared/auth-card";
+import { AuthCard } from "./cards/auth-card";
 import { useAuthForm } from "@/components/auth/lib/useAuthForm";
+import { AUTH_ROUTES } from "@/lib/server/constants";
 
 // ==============================================
 // Constants
@@ -77,7 +78,6 @@ export function LoginForm({ defaultRedirect }: { defaultRedirect: string }) {
                 onChange={() => clearFieldError("username")}
                 aria-describedby={usernameError ? FORM_ERROR_ID : undefined}
                 aria-invalid={usernameError}
-                required
                 autoFocus
               />
               <PasswordInput
@@ -86,15 +86,15 @@ export function LoginForm({ defaultRedirect }: { defaultRedirect: string }) {
                 onChange={() => clearFieldError("password")}
                 aria-describedby={passwordError ? FORM_ERROR_ID : undefined}
                 aria-invalid={passwordError}
-                required
               />
             </Container>
             <Link
               variant="brand"
               intent="ghost-text"
-              href="/auth/forgot-password"
+              href={AUTH_ROUTES.ACCOUNT_RECOVERY}
+              className="w-fit mx-auto"
             >
-              Forgot Password?
+              Trouble Signing In?
             </Link>
           </FormMotionAlertContainer>
 

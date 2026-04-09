@@ -1,14 +1,10 @@
 /**
  * Central export for all TypeScript types
+ * Organized by domain: leads, auth, server, ui
  */
 
-export type {
-  Lead,
-  Note,
-  LeadWithRelations,
-  LeadCreateInput,
-  LeadStats,
-  ApiResponse,
-  ApiError,
-  LeadTableRow,
-} from "./lead";
+// Lead types
+export * from "./leads";
+
+// Server types
+export * from "./server";

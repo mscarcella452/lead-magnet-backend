@@ -12,7 +12,7 @@ import {
 import type { DeleteLeadAlertPayload } from "@/types/ui/dialog";
 import { useState } from "react";
 import { toast } from "sonner";
-import { deleteLeadAction } from "@/lib/server/actions/write/deleteLeadAction";
+import { deleteLeadAction } from "@/lib/server/leads/actions/write/deleteLeadAction";
 import { LoaderCircle, Trash2 } from "lucide-react";
 
 export function DeleteLeadDialog({

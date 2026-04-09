@@ -1,17 +1,14 @@
-// ==============================================
-// app/set-password/page.tsx
-// ==============================================
-
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { CompleteAccountForm } from "@/components/auth/complete-account-form";
-import { InvalidInviteCard } from "@/components/auth/shared/invalid-invite-card";
+import { InvalidLinkCard } from "@/components/auth/cards/invalid-link-card";
+import { APP_ROUTES } from "@/lib/server/constants";
 
 // ==============================================
 // Types
 // ==============================================
 
-interface SetPasswordPageProps {
+interface CompleteInvitePageProps {
   searchParams: Promise<{ token?: string }>;
 }
 
@@ -19,13 +16,13 @@ interface SetPasswordPageProps {
 // Page
 // ==============================================
 
-export default async function SetPasswordPage({
+export default async function CompleteInvitePage({
   searchParams,
-}: SetPasswordPageProps) {
+}: CompleteInvitePageProps) {
   const [session, { token }] = await Promise.all([auth(), searchParams]);
 
-  if (session) redirect("/dashboard");
-  if (!token) return <InvalidInviteCard />;
+  if (session) redirect(APP_ROUTES.DASHBOARD);
+  if (!token) return <InvalidLinkCard />;
 
   return <CompleteAccountForm token={token} />;
 }

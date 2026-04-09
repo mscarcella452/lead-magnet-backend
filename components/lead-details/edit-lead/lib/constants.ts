@@ -1,5 +1,5 @@
-import { LEAD_SOURCES, LEAD_CAMPAIGNS } from "@/types/lead-constants";
-import type { LeadFieldKey } from "@/types/lead-fields";
+import { LEAD_SOURCES, LEAD_CAMPAIGNS } from "@/types/leads/constants";
+import type { LeadFieldKey } from "@/types/leads/fields";
 
 // ====================================================
 // Constants

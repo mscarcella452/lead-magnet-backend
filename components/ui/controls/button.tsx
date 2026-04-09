@@ -2,8 +2,7 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils/classnames";
 import { controlVariants } from "@/design-system/cva-variants/control-variants";
-import { ControlVariantProps } from "@/design-system/lib/types/cva-types";
-import { validateResponsiveIcon } from "@/design-system/lib/helpers/validation";
+import { ControlVariantProps } from "@/design-system/types/cva-types";
 
 // ============================================================================
 // Control Label Component
@@ -43,24 +42,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    // ========================================================================
-    // Development Validation
-    // ========================================================================
-    // Validate that responsiveIcon mode has the required ControlLabel child
-    // Skip validation when asChild=true as children structure is different
-
-    if (
-      process.env.NODE_ENV === "development" &&
-      mode === "responsiveIcon" &&
-      !asChild
-    ) {
-      const error = validateResponsiveIcon(props.children);
-      if (error) console.warn(`Button: ${error}`);
-    }
-
-    // ========================================================================
-    // Render
-    // ========================================================================
     // Use Slot for composition pattern (asChild), otherwise render as button
 
     const Comp = asChild ? Slot : "button";

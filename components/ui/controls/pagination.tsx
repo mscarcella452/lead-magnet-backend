@@ -136,7 +136,6 @@ const PaginationPreviousLink = ({ ...props }: PaginationLinkProps) => (
     size="sm"
     intent="ghost"
     mode="responsiveIcon"
-    radius="md"
     {...props}
   >
     <PreviousLabel />
@@ -150,7 +149,6 @@ const PaginationNextLink = ({ ...props }: PaginationLinkProps) => (
     size="sm"
     intent="ghost"
     mode="responsiveIcon"
-    radius="md"
     {...props}
   >
     <NextLabel />

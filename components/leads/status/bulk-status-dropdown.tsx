@@ -5,9 +5,9 @@ import {
   BulkUpdateDropdownProps,
 } from "@/components/leads/shared/bulk-update-dropdown";
 import { ButtonProps } from "@/components/ui/controls";
-import { bulkUpdateLeadStatusAction } from "@/lib/server/actions/write/bulkUpdateLeadStatusAction";
+import { bulkUpdateLeadStatusAction } from "@/lib/server/leads/actions/write/bulkUpdateLeadStatusAction";
 import { toast } from "sonner";
-import { invalidateLeadWithRelationsCache } from "@/lib/cache/lead-with-relations-cache";
+import { invalidateLeadWithRelationsCache } from "@/lib/server/leads/cache";
 
 export interface BulkStatusDropdownProps extends ButtonProps {
   selectedLeads: Set<string>;

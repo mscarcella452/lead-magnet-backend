@@ -1,4 +1,4 @@
-import { TeamMember } from "@/lib/server/read/getTeamMembers";
+import { TeamMember } from "@/lib/server/team/read/getTeamMembers";
 import { formatDate } from "@/lib/utils/dates";
 import { TeamRowActions } from "./team-row-actions";
 import { memo } from "react";
@@ -8,12 +8,8 @@ import {
   UserRoleBadge,
 } from "@/components/admin/team/table/badges";
 import { Container } from "@/components/ui/layout/containers";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/layout/avatar";
-import { getInitials } from "@/lib/utils/strings";
+import { UserAvatar } from "@/components/avatars/user-avatar";
+import { Badge } from "@/components/ui/feedback/badge";
 
 // ============================================================
 // types
@@ -38,12 +34,13 @@ export const TeamTableRow = memo(function TeamTableRow({
           spacing="group"
           className="text-start flex flex-row items-center min-w-0"
         >
-          <Avatar>
-            <AvatarImage src={member?.avatar ?? undefined} alt={member.name} />
-            <AvatarFallback delayMs={600}>
-              {getInitials(member.name)}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            // src={null}
+            // src={member.avatar}
+            name={member.name}
+            size="xs"
+            // delayMs={600}
+          />
 
           <div className="flex flex-col gap-1 min-w-0 overflow-hidden">
             <span className="font-medium capitalize">{member.name}</span>
@@ -52,6 +49,15 @@ export const TeamTableRow = memo(function TeamTableRow({
             </span>
           </div>
         </Container>
+      </TableCell>
+      <TableCell className="min-w-0 max-w-0">
+        <Badge
+          intent="outline"
+          size="sm"
+          className="flex min-w-0 max-w-full mx-auto"
+        >
+          <span className="truncate">{member.username}</span>
+        </Badge>
       </TableCell>
       <TableCell>
         <UserRoleBadge role={member.role} />

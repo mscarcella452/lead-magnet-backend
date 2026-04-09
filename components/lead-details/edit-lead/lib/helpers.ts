@@ -1,6 +1,6 @@
 import type { LeadWithRelations } from "@/types";
-import type { LeadMetadata, LeadFieldKey } from "@/types/lead-fields";
-import type { GroupedLeadFields } from "@/lib/utils/lead-magnets";
+import type { LeadMetadata, LeadFieldKey } from "@/types/leads/fields";
+import type { GroupedLeadFields } from "@/lib/leads/utils/magnets";
 import { resolveFieldValue } from "@/components/lead-details/lib/helpers";
 import {
   DYNAMIC_SECTION_ORDER,
@@ -14,7 +14,7 @@ import type {
   EditFormDiff,
 } from "@/components/lead-details/edit-lead/lib/types";
 import { LeadPriority, LeadStatus } from "@prisma/client";
-import { type UpdateLeadData } from "@/lib/server/write/updateLead";
+import { type UpdateLeadData } from "@/lib/server/leads/write/updateLead";
 
 // ====================================================
 // buildEditSections

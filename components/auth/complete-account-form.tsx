@@ -1,12 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/controls";
 import { Container, Inset } from "@/components/ui/layout/containers";
-import { FormMotionAlertContainer } from "@/components/ui/controls/form";
-import { UsernameInput, AuthCard } from "./shared";
-import { completeInviteAction } from "@/lib/server/actions/write/completeInviteAction";
+import { FormMotionAlertContainer } from "@/components/ui/forms";
+import { UsernameInput } from "./inputs";
+import { AuthCard } from "./cards/auth-card";
+import { completeInviteAction } from "@/lib/server/auth/actions/write/completeInviteAction";
 import { validateAccountCreation } from "./lib/utils";
 import { useAuthForm } from "./lib/useAuthForm";
-import { PasswordCreationFields } from "./shared/password-creation-fields";
+import { PasswordCreationFields } from "./inputs/password-creation-fields";
 
 // ==============================================
 // Constants
@@ -81,7 +82,6 @@ export function CompleteAccountForm({ token }: { token: string }) {
               onChange={() => clearFieldError("username")}
               aria-describedby={usernameError ? FORM_ERROR_ID : undefined}
               aria-invalid={usernameError}
-              required
               autoFocus
             />
 

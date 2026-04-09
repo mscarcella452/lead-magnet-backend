@@ -14,7 +14,7 @@ import { DIALOG_ANIMATION_MAP } from "@/config/dialog-config";
 import {
   DialogLayoutVariantProps,
   DialogContentVariantProps,
-} from "@/design-system/lib/types/cva-types";
+} from "@/design-system/types/cva-types";
 
 // ============================================================================
 // DialogOverlay - Backdrop overlay

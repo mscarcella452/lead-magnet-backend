@@ -25,6 +25,25 @@ export function formatDate(date: Date | string): string {
     year: "numeric",
   }).format(dateObj);
 }
+// ============================================================================
+// formatExpiry(expiresAt: Date): string
+// Converts a future expiry date into a human-readable duration string.
+// Returns the time remaining until expiry (e.g. "45 minutes", "12 hours",
+// "3 days", "2 weeks"). Intended for use in invite/magic link emails.
+// ============================================================================
+
+export function formatExpiry(expiresAt: Date): string {
+  const ms = new Date(expiresAt).getTime() - Date.now();
+  const minutes = Math.round(ms / (1000 * 60));
+  const hours = Math.round(ms / (1000 * 60 * 60));
+  const days = Math.round(ms / (1000 * 60 * 60 * 24));
+  const weeks = Math.round(ms / (1000 * 60 * 60 * 24 * 7));
+
+  if (minutes < 60) return `${minutes} minute${minutes !== 1 ? "s" : ""}`;
+  if (hours < 24) return `${hours} hour${hours !== 1 ? "s" : ""}`;
+  if (days < 7) return `${days} day${days !== 1 ? "s" : ""}`;
+  return `${weeks} week${weeks !== 1 ? "s" : ""}`;
+}
 
 // ============================================================================
 // getStartOfToday(baseDate: Date = new Date()): Date

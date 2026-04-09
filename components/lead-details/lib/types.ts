@@ -1,4 +1,4 @@
-import { LeadInfoSection } from "@/types/lead-fields";
+import { LeadInfoSection } from "@/types/leads/fields";
 
 // ====================================================
 // Types

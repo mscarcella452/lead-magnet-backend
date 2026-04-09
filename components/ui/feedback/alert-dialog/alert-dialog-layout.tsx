@@ -6,7 +6,7 @@ import { Overlay } from "@/components/ui/feedback/overlay";
 import { cn } from "@/lib/utils/classnames";
 import { alertDialogVariants } from "@/design-system/cva-variants/alert-dialog-variants";
 import { useAlertDialogContext } from "@/components/ui/feedback/alert-dialog/alert-dialog-context";
-import { AlertDialogVariantProps } from "@/design-system/lib/types/cva-types";
+import { AlertDialogVariantProps } from "@/design-system/types/cva-types";
 
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 
@@ -19,7 +19,7 @@ const AlertDialogOverlay = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Overlay asChild {...props}>
-    <Overlay ref={ref} className={className} />
+    <Overlay ref={ref} className={cn("cursor-default", className)} />
   </AlertDialogPrimitive.Overlay>
 ));
 AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName;

@@ -4,9 +4,9 @@
 import { toast } from "sonner";
 import { useCallback, useState } from "react";
 import { type LeadWithRelations } from "@/types";
-import { type LeadMetadata } from "@/types/lead-fields";
-import { type LeadMagnetType } from "@/types/lead-magnets";
-import { groupFieldsBySection } from "@/lib/utils/lead-magnets";
+import { type LeadMetadata } from "@/types/leads/fields";
+import { type LeadMagnetType } from "@/types/leads/magnets";
+import { groupFieldsBySection } from "@/lib/leads/utils/magnets";
 import {
   buildEditSections,
   diffFormState,
@@ -20,8 +20,8 @@ import {
 } from "@/components/lead-details/edit-lead/shared/edit-components";
 import { Button } from "@/components/ui/controls/button";
 import { useDialogs } from "@/components/dialogs/providers/dialog-provider";
-import { updateLeadAction } from "@/lib/server/actions/write/updateLeadAction";
-import { invalidateLeadWithRelationsCache } from "@/lib/cache/lead-with-relations-cache";
+import { updateLeadAction } from "@/lib/server/leads/actions/write/updateLeadAction";
+import { invalidateLeadWithRelationsCache } from "@/lib/server/leads/cache";
 import {
   EditLeadHeader,
   EditLeadBody,

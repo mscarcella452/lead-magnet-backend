@@ -8,7 +8,7 @@ import {
 import {
   type ToneHoverFields,
   type ToneHoverKeys,
-} from "@/design-system/lib/types/preset-types";
+} from "@/design-system/types/preset-types";
 
 // ============================================================================
 // Types
@@ -61,6 +61,8 @@ export const controlVariants = cva(
     "transition-colors duration-500",
     "disabled:pointer-events-none disabled:opacity-70",
     "[&_svg]:shrink-0 [&_svg]:size-[1em]",
+    // for default outline focus. its applied here because ghost-text and text intent is not included in the ring focus compound variants
+    "focus-visible:outline-ring focus-visible:outline-2 focus-visible:outline-offset-2",
   ],
   {
     variants: {
@@ -80,7 +82,7 @@ export const controlVariants = cva(
         outline: "border bg-transparent",
         ghost: "bg-transparent shadow-none",
         text: "h-fit p-0! hover:underline hover:underline-offset-4",
-        "ghost-text": "h-fit p-0!",
+        "ghost-text": "h-fit p-0! ",
         // "ghost-text": "h-fit p-0 opacity-70 hover:opacity-100",
       } satisfies Record<ControlIntent, string>,
 
@@ -107,8 +109,8 @@ export const controlVariants = cva(
       radius: CONTROL_RADIUS_FIELD_RECORD,
 
       focus: {
-        ring: "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
-        outline: "focus-visible:outline-ring",
+        ring: "",
+        default: "outline-ring ",
       },
 
       mode: {
@@ -116,9 +118,22 @@ export const controlVariants = cva(
         iconOnly: "aspect-square !p-0 rounded-full",
         responsiveIcon:
           "max-sm:aspect-square max-sm:!p-0 [&_.control-label]:max-sm:hidden max-sm:rounded-full [&_*]:max-sm:rounded-full",
+        /**
+         * `responsiveIcon` — shows icon-only on mobile, icon+label on desktop.
+         * Requires a `<ControlLabel>` child wrapping the label text.
+         */
       },
     },
-    compoundVariants: [...compoundThemeVariants],
+    compoundVariants: [
+      ...compoundThemeVariants,
+      // text and ghost-text intent not included. its not incldued with ring because it covers up the icon/text
+      {
+        focus: "ring",
+        intent: ["solid", "soft", "outline", "ghost"],
+        className:
+          "focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring focus-visible:ring-inset",
+      },
+    ],
 
     defaultVariants: {
       variant: "primary",

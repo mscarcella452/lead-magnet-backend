@@ -2,7 +2,13 @@
 // Types
 // ==============================================
 
-export type FieldKey = "username" | "email" | "password" | "confirmPassword";
+export type FieldKey =
+  | "username"
+  | "email"
+  | "password"
+  | "confirmPassword"
+  | "name"
+  | "currentPassword";
 
 export type FormState =
   | { status: "idle" }

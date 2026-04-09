@@ -10,6 +10,10 @@ export const VALIDATION_ERROR_MESSAGES = {
   confirmPasswordMatch: "Passwords do not match.",
   email: "Email is required.",
   emailInvalid: "Please enter a valid email address.",
+  emailMatch: "Emails do not match.",
+  name: "Name is required.",
+  currentPassword: "Current password is required.",
+  passwordSame: "New password must be different from current password.",
 } as const;
 
 export const PASSWORD_MINIMUM_LENGTH = 8;

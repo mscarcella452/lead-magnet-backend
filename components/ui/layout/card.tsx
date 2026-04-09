@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils/classnames";
 import { cardVariants } from "@/design-system/cva-variants/card-variants";
-import { CardVariantProps } from "@/design-system/lib/types/cva-types";
+import { CardVariantProps } from "@/design-system/types/cva-types";
 
 export type CardProps = React.HTMLAttributes<HTMLDivElement> & CardVariantProps;
 

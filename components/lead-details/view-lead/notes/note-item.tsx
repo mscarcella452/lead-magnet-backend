@@ -32,7 +32,7 @@ interface NoteItemProps extends CardProps {
 
 export const NoteItem = forwardRef<HTMLDivElement, NoteItemProps>(
   function NoteItem({ note, isFirstNote, ...props }, ref) {
-    const cardRef = useRef<HTMLDivElement>(null);
+    const cardRef = useRef<HTMLDivElement>(null!) as React.RefObject<HTMLDivElement>;
 
     const {
       noteState,

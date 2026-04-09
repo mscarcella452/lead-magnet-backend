@@ -17,7 +17,6 @@ model Lead {
   campaign       String?
   status         LeadStatus   @default(NEW)
   priority       LeadPriority @default(MEDIUM)
-  score          Int?
   metadata       Json?        // dynamic field values per lead magnet
   leadMagnetId   String?      @db.ObjectId
   leadMagnet     LeadMagnet?  @relation("LeadMagnetLeads", fields: [leadMagnetId], references: [id], onDelete: SetNull)
@@ -69,7 +68,7 @@ model Activity {
   leadId    String       @db.ObjectId
   lead      Lead         @relation(fields: [leadId], references: [id], onDelete: Cascade)
   type      ActivityType
-  performedBy String     // Who performed the action, required
+  performedBy String?    // Who performed the action (null for automated events)
   metadata  Json?        // Additional context for the activity
   createdAt DateTime     @default(now())
 
@@ -111,6 +110,7 @@ model User {
   updatedAt DateTime    @updatedAt
   invite    UserInvite?
   passwordResetToken PasswordResetToken?
+  emailVerificationToken EmailVerificationToken?
   
   @@map("users")
 }
@@ -135,6 +135,18 @@ model PasswordResetToken {
   createdAt DateTime @default(now())
 
   @@map("password_reset_tokens")
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  newEmail  String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("email_verification_tokens")
 }
 
 enum UserRole {

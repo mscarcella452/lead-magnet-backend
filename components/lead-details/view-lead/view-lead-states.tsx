@@ -1,7 +1,6 @@
 "use client";
 
 import { RefObject } from "react";
-import { LeadTabs } from "@/components/lead-details/view-lead/tabs/lead-tabs";
 import {
   ViewLeadSkeleton,
   ViewLeadError,
@@ -11,7 +10,7 @@ import { useLeadWithRelations } from "@/components/lead-details/lib/hooks/useLea
 import type { ViewLeadDialogPayload } from "@/types/ui/dialog";
 
 interface ViewLeadStatesProps extends ViewLeadDialogPayload {
-  contentRef: RefObject<HTMLDivElement>;
+  contentRef: RefObject<HTMLDivElement | null>;
 }
 
 export function ViewLeadStates({
@@ -21,19 +20,13 @@ export function ViewLeadStates({
 }: ViewLeadStatesProps) {
   const leadState = useLeadWithRelations(leadId);
 
+  if (leadState.status === "loading") return <ViewLeadSkeleton />;
+  if (leadState.status === "error") return <ViewLeadError />;
   return (
-    <LeadTabs>
-      {leadState.status === "loading" && <ViewLeadSkeleton />}
-      {leadState.status === "error" && (
-        <ViewLeadError message={leadState.error} />
-      )}
-      {leadState.status === "success" && (
-        <ViewLeadDetails
-          lead={leadState.lead}
-          contentRef={contentRef}
-          onConfirm={onConfirm}
-        />
-      )}
-    </LeadTabs>
+    <ViewLeadDetails
+      lead={leadState.lead}
+      contentRef={contentRef}
+      onConfirm={onConfirm}
+    />
   );
 }

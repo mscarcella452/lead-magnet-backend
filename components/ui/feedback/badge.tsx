@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils/classnames";
 import { badgeVariants } from "@/design-system/cva-variants/badge-variants";
-import { BadgeVariantProps } from "@/design-system/lib/types/cva-types";
+import { BadgeVariantProps } from "@/design-system/types/cva-types";
 
 // ============================================================================
 // Badge Props

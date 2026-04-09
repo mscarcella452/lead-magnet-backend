@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/layout/table";
-import { TeamMember } from "@/lib/server/read/getTeamMembers";
+import { TeamMember } from "@/lib/server/team/read/getTeamMembers";
 import { TeamTableRow } from "@/components/admin/team/table/team-table-row";
 
 // ============================================================
@@ -25,6 +25,7 @@ interface TeamTableProps {
 
 const TABLE_HEADERS = [
   "Name",
+  "Username",
   "Role",
   // "Email",
   "Status",
@@ -54,7 +55,11 @@ export function TeamTable({ initialMembers, currentUserRole }: TeamTableProps) {
       </TableHeader>
       <TableBody>
         {initialMembers.map((member) => (
-          <TeamTableRow key={member.id} member={member} currentUserRole={currentUserRole} />
+          <TeamTableRow
+            key={member.id}
+            member={member}
+            currentUserRole={currentUserRole}
+          />
         ))}
       </TableBody>
     </Table>

@@ -1,5 +1,5 @@
 import { type TeamMemberFormData } from "@/types/ui/dialog";
-import { type FormErrors } from "@/components/ui/controls/form";
+import { type FormErrors } from "@/components/ui/forms";
 import { isValidEmail } from "@/lib/utils/validation";
 
 // ============================================================

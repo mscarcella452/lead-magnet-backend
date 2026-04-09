@@ -1,6 +1,6 @@
 import { Mail, Phone, Globe, Video, LucideIcon } from "lucide-react";
 import { LeadContactMeta } from "@/components/lead-details/lib/types";
-import { LeadFieldKey } from "@/types/lead-fields";
+import { LeadFieldKey } from "@/types/leads/fields";
 
 // ====================================================
 // Constants

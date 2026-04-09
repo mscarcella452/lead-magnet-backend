@@ -1,5 +1,5 @@
 import { LeadWithRelations } from "@/types";
-import { type LeadMetadata, type LeadFieldKey } from "@/types/lead-fields";
+import { type LeadMetadata, type LeadFieldKey } from "@/types/leads/fields";
 import { DB_FIELD_RESOLVERS } from "@/components/lead-details/lib/constants";
 import { type InfoRowProps } from "@/components/lead-details/view-lead/info/lib/types";
 

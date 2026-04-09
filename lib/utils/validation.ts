@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { LEAD_SOURCES } from "@/types/lead-constants";
+import { LEAD_SOURCES } from "@/types/leads/constants";
 
 // ============================================================================
 // Lead submission schema

@@ -2,11 +2,17 @@
 
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { motion, AnimatePresence, Variants } from "motion/react";
+import {
+  motion,
+  AnimatePresence,
+  Variants,
+  HTMLMotionProps,
+} from "motion/react";
 import { cn } from "@/lib/utils/index";
 import { ButtonProps } from "@/components/ui/controls";
 import { controlVariants } from "@/design-system/cva-variants/control-variants";
-import { ControlVariantProps } from "@/design-system/lib/types/cva-types";
+import { ControlVariantProps } from "@/design-system/types/cva-types";
+import { Card, CardProps } from "@/components/ui/layout/card";
 
 /**
  * Tabs — Radix UI Tabs wrapped with:
@@ -135,16 +141,34 @@ Tabs.displayName = "Tabs";
 
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.List
-    ref={ref}
-    className={cn(
-      "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
-      className,
-    )}
-    {...props}
-  />
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> &
+    CardProps & {
+      orientation?: "horizontal" | "vertical";
+    }
+>(({ className, orientation = "horizontal", ...props }, ref) => (
+  // <TabsPrimitive.List
+  //   ref={ref}
+  //   className={cn(
+  //     "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
+  //     className,
+  //   )}
+  //   {...props}
+  // />
+  <TabsPrimitive.List asChild>
+    <Card
+      ref={ref}
+      className={cn(
+        {
+          "flex flex-col": orientation === "vertical",
+          "flex flex-row": orientation === "horizontal",
+        },
+        className,
+      )}
+      size="none"
+      variant="none"
+      {...props}
+    />
+  </TabsPrimitive.List>
 ));
 TabsList.displayName = TabsPrimitive.List.displayName;
 
@@ -152,7 +176,56 @@ TabsList.displayName = TabsPrimitive.List.displayName;
 // TabsTrigger
 // ==========================================================================
 
-const INDICATOR_TRANSITION = { type: "spring", duration: 0.5 } as const;
+const INDICATOR_TRANSITION = {
+  type: "spring",
+  stiffness: 300,
+  damping: 30,
+  mass: 0.8,
+} as const;
+
+interface TriggerIndicatorProps
+  extends ControlVariantProps, HTMLMotionProps<"span"> {
+  className?: string;
+  children?: React.ReactNode;
+}
+
+const TriggerIndicator = React.forwardRef<
+  HTMLSpanElement,
+  TriggerIndicatorProps
+>(
+  (
+    {
+      variant,
+      intent,
+      size,
+      mode,
+      radius,
+      className,
+      children,
+      ...motionProps
+    },
+    ref,
+  ) => (
+    <motion.span
+      ref={ref} // ← need ref because mtion is child component of animate presence
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={INDICATOR_TRANSITION}
+      {...motionProps}
+      className={cn(
+        "absolute inset-0",
+
+        controlVariants({ variant, intent, size, mode, radius }),
+        className,
+      )}
+    >
+      {children}
+    </motion.span>
+  ),
+);
+
+TriggerIndicator.displayName = "TriggerIndicator";
 
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
@@ -178,8 +251,14 @@ const TabsTrigger = React.forwardRef<
       registerTab(value);
     }, [value, registerTab]);
 
-    const variant = props.variant ?? "primary";
-    const intent = props.intent ?? "outline";
+    const { variant, intent, size, mode, radius, ...rest } = props;
+    const triggerControlProps: ControlVariantProps = {
+      variant,
+      intent,
+      size,
+      mode,
+      radius,
+    };
 
     return (
       <TabsPrimitive.Trigger
@@ -187,51 +266,51 @@ const TabsTrigger = React.forwardRef<
         value={value}
         className={cn(
           "relative w-full",
-          controlVariants({
-            variant: variant,
-            intent: intent,
-            size: props.size,
-            mode: props.mode,
-            radius: props.radius,
-            focus: "outline",
-          }),
-          className,
-          {
-            "border-transparent!": isActive && intent === "outline",
-            "pointer-events-none": isActive,
-          },
+          controlVariants({ variant: "unstyled", focus: "default", size }),
+          { "pointer-events-none": isActive },
         )}
-        {...props}
+        {...rest}
       >
+        {/* Layer 1: pill — slides via layoutId, no label */}
         <AnimatePresence mode="popLayout" initial={false}>
           {isActive && (
-            <motion.span
+            <TriggerIndicator
+              key="active"
               layoutId="tabs"
-              transition={INDICATOR_TRANSITION}
-              className={cn(
-                controlVariants({
-                  variant: activeVariant,
-                  intent: activeIntent,
-                  size: props.size,
-                  radius: props.radius,
-                }),
-
-                "absolute inset-0 h-full z-1",
-                activeClassName,
-              )}
-              aria-hidden="true"
-            >
-              {children}
-            </motion.span>
+              {...triggerControlProps}
+              variant={activeVariant}
+              intent={activeIntent}
+              className={cn(activeClassName, "z-1")}
+            />
           )}
         </AnimatePresence>
 
-        <span
-          aria-hidden="true"
-          className="absolute inset-0 flex flex-row items-center gap-2 justify-center z-0"
-        >
-          {children}
-        </span>
+        {/* Layer 2: label — separate AnimatePresence, crossfades on top of pill */}
+        <AnimatePresence mode="popLayout" initial={false}>
+          {isActive ? (
+            <TriggerIndicator
+              key="label-active"
+              {...triggerControlProps}
+              variant={activeVariant}
+              intent={activeIntent}
+              className={cn(
+                activeClassName,
+                { "border border-transparent": intent === "outline" },
+                "z-10 bg-transparent!",
+              )}
+            >
+              {children}
+            </TriggerIndicator>
+          ) : (
+            <TriggerIndicator
+              key="label-inactive"
+              {...triggerControlProps}
+              className={cn(className, "z-0")}
+            >
+              {children}
+            </TriggerIndicator>
+          )}
+        </AnimatePresence>
       </TabsPrimitive.Trigger>
     );
   },
@@ -248,11 +327,13 @@ TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
  */
 const CONTENT_OFFSET = 24;
 
-const CONTENT_TRANSITION = {
-  type: "spring",
-  duration: 0.4,
-  bounce: 0.15,
-} as const;
+// const CONTENT_TRANSITION = {
+//   type: "spring",
+//   duration: 0.4,
+//   bounce: 0.15,
+// } as const;
+
+const CONTENT_TRANSITION = INDICATOR_TRANSITION;
 
 const EXIT_TRANSITION = { ...CONTENT_TRANSITION, duration: 0.25 } as const;
 

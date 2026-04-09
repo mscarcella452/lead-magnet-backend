@@ -12,7 +12,7 @@ import {
 import type { DeleteMemberAlertPayload } from "@/types/ui/dialog";
 import { useState } from "react";
 import { toast } from "sonner";
-import { deleteTeamMemberAction } from "@/lib/server/actions/write/deleteTeamMemberAction";
+import { deleteTeamMemberAction } from "@/lib/server/team/actions/write/deleteTeamMemberAction";
 import { LoaderCircle, Trash2 } from "lucide-react";
 
 export function DeleteMemberDialog({ userId }: DeleteMemberAlertPayload) {

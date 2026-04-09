@@ -16,6 +16,7 @@ import { DeleteLeadDialog } from "@/components/dialogs/delete-lead-dialog";
 import { CreateNewMemberDialog } from "@/components/dialogs/team-member/create-new-member-dialog";
 import { DeleteMemberDialog } from "@/components/dialogs/team-member/delete-lead-member";
 import { EditMemberDialog } from "@/components/dialogs/team-member/edit-member-dialog";
+import { AccountEmailChangeDialog } from "@/components/dialogs/account/account-email-change-dialog";
 
 // ============================================================================
 // Animation Map
@@ -64,4 +65,5 @@ export const ALERT_DIALOG_CONTENT_MAP: {
 } = {
   [ALERT_DIALOG_TYPES.DELETE_LEAD]: DeleteLeadDialog,
   [ALERT_DIALOG_TYPES.DELETE_MEMBER]: DeleteMemberDialog,
+  [ALERT_DIALOG_TYPES.UPDATE_EMAIL]: AccountEmailChangeDialog,
 };

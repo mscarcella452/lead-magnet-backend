@@ -2,9 +2,7 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils/classnames";
 import { chipVariants } from "@/design-system/cva-variants/chip-variants";
-import { ChipVariantProps } from "@/design-system/lib/types/cva-types";
-import { validateResponsiveIcon } from "@/design-system/lib/helpers/validation";
-import { ControlLabel } from "@/components/ui/controls/button"; // Import from Button
+import { ChipVariantProps } from "@/design-system/types/cva-types";
 
 // ============================================================================
 // Chip Props
@@ -35,24 +33,7 @@ const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
     },
     ref,
   ) => {
-    // ========================================================================
-    // Development Validation
-    // ========================================================================
-    // Validate that responsiveIcon mode has the required ControlLabel child
-
-    if (
-      process.env.NODE_ENV === "development" &&
-      mode === "responsiveIcon" &&
-      !asChild
-    ) {
-      const error = validateResponsiveIcon(props.children);
-      if (error) console.warn(`Chip: ${error}`);
-    }
-
-    // ========================================================================
-    // Render
-    // ========================================================================
-
+    // Use Slot for composition pattern (asChild), otherwise render as button
     const Comp = asChild ? Slot : "button";
 
     return (

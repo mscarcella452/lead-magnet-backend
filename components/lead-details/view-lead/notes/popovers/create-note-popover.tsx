@@ -1,10 +1,10 @@
 "use client";
 import { toast } from "sonner";
 import { NoteFormCard } from "@/components/lead-details/view-lead/notes/popovers/shared/note-form-card";
-import { createLeadNoteAction } from "@/lib/server/actions/write/createLeadNoteAction";
+import { createLeadNoteAction } from "@/lib/server/leads/actions/write/createLeadNoteAction";
 import { useNotesContext } from "@/components/lead-details/view-lead/notes/providers/notes-context-provider";
 import { usePopoverContext } from "@/components/ui/controls/morphing-popover";
-import { invalidateLeadWithRelationsCache } from "@/lib/cache/lead-with-relations-cache";
+import { invalidateLeadWithRelationsCache } from "@/lib/server/leads/cache";
 import {
   MorphingPopoverContent,
   MorphingPopoverTrigger,

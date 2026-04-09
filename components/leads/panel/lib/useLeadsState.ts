@@ -2,9 +2,9 @@ import type { InitialLeadData } from "@/components/leads/panel/lib/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useReducer, useTransition, useCallback } from "react";
 import { toast } from "sonner";
-import { getTableLeadsAction } from "@/lib/server/actions/read/getTableLeadsAction";
+import { getTableLeadsAction } from "@/lib/server/leads/actions/read/getTableLeadsAction";
 import { buildUpdatedParams } from "@/components/leads/panel/lib/helpers";
-import type { SortField } from "@/lib/server/read/getTableLeads";
+import type { SortField } from "@/lib/server/leads/read/getTableLeads";
 import { leadsReducer } from "@/components/leads/panel/lib/leadsReducer";
 
 export function useLeadsState(initialLeadData: InitialLeadData) {

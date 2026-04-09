@@ -1,7 +1,7 @@
 import "server-only";
 
 import { auth } from "@/auth";
-import { getTeamMembers } from "@/lib/server/read/getTeamMembers";
+import { getTeamMembers } from "@/lib/server/team/read/getTeamMembers";
 import { TeamTable } from "@/components/admin/team/table/team-table";
 
 export async function TeamSection() {

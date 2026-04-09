@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils/classnames";
 import { Badge } from "@/components/ui/feedback/badge";
 import { Container } from "@/components/ui/layout/containers/container";
-import { ContainerVariantProps } from "@/design-system/lib/types/cva-types";
-import { BadgeVariantProps } from "@/design-system/lib/types/cva-types";
+import { ContainerVariantProps } from "@/design-system/types/cva-types";
+import { BadgeVariantProps } from "@/design-system/types/cva-types";
 
 export interface HeadingBlockProps {
   badge?: string;

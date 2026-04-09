@@ -2,9 +2,9 @@ import { LeadPriority } from "@prisma/client";
 import { PRIORITY_CONFIG } from "@/config/lead-config";
 import { BulkUpdateDropdown } from "@/components/leads/shared/bulk-update-dropdown";
 import { ButtonProps } from "@/components/ui/controls";
-import { bulkUpdateLeadPriorityAction } from "@/lib/server/actions/write/bulkUpdateLeadPriorityAction";
+import { bulkUpdateLeadPriorityAction } from "@/lib/server/leads/actions/write/bulkUpdateLeadPriorityAction";
 import { toast } from "sonner";
-import { invalidateLeadWithRelationsCache } from "@/lib/cache/lead-with-relations-cache";
+import { invalidateLeadWithRelationsCache } from "@/lib/server/leads/cache";
 
 export interface BulkPriorityDropdownProps extends ButtonProps {
   selectedLeads: Set<string>;

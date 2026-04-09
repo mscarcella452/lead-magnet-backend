@@ -1,8 +1,7 @@
 import * as React from "react";
 import NextLink, { type LinkProps as NextLinkProps } from "next/link";
-import { ControlVariantProps } from "@/design-system/lib/types/cva-types";
+import { ControlVariantProps } from "@/design-system/types/cva-types";
 import { Button } from "@/components/ui/controls/button";
-import { validateResponsiveIcon } from "@/design-system/lib/helpers/validation";
 
 // ============================================================================
 // Link Props
@@ -44,19 +43,6 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     },
     ref,
   ) => {
-    // ========================================================================
-    // Development Validation
-    // ========================================================================
-    // Validate that responsiveIcon mode has the required ControlLabel child
-
-    if (process.env.NODE_ENV === "development" && mode === "responsiveIcon") {
-      const error = validateResponsiveIcon(children);
-      if (error) console.warn(`Link: ${error}`);
-    }
-
-    // ========================================================================
-    // Render
-    // ========================================================================
     // Button with asChild passes styling to NextLink
     // External links get target="_blank" and security attributes
 

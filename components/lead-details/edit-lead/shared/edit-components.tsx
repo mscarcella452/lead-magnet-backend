@@ -1,5 +1,5 @@
-import { Input } from "@/components/ui/controls/input";
-import { Textarea } from "@/components/ui/controls/textarea";
+import { Input } from "@/components/ui/forms/input";
+import { Textarea } from "@/components/ui/forms/textarea";
 import {
   Select,
   SelectContent,
@@ -14,7 +14,7 @@ import type {
   EditRowProps,
   EditSection,
 } from "@/components/lead-details/edit-lead/lib/types";
-import { LeadFieldType } from "@/types/lead-fields";
+import { LeadFieldType } from "@/types/leads/fields";
 import { StatusDropdown } from "@/components/leads/status";
 import { PriorityDropdown } from "@/components/leads/priority/priority-dropdown";
 import { LeadWithRelations } from "@/types";

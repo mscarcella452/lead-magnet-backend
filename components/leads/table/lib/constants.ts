@@ -2,7 +2,7 @@
 // Lead Table Constants
 // ============================================================================
 
-import type { SortField } from "@/lib/server/read/getTableLeads";
+import type { SortField } from "@/lib/server/leads/read/getTableLeads";
 
 export const TABLE_COLUMNS: ReadonlyArray<{
   key: SortField;

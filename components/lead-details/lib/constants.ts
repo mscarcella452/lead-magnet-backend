@@ -1,4 +1,4 @@
-import { LeadInfoSection, LeadFieldKey } from "@/types/lead-fields";
+import { LeadInfoSection, LeadFieldKey } from "@/types/leads/fields";
 import { LeadWithRelations } from "@/types";
 
 // ====================================================
@@ -43,7 +43,6 @@ export const DB_FIELD_RESOLVERS: Partial<
   email: (lead) => lead.email ?? null,
   status: (lead) => lead.status ?? null,
   priority: (lead) => lead.priority ?? null,
-  score: (lead) => (lead.score != null ? String(lead.score) : null),
   lead_source: (lead) => lead.source ?? null, // DB column is `source`, field key is `lead_source`
   campaign: (lead) => lead.campaign ?? null,
 };

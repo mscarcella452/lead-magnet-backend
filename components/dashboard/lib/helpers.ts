@@ -1,5 +1,5 @@
 import type { PageProps } from "@/components/dashboard/lib/types";
-import type { SortField, SortOrder } from "@/lib/server/read/getTableLeads";
+import type { SortField, SortOrder } from "@/lib/server/leads/read/getTableLeads";
 
 // ============================================================================
 // Helpers

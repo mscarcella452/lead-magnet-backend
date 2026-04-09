@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { exportLeadCSVAction } from "@/lib/server/actions/read/exportLeadsCSVAction";
-import { downloadCSV } from "@/lib/helpers/lead-csv";
+import { exportLeadCSVAction } from "@/lib/server/leads/actions/read/exportLeadsCSVAction";
+import { downloadCSV } from "@/lib/leads/helpers/csv";
 import { formatDateForFilename } from "@/lib/utils/dates";
 import { toast } from "sonner";
 

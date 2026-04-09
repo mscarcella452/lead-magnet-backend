@@ -20,7 +20,7 @@ import { AnimatedContentSwap } from "@/components/ui/animations/animated-content
 import { cn } from "@/lib/utils/classnames";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Container } from "@/components/ui/layout/containers/container";
-import { AccordionVariantProps } from "@/design-system/lib/types/cva-types";
+import { AccordionVariantProps } from "@/design-system/types/cva-types";
 import { accordionVariants } from "@/design-system/cva-variants/accordion-variants";
 
 // ============================================================================

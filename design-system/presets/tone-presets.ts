@@ -1,7 +1,7 @@
 import {
   ToneFieldClassRecord,
   ToneHoverFieldClassRecord,
-} from "@/design-system/lib/types/preset-types";
+} from "@/design-system/types/preset-types";
 
 export const BASE_TONE_FIELD_RECORD = {
   // ============================================================================

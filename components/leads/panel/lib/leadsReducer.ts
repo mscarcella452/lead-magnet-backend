@@ -1,5 +1,5 @@
-import type { LeadTableRow } from "@/types/lead";
-import type { SortField, SortOrder } from "@/lib/server/read/getTableLeads";
+import type { LeadTableRow } from "@/types/leads/lead";
+import type { SortField, SortOrder } from "@/lib/server/leads/read/getTableLeads";
 import type { InitialLeadData } from "@/components/leads/panel/lib/types";
 
 export type LeadsAction =

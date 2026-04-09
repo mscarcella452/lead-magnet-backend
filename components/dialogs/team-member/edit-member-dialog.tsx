@@ -15,10 +15,10 @@ import { toast } from "sonner";
 import { useDialogs } from "@/components/dialogs/providers/dialog-provider";
 import { TeamMemberForm } from "@/components/dialogs/team-member/shared/team-member-form";
 import { TeamMemberFormData, EditMemberDialogPayload } from "@/types/ui/dialog";
-import { editTeamMemberAction } from "@/lib/server/actions/write/editTeamMemberAction";
+import { editTeamMemberAction } from "@/lib/server/team/actions/write/editTeamMemberAction";
 import { UserRole } from "@prisma/client";
 import { type TeamMemberFormRef } from "@/components/dialogs/team-member/shared/lib/types";
-import { resendTeamMemberInviteAction } from "@/lib/server/actions/write/resendTeamMemberInviteAction";
+import { resendTeamMemberInviteAction } from "@/lib/server/team/actions/write/resendTeamMemberInviteAction";
 
 // ============================================================
 // Types
@@ -68,13 +68,18 @@ export const EditMemberDialog = ({
     }
   };
 
+  const formatName = formData.name
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
   return (
     <DialogContent layout="responsiveModal">
       <Container spacing="content">
         <DialogHeader>
           <DialogTitle>Edit Team Member</DialogTitle>
           <DialogDescription className="truncate">
-            Update the details for {formData.name ?? "this team member"}.
+            Update the details for{" "}
+            {formatName !== "" ? formatName : "this team member"}.
           </DialogDescription>
         </DialogHeader>
         <DialogBody>

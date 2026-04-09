@@ -1,25 +1,22 @@
 "use client";
 
-import { signOut } from "next-auth/react";
 import { Button, type ButtonProps } from "@/components/ui/controls";
 import { LogOut } from "lucide-react";
-import { toast } from "sonner";
+import { handleLogout } from "@/lib/auth/auth-client-actions";
+import { useRouter } from "next/navigation";
 
 export function LogoutButton({ children, ...props }: ButtonProps) {
-  const handleLogout = async () => {
-    try {
-      await signOut({ redirectTo: "/" });
-    } catch (error) {
-      console.error("Logout failed:", error);
-      toast.error("Failed to log out");
-    }
-  };
-
+  const router = useRouter();
   return (
-    <Button onClick={handleLogout} intent="outline" size="sm" {...props}>
+    <Button
+      onClick={() => handleLogout(router)}
+      intent="outline"
+      size="sm"
+      {...props}
+    >
       {children || (
         <>
-          <LogOut className="size-4" />
+          <LogOut aria-hidden="true" />
           Log out
         </>
       )}

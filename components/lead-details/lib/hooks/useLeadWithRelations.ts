@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getLeadWithRelationsAction } from "@/lib/server/actions/read/getLeadWithRelationsAction";
-import { leadWithRelationsCache } from "@/lib/cache/lead-with-relations-cache";
-import type { LeadWithRelations } from "@/types/lead";
+import { getLeadWithRelationsAction } from "@/lib/server/leads/actions/read/getLeadWithRelationsAction";
+import { leadWithRelationsCache } from "@/lib/server/leads/cache";
+import type { LeadWithRelations } from "@/types/leads/lead";
 
 type LeadState =
   | { status: "loading" }

@@ -4,8 +4,9 @@ import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 
 import { cn } from "@/lib/utils/classnames";
-import { AvatarVariantProps } from "@/design-system/lib/types/cva-types";
+import { AvatarVariantProps } from "@/design-system/types/cva-types";
 import { avatarVariants } from "@/design-system/cva-variants/avatar-variants";
+import NextImage from "next/image";
 
 export interface AvatarProps
   extends
@@ -28,16 +29,44 @@ const Avatar = React.forwardRef<
 ));
 Avatar.displayName = AvatarPrimitive.Root.displayName;
 
+// const AvatarImage = React.forwardRef<
+//   React.ElementRef<typeof AvatarPrimitive.Image>,
+//   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
+// >(({ className, ...props }, ref) => (
+//   <AvatarPrimitive.Image
+//     ref={ref}
+//     className={cn("aspect-square h-full w-full", className)}
+//     {...props}
+//   />
+// ));
+
+interface AvatarImageProps extends Omit<
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>,
+  "src" | "alt" | "width" | "height"
+> {
+  src: string;
+  alt: string;
+  priority?: boolean;
+}
+
 const AvatarImage = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Image>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Image
-    ref={ref}
-    className={cn("aspect-square h-full w-full", className)}
-    {...props}
-  />
-));
+  AvatarImageProps
+>(({ className, priority = false, src, alt, ...props }, ref) => {
+  if (!src) return null;
+
+  return (
+    <NextImage
+      fill
+      priority={priority}
+      src={src}
+      alt={alt}
+      sizes="64px"
+      className={cn("aspect-square h-full w-full object-cover", className)}
+      {...props}
+    />
+  );
+});
 AvatarImage.displayName = AvatarPrimitive.Image.displayName;
 
 const AvatarFallback = React.forwardRef<

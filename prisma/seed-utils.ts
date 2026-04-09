@@ -1,12 +1,12 @@
 import { faker } from "@faker-js/faker";
 import { LeadStatus, LeadPriority } from "@prisma/client";
-import { LEAD_MAGNETS, LeadMagnetType } from "@/types/lead-magnets";
+import { LEAD_MAGNETS, LeadMagnetType } from "@/types/leads/magnets";
 import {
   LEAD_FIELD_REGISTRY,
   LeadFieldKey,
   LeadMetadata,
   DB_LEAD_COLUMNS,
-} from "@/types/lead-fields";
+} from "@/types/leads/fields";
 import {
   LeadSource,
   LeadCampaign,
@@ -14,7 +14,7 @@ import {
   LEAD_CAMPAIGNS,
   ALWAYS_CAMPAIGN_SOURCES,
   OCCASIONAL_CAMPAIGN_SOURCES,
-} from "@/types/lead-constants";
+} from "@/types/leads/constants";
 
 // ===========================================================
 // Enum Pools
@@ -74,7 +74,7 @@ export const WEBSITE_NOTES = [
   "Found us through Google search — typed 'gym near me with nutrition coaching'.",
 ];
 
-export const PERFORMERS = ["You", "Sales Team", "Account Manager", "Support"];
+export const USERNAMES = ["admin", "tanyabell", "rx_hendricks", "jakemorris92"];
 
 // ===========================================================
 // Primitive Helpers
@@ -199,7 +199,6 @@ export type GeneratedLead = {
   campaign: LeadCampaign | null;
   status: LeadStatus;
   priority: LeadPriority;
-  score: number;
   metadata: LeadMetadata;
   magnetType: LeadMagnetType;
   createdAt: Date;
@@ -252,7 +251,6 @@ export function generateLeads(
         campaign,
         status: randomItem(LEAD_STATUS_OPTIONS),
         priority: randomItem(LEAD_PRIORITY_OPTIONS),
-        score: faker.number.int({ min: 1, max: 100 }),
         metadata: generateMetadataForMagnet(magnetType),
         magnetType,
         createdAt: randomDate(90),

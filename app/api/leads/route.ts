@@ -8,8 +8,8 @@ import {
   validateApiKey,
   getCorsHeaders,
   SecurityError,
-} from "@/lib/security";
-import { sendLeadMagnetEmail } from "@/lib/email";
+} from "@/lib/server/security";
+import { sendLeadMagnetEmail } from "@/lib/server/email/send/sendLeadMagnetEmail";
 import { ApiResponse } from "@/types";
 
 /**

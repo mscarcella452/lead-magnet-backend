@@ -1,7 +1,7 @@
 import { PrismaClient, ActivityType, LeadStatus } from "@prisma/client";
-import { LEAD_MAGNETS, LeadMagnetType } from "@/types/lead-magnets";
+import { LEAD_MAGNETS, LeadMagnetType } from "@/types/leads/magnets";
 import {
-  PERFORMERS,
+  USERNAMES,
   generateLeads,
   buildLeadMagnetPayload,
   randomItem,
@@ -87,22 +87,22 @@ async function main() {
         data: {
           leadId: createdLead.id,
           content: notes[i].content,
-          author: randomItem(PERFORMERS),
+          author: randomItem(USERNAMES),
           isPinned,
           pinnedAt: isPinned ? noteDate : null,
-          updatedBy: hasBeenUpdated ? randomItem(PERFORMERS) : null,
+          updatedBy: hasBeenUpdated ? randomItem(USERNAMES) : null,
           contentUpdatedAt,
           createdAt: noteDate,
         },
       });
     }
 
-    // Lead created activity
+    // Lead created activity (automated - no performedBy)
     await prisma.activity.create({
       data: {
         leadId: createdLead.id,
         type: ActivityType.LEAD_CREATED,
-        performedBy: randomItem(PERFORMERS),
+        performedBy: null,
         metadata: { source: createdLead.source },
         createdAt: createdLead.createdAt,
       },
@@ -114,7 +114,7 @@ async function main() {
         data: {
           leadId: createdLead.id,
           type: ActivityType.STATUS_CHANGED,
-          performedBy: randomItem(PERFORMERS),
+          performedBy: randomItem(USERNAMES),
           metadata: { from: LeadStatus.NEW, to: createdLead.status },
           createdAt: new Date(
             createdLead.createdAt.getTime() + 24 * 60 * 60 * 1000,

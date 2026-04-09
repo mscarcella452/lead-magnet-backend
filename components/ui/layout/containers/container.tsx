@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils/classnames";
-import { type ContainerVariantProps } from "@/design-system/lib/types/cva-types";
+import { type ContainerVariantProps } from "@/design-system/types/cva-types";
 import { containerVariants } from "@/design-system/cva-variants/container-variants";
 
 interface ContainerPropsBase extends ContainerVariantProps {

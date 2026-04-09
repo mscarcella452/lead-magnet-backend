@@ -1,59 +1,35 @@
 "use client";
 
 import { Link } from "@/components/ui/controls";
-import { usePathname } from "next/navigation";
 import { ThemeToggleButton, ControlLabel } from "@/components/ui/controls";
 import { Container } from "@/components/ui/layout/containers";
-import { cn } from "@/lib/utils/classnames";
-import { LogoAvatar } from "@/components/brand/logo-avatar";
-import { LogoutButton } from "@/components/auth/log-out-button";
+import { LogoAvatar } from "@/components/avatars/logo-avatar";
 import { SITE_CONFIG } from "@/config";
+import { UserDropdownMenu } from "@/components/navigation/user-dropdown-menu";
+import { CircleUserIcon } from "lucide-react";
+import { Button } from "@/components/ui/controls";
+import { CurrentUser } from "@/lib/auth/auth-server-actions";
+import { APP_ROUTES } from "@/lib/server/constants";
 
 /**
  * Admin Navigation Component (Client Component)
  *
  * Navigation bar for admin panel.
  */
-export function AdminNav({ isAdmin }: { isAdmin: boolean }) {
-  const pathname = usePathname();
-
+export function AdminNav({
+  isAdmin,
+  user,
+}: {
+  isAdmin: boolean;
+  user: CurrentUser;
+}) {
   return (
     <nav className="border-b surface-card-blur sticky top-0 z-50 px-4 lg:px-8">
       <div className="mx-auto flex h-16 items-center justify-between">
-        <Container
-          spacing="group"
-          position="start"
-          width="fit"
-          className="flex flex-row items-center"
-        >
-          {isAdmin ? (
-            <>
-              <Link
-                href="/dashboard"
-                intent="text"
-                mode="responsiveIcon"
-                size="sm"
-              >
-                <LogoAvatar size="sm" />
-                <ControlLabel>{SITE_CONFIG.business_name} </ControlLabel>
-              </Link>
-
-              <Link href="/dashboard/admin/team" intent="text" size="sm">
-                Admin
-              </Link>
-            </>
-          ) : (
-            <Container
-              spacing="group"
-              position="start"
-              width="fit"
-              className="flex flex-row items-center"
-            >
-              <LogoAvatar size="sm" />
-              {SITE_CONFIG.business_name}
-            </Container>
-          )}
-        </Container>
+        <Link href={APP_ROUTES.DASHBOARD} intent="text" size="sm">
+          <LogoAvatar size="sm" />
+          {SITE_CONFIG.business_name}
+        </Link>
 
         <Container
           spacing="group"
@@ -61,7 +37,14 @@ export function AdminNav({ isAdmin }: { isAdmin: boolean }) {
           width="fit"
           className="flex flex-row items-center"
         >
-          <LogoutButton />
+          {/* <LogoutButton /> */}
+          <UserDropdownMenu isAdmin={isAdmin} user={user}>
+            <Button size="sm" intent="outline" mode="responsiveIcon">
+              {/* <LogoAvatar size="none" className="rounded-full size-6!" /> */}
+              <CircleUserIcon />
+              <ControlLabel>{user.username}</ControlLabel>
+            </Button>
+          </UserDropdownMenu>
           <ThemeToggleButton size="sm" intent="outline" />
         </Container>
       </div>

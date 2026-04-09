@@ -1,4 +1,4 @@
-import { TeamMember } from "@/lib/server/read/getTeamMembers";
+import { TeamMember } from "@/lib/server/team/read/getTeamMembers";
 import { Button } from "@/components/ui/controls";
 import { useState, memo } from "react";
 import { Trash2, RotateCcw, Ellipsis, Pencil } from "lucide-react";
@@ -14,7 +14,7 @@ import { AlertDialogTrigger } from "@/components/ui/feedback/alert-dialog";
 import { DialogTrigger } from "@/components/ui/feedback/dialog";
 import { ALERT_DIALOG_TYPES, DIALOG_TYPES } from "@/types/ui/dialog";
 import { UserRole } from "@prisma/client";
-import { resendTeamMemberInviteAction } from "@/lib/server/actions/write/resendTeamMemberInviteAction";
+import { resendTeamMemberInviteAction } from "@/lib/server/team/actions/write/resendTeamMemberInviteAction";
 import { toast } from "sonner";
 
 // ============================================================

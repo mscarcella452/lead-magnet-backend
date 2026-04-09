@@ -1,4 +1,4 @@
-import type { GetDashboardStatsResult } from "@/lib/server/read/getDashboardStats";
+import type { GetDashboardStatsResult } from "@/lib/server/leads/read/getDashboardStats";
 import type { LucideIcon } from "lucide-react";
 
 // ============================================================================

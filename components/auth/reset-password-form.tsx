@@ -2,10 +2,11 @@
 
 import { Button } from "@/components/ui/controls";
 import { Container, Inset } from "@/components/ui/layout/containers";
-import { AuthCard, PasswordCreationFields } from "./shared";
-import { FormMotionAlertContainer } from "@/components/ui/controls/form";
+import { AuthCard } from "./cards/auth-card";
+import { PasswordCreationFields } from "./inputs";
+import { FormMotionAlertContainer } from "@/components/ui/forms";
 import { useAuthForm } from "@/components/auth/lib/useAuthForm";
-import { resetPasswordAction } from "@/lib/server/actions/write/resetPasswordAction";
+import { resetPasswordAction } from "@/lib/server/auth/actions/write/resetPasswordAction";
 import { validateResetPassword } from "./lib/utils";
 
 // ==============================================
@@ -63,6 +64,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
               fieldHasError={fieldHasError}
               clearFieldError={clearFieldError}
               formErrorId={FORM_ERROR_ID}
+              isPassWordReset={true}
             />
           </FormMotionAlertContainer>
 

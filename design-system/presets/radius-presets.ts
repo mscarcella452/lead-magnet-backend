@@ -1,7 +1,7 @@
 import {
   ControlRadiusFields,
   SurfaceRadiusFields,
-} from "@/design-system/lib/types/preset-types";
+} from "@/design-system/types/preset-types";
 
 export const CONTROL_RADIUS_FIELD_RECORD: Record<ControlRadiusFields, string> =
   {

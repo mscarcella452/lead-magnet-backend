@@ -5,7 +5,7 @@ import type { LeadStatus, LeadPriority } from "@prisma/client";
 // Lead Table Types
 // ============================================================================
 
-import type { SortField } from "@/lib/server/read/getTableLeads";
+import type { SortField } from "@/lib/server/leads/read/getTableLeads";
 
 export type SortDirection = "asc" | "desc";
 

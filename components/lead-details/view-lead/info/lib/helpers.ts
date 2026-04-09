@@ -1,7 +1,7 @@
 import { LeadWithRelations } from "@/types";
 import { formatDate } from "@/lib/utils/dates";
-import { type LeadInfoSection, type LeadMetadata } from "@/types/lead-fields";
-import { groupLeadFieldsBySection } from "@/lib/utils/lead-magnets";
+import { type LeadInfoSection, type LeadMetadata } from "@/types/leads/fields";
+import { groupLeadFieldsBySection } from "@/lib/leads/utils/magnets";
 import {
   CONTACT_ACTION_CONFIGS,
   EXCLUDED_SECTION_FIELDS,
@@ -61,8 +61,6 @@ export function buildContactActionsByKey(
 
 /**
  * Builds the fixed set of summary badge rows shown at the top of the lead detail view.
- * Score is always included; SummaryRow suppresses it if the value is null,
- * keeping this list flat and avoiding conditional spreads.
  */
 export function buildSummaryItems(lead: LeadWithRelations): SummaryRowProps[] {
   return [
@@ -71,11 +69,6 @@ export function buildSummaryItems(lead: LeadWithRelations): SummaryRowProps[] {
       label: "Last Updated",
       value: formatDate(lead.updatedAt),
       variant: "primary",
-    },
-    {
-      label: "Score",
-      value: lead.score != null ? String(lead.score) : null,
-      variant: "success",
     },
   ];
 }

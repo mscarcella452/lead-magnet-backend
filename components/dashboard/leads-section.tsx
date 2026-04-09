@@ -4,7 +4,7 @@ import { parseSearchParams } from "@/components/dashboard/lib/helpers";
 import {
   getTableLeads,
   getTableLeadsCount,
-} from "@/lib/server/read/getTableLeads";
+} from "@/lib/server/leads/read/getTableLeads";
 import { LeadsPanel } from "@/components/leads/panel";
 import type { PageProps } from "@/components/dashboard/lib/types";
 

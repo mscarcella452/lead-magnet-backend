@@ -8,7 +8,7 @@ import {
 import {
   type ToneHoverFields,
   type ToneHoverKeys,
-} from "@/design-system/lib/types/preset-types";
+} from "@/design-system/types/preset-types";
 
 // ============================================================================
 // Types

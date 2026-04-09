@@ -10,8 +10,8 @@ import { DialogTrigger } from "@/components/ui/feedback/dialog";
 import { Button } from "@/components/ui/controls";
 import { Eye, Pencil, MoreHorizontal } from "lucide-react";
 import { DIALOG_TYPES } from "@/types/ui/dialog";
-import { getLeadWithRelationsAction } from "@/lib/server/actions/read/getLeadWithRelationsAction";
-import { leadWithRelationsCache } from "@/lib/cache/lead-with-relations-cache";
+import { getLeadWithRelationsAction } from "@/lib/server/leads/actions/read/getLeadWithRelationsAction";
+import { leadWithRelationsCache } from "@/lib/server/leads/cache";
 import type { ActionsMenuProps } from "@/components/leads/table/lib/types";
 import { DeleteLeadMenuItem } from "@/components/leads/delete/delete-lead-menuItem";
 

@@ -10,7 +10,7 @@ export const inputVariants = cva(
     "px-3 py-1",
     "file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
     "placeholder:text-muted-foreground",
-    "disabled:cursor-not-allowed",
+    "disabled:cursor-not-allowed disabled:text-subtle-foreground",
   ],
   {
     variants: {

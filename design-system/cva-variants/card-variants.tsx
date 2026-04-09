@@ -27,9 +27,11 @@ export const cardVariants = cva(
         "muted-blur": "surface-muted-blur",
         "panel-blur": "surface-panel-blur",
         "outline-blur": "border surface-outline-blur",
+        none: "",
       },
       size: {
         none: "",
+        xs: "px-card-x-xs py-card-y-xs gap-card-y-xs",
         sm: "px-card-x-sm py-card-y-sm gap-card-y-xs",
         md: "px-card-x-md py-card-y-md gap-card-y-sm",
         lg: "px-card-x-lg py-card-y-lg gap-card-y-md",

@@ -17,7 +17,7 @@ import { type TeamMemberFormRef } from "@/components/dialogs/team-member/shared/
 import { DEFAULT_FORM_DATA } from "@/components/dialogs/team-member/shared/lib/constants";
 import { type TeamMemberFormData } from "@/types/ui/dialog";
 import { toast } from "sonner";
-import { inviteTeamMemberAction } from "@/lib/server/actions/write/inviteTeamMemberAction";
+import { inviteTeamMemberAction } from "@/lib/server/team/actions/write/inviteTeamMemberAction";
 import { UserRole } from "@prisma/client";
 import { motion } from "motion/react";
 

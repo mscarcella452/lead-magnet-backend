@@ -1,10 +1,11 @@
+import React from "react";
 import { cn } from "@/lib/utils/classnames";
 
 interface InsetProps {
   children: React.ReactNode;
   className?: string;
   variant?: "section" | "hero" | "footer" | "drawer" | "content";
-  as?: keyof JSX.IntrinsicElements;
+  as?: React.ElementType;
   id?: string;
 }
 

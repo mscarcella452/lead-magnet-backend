@@ -1,4 +1,4 @@
-import type { GetDashboardStatsResult } from "@/lib/server/read/getDashboardStats";
+import type { GetDashboardStatsResult } from "@/lib/server/leads/read/getDashboardStats";
 import type { StatCardData } from "@/components/dashboard/stats-cards/lib/types";
 import { CARD_CONFIGS } from "@/components/dashboard/stats-cards/config";
 

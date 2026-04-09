@@ -31,6 +31,7 @@ export const ALERT_DIALOG_TYPES = {
   DELETE_LEAD: "deleteLead",
   // Team table
   DELETE_MEMBER: "deleteMember",
+  UPDATE_EMAIL: "updateEmail",
 } as const;
 
 // ============================================================================
@@ -78,6 +79,9 @@ export type AlertDialogPayloads = {
   [ALERT_DIALOG_TYPES.DELETE_MEMBER]: {
     userId: string;
   };
+  [ALERT_DIALOG_TYPES.UPDATE_EMAIL]: {
+    newEmail: string;
+  };
 };
 
 // ============================================================================
@@ -123,3 +127,5 @@ export type DeleteLeadAlertPayload =
   AlertDialogPayloads[typeof ALERT_DIALOG_TYPES.DELETE_LEAD];
 export type DeleteMemberAlertPayload =
   AlertDialogPayloads[typeof ALERT_DIALOG_TYPES.DELETE_MEMBER];
+export type UpdateEmailAlertPayload =
+  AlertDialogPayloads[typeof ALERT_DIALOG_TYPES.UPDATE_EMAIL];

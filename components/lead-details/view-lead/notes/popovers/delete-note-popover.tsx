@@ -1,9 +1,9 @@
 "use client";
 
-import { deleteLeadNoteAction } from "@/lib/server/actions/write/deleteLeadNoteAction";
+import { deleteLeadNoteAction } from "@/lib/server/leads/actions/write/deleteLeadNoteAction";
 import { toast } from "sonner";
 import { useNotesContext } from "@/components/lead-details/view-lead/notes/providers/notes-context-provider";
-import { invalidateLeadWithRelationsCache } from "@/lib/cache/lead-with-relations-cache";
+import { invalidateLeadWithRelationsCache } from "@/lib/server/leads/cache";
 import {
   Card,
   CardContent,

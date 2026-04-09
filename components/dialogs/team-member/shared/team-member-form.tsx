@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { Input } from "@/components/ui/controls";
+import { Input } from "@/components/ui/forms";
 import {
   Select,
   SelectContent,
@@ -13,7 +13,7 @@ import { Container } from "@/components/ui/layout/containers";
 import {
   FormMotionAlertContainer,
   type FormErrors,
-} from "@/components/ui/controls/form";
+} from "@/components/ui/forms";
 import {
   type TeamMemberFormProps,
   type TeamMemberFormRef,

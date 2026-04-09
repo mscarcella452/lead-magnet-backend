@@ -152,12 +152,16 @@ function ActivityItem({ activity, ...props }: ActivityItemProps) {
   return (
     <Card variant="outline" size="sm" {...props}>
       <CardHeader className="flex flex-row items-baseline gap-2 text-xs">
-        <span className="font-medium text-foreground">
-          {activity.performedBy}
-        </span>
-        <span aria-hidden="true" className="text-caption">
-          •
-        </span>
+        {activity.performedBy && (
+          <>
+            <span className="font-medium text-foreground">
+              {activity.performedBy}
+            </span>
+            <span aria-hidden="true" className="text-caption">
+              •
+            </span>
+          </>
+        )}
         <CardTitle className="font-medium text-muted-foreground">
           {label}
         </CardTitle>

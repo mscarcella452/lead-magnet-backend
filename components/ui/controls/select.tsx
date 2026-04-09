@@ -4,7 +4,7 @@ import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import { selectTriggerVariants } from "@/design-system/cva-variants/select-variants";
-import { SelectTriggerVariantProps } from "@/design-system/lib/types/cva-types";
+import { SelectTriggerVariantProps } from "@/design-system/types/cva-types";
 import { cn } from "@/lib/utils/index";
 
 const Select = SelectPrimitive.Root;

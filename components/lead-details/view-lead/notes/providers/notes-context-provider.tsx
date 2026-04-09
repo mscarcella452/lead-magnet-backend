@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, useReducer, RefObject } from "react";
-import { Note } from "@/types/lead";
+import { Note } from "@/types/leads/lead";
 
 // ============================================================
 // TYPES
@@ -17,14 +17,14 @@ type NotesContextValue = {
   notes: Note[];
   dispatch: React.Dispatch<NoteAction>;
   leadId: string;
-  contentRef: RefObject<HTMLDivElement>;
+  contentRef: RefObject<HTMLDivElement | null>;
 };
 
 interface NotesContextProviderProps {
   children: React.ReactNode;
   initialNotes: Note[];
   leadId: string;
-  contentRef: RefObject<HTMLDivElement>;
+  contentRef: RefObject<HTMLDivElement | null>;
 }
 
 // ============================================================

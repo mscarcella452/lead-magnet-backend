@@ -20,6 +20,11 @@
     /* scroll-behavior: smooth; */
   }
 
+  /* prevent icons from shifting inside a motion component */
+  svg {
+    transform: translate(0, 0);
+  }
+
   * {
     overscroll-behavior: none;
     border-color: var(--border);

@@ -1,8 +1,8 @@
 import { memo, useCallback } from "react";
 import { TableCell } from "@/components/ui/layout/table";
 import { PriorityDropdown } from "@/components/leads/priority/priority-dropdown";
-import { updateLeadPriorityAction } from "@/lib/server/actions/write/updateLeadPriorityAction";
-import { invalidateLeadWithRelationsCache } from "@/lib/cache/lead-with-relations-cache";
+import { updateLeadPriorityAction } from "@/lib/server/leads/actions/write/updateLeadPriorityAction";
+import { invalidateLeadWithRelationsCache } from "@/lib/server/leads/cache";
 import { toast } from "sonner";
 import { LeadPriority } from "@prisma/client";
 import type { PriorityTableCellProps } from "@/components/leads/table/lib/types";

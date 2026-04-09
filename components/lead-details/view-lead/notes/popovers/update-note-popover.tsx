@@ -1,9 +1,9 @@
 import { toast } from "sonner";
 import { NoteFormCard } from "@/components/lead-details/view-lead/notes/popovers/shared/note-form-card";
 import { Note } from "@/types";
-import { updateLeadNoteAction } from "@/lib/server/actions/write/updateLeadNoteAction";
+import { updateLeadNoteAction } from "@/lib/server/leads/actions/write/updateLeadNoteAction";
 import { useNotesContext } from "@/components/lead-details/view-lead/notes/providers/notes-context-provider";
-import { invalidateLeadWithRelationsCache } from "@/lib/cache/lead-with-relations-cache";
+import { invalidateLeadWithRelationsCache } from "@/lib/server/leads/cache";
 import { useNoteItemState } from "@/components/lead-details/view-lead/notes/providers/note-item-state-provider";
 
 // ============================================================

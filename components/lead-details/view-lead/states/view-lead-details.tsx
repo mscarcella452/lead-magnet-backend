@@ -18,7 +18,7 @@ import type { LeadWithRelations } from "@/types";
 
 interface ViewLeadDetailsProps {
   lead: LeadWithRelations;
-  contentRef: RefObject<HTMLDivElement>;
+  contentRef: RefObject<HTMLDivElement | null>;
   onConfirm: () => void;
 }
 

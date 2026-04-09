@@ -8,7 +8,7 @@ import {
   PasswordNotSetError,
   InvalidCredentialsError,
   MissingFieldsError,
-} from "@/lib/auth-errors";
+} from "@/lib/auth/auth-errors";
 
 const prisma = new PrismaClient();
 
@@ -33,7 +33,11 @@ export const authConfig = {
 
         const { username, password } = parsed.data;
 
-        const user = await prisma.user.findUnique({ where: { username } });
+        // Normalize username to lowercase for case-insensitive lookup
+        const normalizedUsername = username.toLowerCase().trim();
+        const user = await prisma.user.findUnique({
+          where: { username: normalizedUsername },
+        });
 
         if (!user) throw new UserNotFoundError();
         if (!user.password) throw new PasswordNotSetError();

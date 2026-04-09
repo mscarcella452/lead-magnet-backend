@@ -1,14 +1,14 @@
 import { LeadWithRelations } from "@/types";
 import { Container } from "@/components/ui/layout/containers";
-import { LeadMetadata } from "@/types/lead-fields";
-import { LeadMagnetType } from "@/types/lead-magnets";
+import { LeadMetadata } from "@/types/leads/fields";
+import { LeadMagnetType } from "@/types/leads/magnets";
 import { SECTION_LABELS } from "@/components/lead-details/lib/constants";
 import {
   buildContactActionsByKey,
   buildSummaryItems,
   buildDynamicSections,
 } from "@/components/lead-details/view-lead/info/lib/helpers";
-import { groupFieldsBySection } from "@/lib/utils/lead-magnets";
+import { groupFieldsBySection } from "@/lib/leads/utils/magnets";
 import {
   InfoSection,
   SummaryRow,

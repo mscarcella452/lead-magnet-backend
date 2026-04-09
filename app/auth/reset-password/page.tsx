@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { ResetPasswordForm } from "@/components/auth/reset-password-form";
-import { InvalidInviteCard } from "@/components/auth/shared/invalid-invite-card";
+import { InvalidLinkCard } from "@/components/auth/cards/invalid-link-card";
+import { APP_ROUTES } from "@/lib/server/constants";
 
 interface ResetPasswordPageProps {
   searchParams: Promise<{ token?: string }>;
@@ -12,8 +13,8 @@ export default async function ResetPasswordPage({
 }: ResetPasswordPageProps) {
   const [session, { token }] = await Promise.all([auth(), searchParams]);
 
-  if (session) redirect("/dashboard");
-  if (!token) return <InvalidInviteCard />;
+  if (session) redirect(APP_ROUTES.DASHBOARD);
+  if (!token) return <InvalidLinkCard />;
 
   return <ResetPasswordForm token={token} />;
 }

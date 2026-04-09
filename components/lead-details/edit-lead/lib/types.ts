@@ -1,4 +1,4 @@
-import type { LeadFieldKey, LeadFieldType } from "@/types/lead-fields";
+import type { LeadFieldKey, LeadFieldType } from "@/types/leads/fields";
 import { BaseSection } from "@/components/lead-details/lib/types";
 
 // ====================================================

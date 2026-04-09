@@ -55,15 +55,18 @@ async function seedUsers() {
 
   if (usersToSeed.length === 0) {
     console.error(
-      "❌ No users to seed. Please set environment variables for ADMIN and DEV users."
+      "❌ No users to seed. Please set environment variables for ADMIN and DEV users.",
     );
     process.exit(1);
   }
 
   // Seed each user
   for (const userData of usersToSeed) {
+    // Normalize username to lowercase for case-insensitive storage
+    const normalizedUsername = userData.username.toLowerCase().trim();
+
     const existingUser = await prisma.user.findUnique({
-      where: { username: userData.username },
+      where: { username: normalizedUsername },
     });
 
     if (existingUser) {
@@ -77,7 +80,7 @@ async function seedUsers() {
     const user = await prisma.user.create({
       data: {
         name: userData.name,
-        username: userData.username,
+        username: normalizedUsername,
         email: userData.email,
         password: hashedPassword,
         role: userData.role,
@@ -85,7 +88,7 @@ async function seedUsers() {
     });
 
     console.log(
-      `✓ Created ${userData.role.toLowerCase()} user: ${user.username} (${user.email})`
+      `✓ Created ${userData.role.toLowerCase()} user: ${user.username} (${user.email})`,
     );
   }
 

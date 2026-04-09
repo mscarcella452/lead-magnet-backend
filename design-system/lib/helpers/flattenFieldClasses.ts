@@ -1,4 +1,4 @@
-import { FieldClassRecord } from "@/design-system/lib/types/helper-types";
+import { FieldClassRecord } from "@/design-system/types/helper-types";
 
 // ============================================================================
 // flattenFieldClasses
