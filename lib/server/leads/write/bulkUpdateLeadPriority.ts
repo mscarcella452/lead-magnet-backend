@@ -2,7 +2,8 @@ import "server-only";
 import { Lead, LeadPriority } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { formatPriorityChange } from "@/lib/leads/helpers/changes";
-import { getCurrentUser } from "@/lib/auth/auth-server-actions";
+import { getCurrentUser } from "@/lib/server/auth/read/getCurrentUser";
+import { ActivityType } from "@prisma/client";
 
 export interface BulkUpdateLeadPriorityData {
   leadIds: string[];
@@ -32,23 +33,26 @@ export async function bulkUpdateLeadPriority(
 
   const idsToUpdate = leadsToUpdate.map((l) => l.id);
 
-  const activityRecords = leadsToUpdate.map((lead) => ({
-    leadId: lead.id,
-    type: "PRIORITY_CHANGED" as const,
-    performedBy: user.username,
-    metadata: {
-      change: formatPriorityChange(lead.priority, data.newPriority),
-      from: lead.priority,
-      to: data.newPriority,
-    },
-  }));
-
   await prisma.$transaction([
     prisma.lead.updateMany({
       where: { id: { in: idsToUpdate } },
       data: { priority: data.newPriority },
     }),
-    prisma.activity.createMany({ data: activityRecords }),
+    ...leadsToUpdate.map((lead) =>
+      prisma.activity.create({
+        data: {
+          lead: { connect: { id: lead.id } },
+          type: ActivityType.PRIORITY_CHANGED,
+          performedByUser: { connect: { id: user.id } },
+          performedBy: user.username,
+          metadata: {
+            change: formatPriorityChange(lead.priority, data.newPriority),
+            from: lead.priority,
+            to: data.newPriority,
+          },
+        },
+      }),
+    ),
   ]);
 
   return prisma.lead.findMany({ where: { id: { in: data.leadIds } } });

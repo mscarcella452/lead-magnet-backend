@@ -24,7 +24,7 @@ export const validateTeamMember = ({
   (email && !isValidEmail(email)
     ? fieldError(ERR.emailInvalid, "email")
     : null) ??
-  (email !== confirmEmail
+  (email.toLowerCase() !== confirmEmail.toLowerCase()
     ? fieldError(ERR.emailMatch, ["email", "confirmEmail"])
     : null) ??
   requireField(role, ERR.role, "role");

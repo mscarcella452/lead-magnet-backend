@@ -1,6 +1,6 @@
 "use client";
 import { memo } from "react";
-import type { CurrentUser } from "@/lib/auth/auth-server-actions";
+import type { CurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 import {
   AccountTabs,
   AccountTabsList,
@@ -19,10 +19,9 @@ export const AccountTabsLayout = memo(function AccountTabsLayout({
 }: AccountTabsLayoutProps) {
   return (
     <AccountTabs className={className}>
-      <Container spacing="section" className="flex flex-row">
+      <Container spacing="section" className="grid grid-cols-3">
         <AccountTabsList />
-
-        <AccountTabsContent user={user} className="flex-1" />
+        <AccountTabsContent user={user} className="col-span-2" />
       </Container>
     </AccountTabs>
   );

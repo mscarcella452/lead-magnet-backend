@@ -13,7 +13,7 @@ import { APP_ROUTES } from "@/lib/server/constants";
 import Link from "next/link";
 import { UserAvatar } from "@/components/avatars/user-avatar";
 import { Container } from "@/components/ui/layout/containers";
-import { CurrentUser } from "@/lib/auth/auth-server-actions";
+import type { CurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 import { handleLogout } from "@/lib/auth/auth-client-actions";
 import { useRouter } from "next/navigation";
 

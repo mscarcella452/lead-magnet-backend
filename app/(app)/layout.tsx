@@ -1,5 +1,5 @@
 import { AdminNav } from "@/components/navigation/AdminNav";
-import { getCurrentUser } from "@/lib/auth/auth-server-actions";
+import { getCurrentUserFromDB } from "@/lib/server/auth/read/getCurrentUser";
 import { redirect } from "next/navigation";
 import { AUTH_ROUTES } from "@/lib/server/constants";
 import { isAdminRole } from "@/lib/auth/rbac";
@@ -11,7 +11,7 @@ export default async function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentUser();
+  const user = await getCurrentUserFromDB();
 
   if (!user) {
     redirect(AUTH_ROUTES.LOGIN);

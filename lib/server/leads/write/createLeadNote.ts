@@ -2,7 +2,7 @@ import "server-only";
 
 import { Note } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { getCurrentUser } from "@/lib/auth/auth-server-actions";
+import { getCurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 
 // ============================================================================
 // createLeadNote(leadId: string, content: string, author?: string): Promise<Note>
@@ -17,22 +17,15 @@ export async function createLeadNote(
   if (!user) throw new Error("Unauthorized");
 
   const note = await prisma.note.create({
-    data: { leadId, content: content.trim(), author: user.username },
+    data: {
+      lead: { connect: { id: leadId } },
+      content: content.trim(),
+      authorUser: {
+        connect: { id: user.id },
+      },
+      author: user.username,
+    },
   });
 
   return note;
 }
-
-// Uses transaction to ensure both note and activity are created atomically
-// const [note, _activity] = await prisma.$transaction([
-//   prisma.note.create({
-//     data: { leadId, content: content.trim(), author },
-//   }),
-//   prisma.activity.create({
-//     data: {
-//       leadId,
-//       type: "NOTE_ADDED",
-//       metadata: { noteContent: content.trim().substring(0, 100) },
-//     },
-//   }),
-// ]);

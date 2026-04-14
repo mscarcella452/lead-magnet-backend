@@ -2,7 +2,7 @@ import "server-only";
 import { Lead, LeadPriority, ActivityType } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { formatPriorityChange } from "@/lib/leads/helpers/changes";
-import { getCurrentUser } from "@/lib/auth/auth-server-actions";
+import { getCurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 
 // ============================================================
 // Types
@@ -45,8 +45,9 @@ export async function updateLeadPriority(
     }),
     prisma.activity.create({
       data: {
-        leadId: data.leadId,
+        lead: { connect: { id: data.leadId } },
         type: ActivityType.PRIORITY_CHANGED,
+        performedByUser: { connect: { id: currentUser.id } },
         performedBy: currentUser.username,
         metadata: formatPriorityChange(currentLead.priority, data.newPriority),
       },

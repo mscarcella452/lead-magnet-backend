@@ -2,7 +2,7 @@ import "server-only";
 import { Lead, LeadStatus, ActivityType } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { formatStatusChange } from "@/lib/leads/helpers/changes";
-import { getCurrentUser } from "@/lib/auth/auth-server-actions";
+import { getCurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 
 // ============================================================
 // Types
@@ -45,8 +45,9 @@ export async function updateLeadStatus(
     }),
     prisma.activity.create({
       data: {
-        leadId: data.leadId,
+        lead: { connect: { id: data.leadId } },
         type: ActivityType.STATUS_CHANGED,
+        performedByUser: { connect: { id: currentUser.id } },
         performedBy: currentUser.username,
         metadata: formatStatusChange(currentLead.status, data.newStatus),
       },

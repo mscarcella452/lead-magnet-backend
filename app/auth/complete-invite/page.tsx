@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { getCurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 import { CompleteAccountForm } from "@/components/auth/complete-account-form";
 import { validateToken } from "@/lib/server/auth/read/validateToken";
 import { APP_ROUTES } from "@/lib/server/constants";
@@ -20,9 +20,12 @@ interface CompleteInvitePageProps {
 export default async function CompleteInvitePage({
   searchParams,
 }: CompleteInvitePageProps) {
-  const [session, { token }] = await Promise.all([auth(), searchParams]);
+  const [user, { token }] = await Promise.all([
+    getCurrentUser(),
+    searchParams,
+  ]);
 
-  if (session) redirect(APP_ROUTES.DASHBOARD);
+  if (user) redirect(APP_ROUTES.DASHBOARD);
 
   if (!token) {
     redirect(buildInvalidTokenUrl({ type: "invite", reason: "not_found" }));

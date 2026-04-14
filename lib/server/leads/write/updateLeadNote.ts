@@ -1,7 +1,7 @@
 import "server-only";
 import { Note, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { getCurrentUser } from "@/lib/auth/auth-server-actions";
+import { getCurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 
 // ============================================================
 // Types
@@ -37,6 +37,9 @@ export async function updateLeadNote({
   if (content !== undefined) {
     data.content = content.trim();
     data.contentUpdatedAt = new Date();
+    data.updatedByUser = {
+      connect: { id: currentUser.id },
+    };
     data.updatedBy = currentUser.username;
   }
 
@@ -50,37 +53,3 @@ export async function updateLeadNote({
     data,
   });
 }
-
-// if add activity update side effect
-
-// export async function updateLeadNote({
-//   leadId,
-//   noteId,
-//   content,
-
-// }: UpdateLeadNoteData): Promise<Note> {
-// const currentUser = await getCurrentUser();
-// if (!currentUser) throw new Error("Unauthorized");
-
-//   const [note] = await prisma.$transaction(async (tx) => {
-//     const note = await tx.note.update({
-//       where: { id: noteId, leadId },
-//       data: {
-//         content: content.trim(),
-//       },
-//     });
-
-//     await tx.activity.create({
-//       data: {
-//         leadId,
-//         type: ActivityType.NOTE_UPDATED,
-//         performedBy: currentUser.role,
-//         metadata: { noteContent: content.trim().substring(0, 100) },
-//       },
-//     });
-
-//     return [note];
-//   });
-
-//   return note;
-// }

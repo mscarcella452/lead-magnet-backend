@@ -14,6 +14,7 @@ import { ComponentProps } from "react";
 import { PriorityBadge } from "@/components/field-controls/priority";
 import { SourceBadge } from "@/components/field-controls/source";
 import { Badge } from "@/components/ui/feedback/badge";
+import { getDeletedUserDisplay } from "@/lib/utils/users";
 
 // ============================================================================
 // Types
@@ -149,14 +150,17 @@ function ActivityItem({ activity, ...props }: ActivityItemProps) {
   const formattedDate = formatDate(activity.createdAt);
   const MetadataRenderer = ACTIVITY_RENDERERS[activity.type as ActivityType];
 
+  const displayName = getDeletedUserDisplay(
+    activity.performedById,
+    activity.performedBy,
+  );
+
   return (
     <Card variant="outline" size="sm" {...props}>
       <CardHeader className="flex flex-row items-baseline gap-2 text-xs">
         {activity.performedBy && (
           <>
-            <span className="font-medium text-foreground">
-              {activity.performedBy}
-            </span>
+            <span className="font-medium text-foreground">{displayName}</span>
             <span aria-hidden="true" className="text-caption">
               •
             </span>

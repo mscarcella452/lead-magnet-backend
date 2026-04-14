@@ -10,7 +10,7 @@ import { validatePasswordChange } from "@/lib/auth/auth-forms/validation";
 import { useAuthForm } from "@/lib/auth/auth-forms/hooks";
 import { toast } from "sonner";
 import { AccountFieldCard } from "../shared/account-field-card";
-import type { CurrentUser } from "@/lib/auth/auth-server-actions";
+import type { CurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 import { useState } from "react";
 import { AUTH_ROUTES } from "@/lib/server/constants";
 

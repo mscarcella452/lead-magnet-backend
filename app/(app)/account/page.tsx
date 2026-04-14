@@ -1,24 +1,28 @@
-import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { Container } from "@/components/ui/layout/containers";
 import { AccountFormLayout } from "@/components/account/account-form-layout";
-import { AUTH_ROUTES } from "@/lib/server/constants";
-import { getCurrentUserFromDB } from "@/lib/auth/auth-server-actions";
+import { getCurrentUserFromDB } from "@/lib/server/auth/read/getCurrentUser";
 import { SectionHeading } from "@/components/ui/layout/blocks";
+import { ErrorBoundary } from "@/components/ui/feedback/error-boundary";
+import { AccountSkeleton, AccountError } from "@/components/account/states";
 
-export default async function AccountPage() {
+async function AccountContent() {
+  // Layout already ensures user exists via getCurrentUserFromDB()
   const user = await getCurrentUserFromDB();
+  
+  // TypeScript doesn't know layout guarantees user exists, so we assert it
+  if (!user) throw new Error("User not found - should be caught by layout");
 
-  if (!user) {
-    redirect(AUTH_ROUTES.LOGIN);
-  }
+  return <AccountFormLayout user={user} />;
+}
 
+export default function AccountPage() {
   return (
     <Container
       as="section"
       spacing="stack"
       position="center"
       width="full"
-      // width="constrained"
       className="max-w-4xl @container"
     >
       <SectionHeading
@@ -26,7 +30,11 @@ export default async function AccountPage() {
         subheader="Manage your account information and security settings"
       />
 
-      <AccountFormLayout user={user} />
+      <ErrorBoundary fallbackRender={AccountError}>
+        <Suspense fallback={<AccountSkeleton />}>
+          <AccountContent />
+        </Suspense>
+      </ErrorBoundary>
     </Container>
   );
 }

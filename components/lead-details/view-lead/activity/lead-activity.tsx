@@ -32,7 +32,7 @@ const LeadActivity = ({ lead, limit }: LeadActivityProps) => {
     >
       <Container spacing="item" className="relative">
         {hasActivities ? (
-          displayedActivities.map((activity, index) => (
+          displayedActivities.map((activity) => (
             <ActivityItem key={activity.id} activity={activity} />
           ))
         ) : (

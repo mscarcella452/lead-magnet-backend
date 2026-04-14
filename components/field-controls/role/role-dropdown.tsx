@@ -32,7 +32,7 @@ export function RoleDropdown({
   if (isProtected || isSelf) {
     return (
       <Chip
-        variant={isProtected ? "brand" : "info"}
+        variant={ROLE_CONFIG[currentRole].variant}
         intent="soft"
         size="sm"
         className="pointer-events-none"
@@ -48,9 +48,6 @@ export function RoleDropdown({
     return null;
   }
 
-  // Type-safe: currentRole is now guaranteed to be AssignableRole after the guard
-  const assignableRole = currentRole as AssignableRole;
-
   const handleRoleChange = async (newRole: AssignableRole) => {
     const result = await updateTeamMemberRoleAction(userId, newRole);
 
@@ -60,6 +57,9 @@ export function RoleDropdown({
       toast.error(result.error || "Failed to update role");
     }
   };
+
+  // Type-safe: currentRole is now guaranteed to be AssignableRole after the guard
+  const assignableRole = currentRole as AssignableRole;
 
   return (
     <UpdateDropdown

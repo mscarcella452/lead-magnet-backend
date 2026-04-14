@@ -51,8 +51,17 @@ model Note {
   leadId           String    @db.ObjectId
   lead             Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
   content          String
-  author           String   
-  updatedBy        String?
+  
+  // User relation for author (nullified when user deleted)
+  authorId         String?   @db.ObjectId
+  authorUser       User?     @relation("NotesAuthored", fields: [authorId], references: [id], onDelete: SetNull)
+  author           String    // Denormalized username for display
+  
+  // User relation for updatedBy (nullified when user deleted)
+  updatedById      String?   @db.ObjectId
+  updatedByUser    User?     @relation("NotesUpdated", fields: [updatedById], references: [id], onDelete: SetNull)
+  updatedBy        String?   // Denormalized username for display
+  
   isPinned         Boolean   @default(false)
   pinnedAt         DateTime?
   createdAt        DateTime  @default(now())
@@ -64,13 +73,18 @@ model Note {
 }
 
 model Activity {
-  id        String       @id @default(auto()) @map("_id") @db.ObjectId
-  leadId    String       @db.ObjectId
-  lead      Lead         @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  type      ActivityType
-  performedBy String?    // Who performed the action (null for automated events)
-  metadata  Json?        // Additional context for the activity
-  createdAt DateTime     @default(now())
+  id              String       @id @default(auto()) @map("_id") @db.ObjectId
+  leadId          String       @db.ObjectId
+  lead            Lead         @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type            ActivityType
+  
+  // User relation for performedBy (nullified when user deleted)
+  performedById   String?      @db.ObjectId
+  performedByUser User?        @relation("ActivitiesPerformed", fields: [performedById], references: [id], onDelete: SetNull)
+  performedBy     String?      // Denormalized username for display (null for automated events)
+  
+  metadata        Json?        // Additional context for the activity
+  createdAt       DateTime     @default(now())
 
   @@index([leadId, createdAt])
   @@map("activities")
@@ -100,17 +114,25 @@ enum LeadPriority {
 }
 
 model User {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  username  String      @unique
-  email     String      @unique
-  password  String?
-  role      UserRole    @default(MEMBER)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  invite    UserInvite?
-  passwordResetToken PasswordResetToken?
+  id                     String      @id @default(auto()) @map("_id") @db.ObjectId
+  name                   String
+  username               String      @unique
+  email                  String      @unique
+  password               String?
+  avatar                 String      @default("") // Optional avatar image URL
+  role                   UserRole    @default(MEMBER)
+  createdAt              DateTime    @default(now())
+  updatedAt              DateTime    @updatedAt
+  
+  // Auth-related relations
+  invite                 UserInvite?
+  passwordResetToken     PasswordResetToken?
   emailVerificationToken EmailVerificationToken?
+  
+  // Activity tracking relations
+  notesAuthored          Note[]      @relation("NotesAuthored")
+  notesUpdated           Note[]      @relation("NotesUpdated")
+  activitiesPerformed    Activity[]  @relation("ActivitiesPerformed")
   
   @@map("users")
 }

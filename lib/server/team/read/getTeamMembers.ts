@@ -14,6 +14,7 @@ export interface TeamMember {
   email: string;
   role: UserRole;
   password: string | null;
+  avatar: string;
   createdAt: string;
   invite?: {
     expiresAt: string;
@@ -35,6 +36,7 @@ async function fetchTeamMembers(): Promise<TeamMember[]> {
       email: true,
       role: true,
       password: true,
+      avatar: true,
       createdAt: true,
       invite: {
         select: {

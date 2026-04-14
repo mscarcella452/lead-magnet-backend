@@ -1,7 +1,7 @@
 import { InvalidTokenCard } from "@/components/auth/cards/invalid-token-card";
 import { AUTH_ROUTES, APP_ROUTES } from "@/lib/server/constants";
 import type { TokenType, TokenReason } from "@/types/auth";
-import { auth } from "@/auth";
+import { getCurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 
 // ============================================================
 // Types
@@ -86,12 +86,15 @@ const getInvalidTokenContent = (
 export default async function InvalidTokenPage({
   searchParams,
 }: InvalidTokenPageProps) {
-  const [session, { reason, type }] = await Promise.all([auth(), searchParams]);
+  const [user, { reason, type }] = await Promise.all([
+    getCurrentUser(),
+    searchParams,
+  ]);
 
   const { title, message, buttonHref, buttonLabel } = getInvalidTokenContent(
     type,
     reason,
-    !!session,
+    !!user,
   );
 
   return (

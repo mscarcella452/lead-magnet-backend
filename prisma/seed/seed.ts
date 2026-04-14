@@ -1,19 +1,11 @@
 import { PrismaClient, ActivityType, LeadStatus } from "@prisma/client";
 import { LEAD_MAGNETS, LeadMagnetType } from "@/types/leads/magnets";
-import {
-  USERNAMES,
-  generateLeads,
-  buildLeadMagnetPayload,
-  randomItem,
-} from "./seed-utils";
+import { generateLeads, buildLeadMagnetPayload, randomItem } from "./lib/utils";
+import { DUMMY_USERS } from "./lib/constants";
+import { seedUsers, UsernameToIdMap } from "./seedUsers";
 
 const prisma = new PrismaClient();
 
-// ===========================================================
-// Distribution
-// Uneven but realistic spread across lead magnets.
-// Total = 57
-// ===========================================================
 const LEAD_MAGNET_DISTRIBUTION: Record<LeadMagnetType, number> = {
   FREE_TRIAL: 18,
   FITNESS_ASSESSMENT: 14,
@@ -31,10 +23,10 @@ async function main() {
   await prisma.note.deleteMany({});
   await prisma.lead.deleteMany({});
   await prisma.leadMagnet.deleteMany({});
+  await prisma.user.deleteMany({});
 
-  // ===========================================================
-  // Seed LeadMagnet records from registry
-  // ===========================================================
+  const usernameToId: UsernameToIdMap = await seedUsers();
+
   console.log("Seeding lead magnets from registry...");
   const magnetRecords = await Promise.all(
     (
@@ -54,9 +46,6 @@ async function main() {
     ]),
   ) as Record<LeadMagnetType, string>;
 
-  // ===========================================================
-  // Seed Leads
-  // ===========================================================
   console.log("Generating leads...");
   const leads = generateLeads(LEAD_MAGNET_DISTRIBUTION);
 
@@ -69,7 +58,7 @@ async function main() {
       },
     });
 
-    // Notes — pre-generated in seed-utils, unique and source-appropriate
+    // Notes
     for (let i = 0; i < notes.length; i++) {
       const noteDate = new Date(
         Math.min(
@@ -80,29 +69,37 @@ async function main() {
       const isPinned = Math.random() > 0.8;
       const hasBeenUpdated = Math.random() > 0.8;
       const contentUpdatedAt = hasBeenUpdated
-        ? new Date(noteDate.getTime() + Math.random() * 7 * 24 * 60 * 60 * 1000) // random time within 7 days after noteDate
+        ? new Date(noteDate.getTime() + Math.random() * 7 * 24 * 60 * 60 * 1000)
+        : null;
+
+      const authorUsername = randomItem(DUMMY_USERS).username;
+      const updatedByUsername = hasBeenUpdated
+        ? randomItem(DUMMY_USERS).username
         : null;
 
       await prisma.note.create({
         data: {
-          leadId: createdLead.id,
+          lead: { connect: { id: createdLead.id } },
           content: notes[i].content,
-          author: randomItem(USERNAMES),
+          authorUser: { connect: { id: usernameToId[authorUsername] } },
+          author: authorUsername,
+          ...(updatedByUsername && {
+            updatedByUser: { connect: { id: usernameToId[updatedByUsername] } },
+            updatedBy: updatedByUsername,
+          }),
+          contentUpdatedAt,
           isPinned,
           pinnedAt: isPinned ? noteDate : null,
-          updatedBy: hasBeenUpdated ? randomItem(USERNAMES) : null,
-          contentUpdatedAt,
           createdAt: noteDate,
         },
       });
     }
 
-    // Lead created activity (automated - no performedBy)
+    // Lead created activity (automated - no user)
     await prisma.activity.create({
       data: {
-        leadId: createdLead.id,
+        lead: { connect: { id: createdLead.id } },
         type: ActivityType.LEAD_CREATED,
-        performedBy: null,
         metadata: { source: createdLead.source },
         createdAt: createdLead.createdAt,
       },
@@ -110,14 +107,64 @@ async function main() {
 
     // Status change activity (40% chance, only if not NEW)
     if (Math.random() > 0.6 && createdLead.status !== LeadStatus.NEW) {
+      const performedByUsername = randomItem(DUMMY_USERS).username;
       await prisma.activity.create({
         data: {
-          leadId: createdLead.id,
+          lead: { connect: { id: createdLead.id } },
           type: ActivityType.STATUS_CHANGED,
-          performedBy: randomItem(USERNAMES),
+          performedByUser: {
+            connect: { id: usernameToId[performedByUsername] },
+          },
+          performedBy: performedByUsername,
           metadata: { from: LeadStatus.NEW, to: createdLead.status },
           createdAt: new Date(
             createdLead.createdAt.getTime() + 24 * 60 * 60 * 1000,
+          ),
+        },
+      });
+    }
+
+    // Priority change activity (30% chance, only if not MEDIUM)
+    if (Math.random() > 0.7 && createdLead.priority !== "MEDIUM") {
+      const performedByUsername = randomItem(DUMMY_USERS).username;
+      await prisma.activity.create({
+        data: {
+          lead: { connect: { id: createdLead.id } },
+          type: ActivityType.PRIORITY_CHANGED,
+          performedByUser: {
+            connect: { id: usernameToId[performedByUsername] },
+          },
+          performedBy: performedByUsername,
+          metadata: { from: "MEDIUM", to: createdLead.priority },
+          createdAt: new Date(
+            createdLead.createdAt.getTime() + 2 * 24 * 60 * 60 * 1000,
+          ),
+        },
+      });
+    }
+
+    // Lead updated activity (25% chance)
+    if (Math.random() > 0.75) {
+      const performedByUsername = randomItem(DUMMY_USERS).username;
+      await prisma.activity.create({
+        data: {
+          lead: { connect: { id: createdLead.id } },
+          type: ActivityType.LEAD_UPDATED,
+          performedByUser: {
+            connect: { id: usernameToId[performedByUsername] },
+          },
+          performedBy: performedByUsername,
+          metadata: {
+            fields: [
+              {
+                field: "source",
+                from: "ORGANIC_SEARCH",
+                to: createdLead.source,
+              },
+            ],
+          },
+          createdAt: new Date(
+            createdLead.createdAt.getTime() + 3 * 24 * 60 * 60 * 1000,
           ),
         },
       });

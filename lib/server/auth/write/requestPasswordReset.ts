@@ -22,7 +22,10 @@ export async function requestPasswordReset({
 }: RequestPasswordResetInput): Promise<void> {
   if (!isValidEmail(email)) throw new Error("Invalid email address");
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  // Normalize email to lowercase for case-insensitive lookup
+  const normalizedEmail = email.toLowerCase().trim();
+
+  const user = await prisma.user.findUnique({ where: { email: normalizedEmail } });
 
   // Silently succeed if user not found — prevents email enumeration
   // Telling the user "that email doesn't exist" lets an attacker enumerate valid emails. Instead the form should always show a generic success message like "If that email exists, you'll receive a reset link shortly."

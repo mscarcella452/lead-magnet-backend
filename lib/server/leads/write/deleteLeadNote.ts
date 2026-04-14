@@ -2,7 +2,6 @@ import "server-only";
 
 import { Note } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { ActivityType } from "@prisma/client";
 
 // ============================================================================
 // deleteLeadNote(leadId: string, noteId: string): Promise<Note>
@@ -24,7 +23,3 @@ export async function deleteLeadNote({
 
   return note;
 }
-
-// if you want activity update side effect
-
-// Deletes a note for a lead and logs activity as side Effect

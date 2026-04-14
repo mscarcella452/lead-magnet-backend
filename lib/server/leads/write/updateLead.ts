@@ -6,7 +6,7 @@ import {
   formatStatusChange,
   formatPriorityChange,
 } from "@/lib/leads/helpers/changes";
-import { getCurrentUser } from "@/lib/auth/auth-server-actions";
+import { getCurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 import { LeadMetadataUpdate } from "@/types/leads/fields";
 
 // ============================================================
@@ -59,8 +59,9 @@ export async function updateLead(
       ? [
           prisma.activity.create({
             data: {
-              leadId: id,
+              lead: { connect: { id } },
               type: ActivityType.STATUS_CHANGED,
+              performedByUser: { connect: { id: currentUser.id } },
               performedBy: currentUser.username,
               metadata: {
                 change: formatStatusChange(statusChange.from, statusChange.to),
@@ -75,8 +76,9 @@ export async function updateLead(
       ? [
           prisma.activity.create({
             data: {
-              leadId: id,
+              lead: { connect: { id } },
               type: ActivityType.PRIORITY_CHANGED,
+              performedByUser: { connect: { id: currentUser.id } },
               performedBy: currentUser.username,
               metadata: {
                 change: formatPriorityChange(
@@ -94,8 +96,9 @@ export async function updateLead(
       ? [
           prisma.activity.create({
             data: {
-              leadId: id,
+              lead: { connect: { id } },
               type: ActivityType.LEAD_UPDATED,
+              performedByUser: { connect: { id: currentUser.id } },
               performedBy: currentUser.username,
               metadata: {
                 fields: otherChanges,

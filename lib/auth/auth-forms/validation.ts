@@ -113,7 +113,7 @@ export const validateEmailInput = (
   confirmEmail: string,
 ): FormState<AuthFieldKey> | null =>
   validateEmailField(email) ??
-  (email !== confirmEmail
+  (email.toLowerCase() !== confirmEmail.toLowerCase()
     ? fieldError(ERR.emailMatch, ["email", "confirmEmail"])
     : null);
 

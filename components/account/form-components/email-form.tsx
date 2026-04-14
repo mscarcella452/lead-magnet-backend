@@ -9,7 +9,7 @@ import { useAuthForm } from "@/lib/auth/auth-forms/hooks";
 import { toast } from "sonner";
 import { AccountFieldCard } from "../shared/account-field-card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/forms";
-import type { CurrentUser } from "@/lib/auth/auth-server-actions";
+import type { CurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 import { ALERT_DIALOG_TYPES } from "@/types/ui/dialog";
 import { useAlertDialogs } from "@/components/dialogs/providers";
 

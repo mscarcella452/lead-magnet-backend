@@ -1,7 +1,5 @@
+import { Skeleton } from "@/components/ui/feedback/skeleton";
+
 export function TeamSkeleton() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <p>Loading team members...</p>
-    </div>
-  );
+  return <Skeleton className="h-104 w-full" />;
 }

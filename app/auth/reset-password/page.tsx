@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { getCurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 import { ResetPasswordForm } from "@/components/auth/reset-password-form";
 import { validateToken } from "@/lib/server/auth/read/validateToken";
 import { APP_ROUTES } from "@/lib/server/constants";
@@ -20,9 +20,12 @@ interface ResetPasswordPageProps {
 export default async function ResetPasswordPage({
   searchParams,
 }: ResetPasswordPageProps) {
-  const [session, { token }] = await Promise.all([auth(), searchParams]);
+  const [user, { token }] = await Promise.all([
+    getCurrentUser(),
+    searchParams,
+  ]);
 
-  if (session) redirect(APP_ROUTES.DASHBOARD);
+  if (user) redirect(APP_ROUTES.DASHBOARD);
 
   if (!token) {
     redirect(

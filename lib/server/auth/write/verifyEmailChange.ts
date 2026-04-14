@@ -1,5 +1,7 @@
 import "server-only";
 import { prisma } from "@/lib/db";
+import { revalidateTag } from "next/cache";
+import { getUserCacheTag } from "@/lib/server/constants";
 
 // =============================================
 // verifyEmailChange
@@ -31,6 +33,9 @@ export async function verifyEmailChange(
   await prisma.emailVerificationToken.delete({
     where: { id: verificationToken.id },
   });
+
+  // Invalidate only this user's cache (email is a cached field)
+  revalidateTag(getUserCacheTag(verificationToken.userId), {});
 
   return { email: verificationToken.newEmail };
 }

@@ -35,9 +35,14 @@ export const TeamTableRow = memo(function TeamTableRow({
           spacing="group"
           className="text-start flex flex-row items-center min-w-0"
         >
+          {/*
+           * Avatar image upload is not yet implemented.
+           * To enable: add a storage service (e.g. Uploadthing, Cloudinary, S3),
+           * build an upload endpoint, and save the returned URL to User.avatar.
+           * The avatar field already exists on the User model and TeamMember type.
+           */}
           <UserAvatar
-            // src={null}
-            // src={member.avatar}
+            src={member.avatar}
             name={member.name}
             size="xs"
             // delayMs={600}

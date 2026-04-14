@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { revalidateTag, revalidatePath } from "next/cache";
 import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 import { sendInviteEmail } from "@/lib/server/email/send/sendInviteEmail";
-import { getCurrentUser } from "@/lib/auth/auth-server-actions";
+import { getCurrentUserFromDB } from "@/lib/server/auth/read/getCurrentUser";
 import { generateToken } from "@/lib/server/utils";
 import { EXPIRY_MS } from "@/lib/server/constants";
 import { ADMIN_ROLES } from "@/lib/auth/rbac";
@@ -13,7 +13,8 @@ import { ADMIN_ROLES } from "@/lib/auth/rbac";
 // ============================================================
 
 export async function resendTeamMemberInvite(targetUserId: string) {
-  const currentUser = await getCurrentUser();
+  // Use DB call to ensure fresh role data (security: prevent stale session role)
+  const currentUser = await getCurrentUserFromDB();
   if (!currentUser) throw new Error("Unauthorized");
   if (!ADMIN_ROLES.includes(currentUser.role.toLowerCase() as never))
     throw new Error("Unauthorized");

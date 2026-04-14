@@ -37,15 +37,18 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validatedData = leadSubmissionSchema.parse(body);
 
+    // Normalize email to lowercase for case-insensitive storage
+    const normalizedEmail = validatedData.email.toLowerCase().trim();
+
     const lead = await prisma.lead.upsert({
-      where: { email: validatedData.email },
+      where: { email: normalizedEmail },
       update: {
         name: validatedData.name,
         source: validatedData.source,
         metadata: validatedData.metadata,
       },
       create: {
-        email: validatedData.email,
+        email: normalizedEmail,
         name: validatedData.name,
         source: validatedData.source,
         metadata: validatedData.metadata,

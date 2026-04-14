@@ -18,7 +18,7 @@ import { LeadFieldType } from "@/types/leads/fields";
 import { StatusDropdown } from "@/components/field-controls/status";
 import { PriorityDropdown } from "@/components/field-controls/priority";
 import { LeadWithRelations } from "@/types";
-import { Card, CardTitle } from "@/components/ui/layout/card";
+import { CardTitle } from "@/components/ui/layout/card";
 // ====================================================
 // Constants
 // ====================================================

@@ -5,13 +5,27 @@
 
 export const CACHE_TAGS = {
   LEADS: "leads",
-  LEAD_NOTES: "lead-notes",
   DASHBOARD_STATS: "dashboard-stats",
   TEAM_MEMBERS: "team-members",
+  USER: "user", // Cache key prefix + global invalidation tag (per-user: getUserCacheTag)
 } as const;
 
 // Type for cache tags
 export type CacheTag = (typeof CACHE_TAGS)[keyof typeof CACHE_TAGS];
+
+// ============================================================================
+// CACHE TAG HELPERS
+// Type-safe helpers for generating dynamic cache tags
+// ============================================================================
+
+/**
+ * Generate a user-specific cache tag
+ * @param userId - The user's ID
+ * @returns Cache tag in format: "user-{userId}"
+ */
+export function getUserCacheTag(userId: string): string {
+  return `${CACHE_TAGS.USER}-${userId}`;
+}
 
 // ============================================================================
 // REVALIDATE PATHS
@@ -52,6 +66,21 @@ export const APP_ROUTES = {
   ACCOUNT: "/account",
   ADMIN_TEAM: "/admin/team",
 } as const;
+
+// ============================================================================
+// Public ROUTES
+// Routes that don't require authentication
+// ============================================================================
+
+export const PUBLIC_ROUTES = [
+  AUTH_ROUTES.LOGIN,
+  AUTH_ROUTES.COMPLETE_INVITE,
+  AUTH_ROUTES.ACCOUNT_RECOVERY,
+  AUTH_ROUTES.RESET_PASSWORD,
+  AUTH_ROUTES.VERIFY_EMAIL,
+  AUTH_ROUTES.INVALID_TOKEN,
+  "/api/auth",
+] as const;
 
 // ============================================================================
 // EXPIRY_MS

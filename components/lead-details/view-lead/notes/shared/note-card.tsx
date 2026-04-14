@@ -21,12 +21,19 @@ import { NotePinButton } from "@/components/lead-details/view-lead/notes/shared/
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { CARD_MOTION_TRANSITION } from "@/components/lead-details/view-lead/notes/lib/constants";
 import { formatDate } from "@/lib/utils/dates";
+import { getDeletedUserDisplay } from "@/lib/utils/users";
 
 // ============================================================================
 // NoteCardHeader
 // ============================================================================
 
-function NoteCardHeader({ note }: { note: Note }) {
+function NoteCardHeader({
+  note,
+  displayName,
+}: {
+  note: Note;
+  displayName: string | null;
+}) {
   const { leadId, dispatch } = useNotesContext();
 
   const formattedCreatedDate = formatDate(note.createdAt);
@@ -90,7 +97,7 @@ function NoteCardHeader({ note }: { note: Note }) {
     <CardHeader className="flex flex-row items-baseline gap-2 text-xs relative mb-card-y-xs">
       <CardTitle className="font-medium">
         <span className="sr-only">Note by </span>
-        {note.author}
+        {displayName}
       </CardTitle>
       <span className="text-caption" aria-hidden="true">
         •
@@ -116,14 +123,20 @@ function NoteCardHeader({ note }: { note: Note }) {
 // NoteCardFooter
 // ============================================================================
 
-function NoteCardFooter({ note }: { note: Note }) {
+function NoteCardFooter({
+  note,
+  displayName,
+}: {
+  note: Note;
+  displayName: string | null;
+}) {
   if (!note.contentUpdatedAt) return null;
 
   const formattedContentUpdatedDate = formatDate(note.contentUpdatedAt);
 
   return (
     <CardFooter className="gap-2 text-caption mt-card-y-sm">
-      <span>Last updated by {note.updatedBy}</span>
+      <span>Last updated by {displayName}</span>
       <span aria-hidden="true">•</span>
       <span>{formattedContentUpdatedDate}</span>
     </CardFooter>
@@ -142,6 +155,8 @@ interface NoteCardProps extends CardProps {
 export function NoteCard({ note, cardRef, ...props }: NoteCardProps) {
   const { isOpen, isTranslated } = useNoteItemState();
   const { className, ...rest } = props;
+
+  const displayName = getDeletedUserDisplay(note.authorId, note.author);
   return (
     <LayoutGroup id={`note-card-${note.id}`}>
       <Card
@@ -158,7 +173,7 @@ export function NoteCard({ note, cardRef, ...props }: NoteCardProps) {
         {...rest}
       >
         <motion.div layout>
-          <NoteCardHeader note={note} />
+          <NoteCardHeader note={note} displayName={displayName} />
         </motion.div>
         <motion.div layout key={note.content}>
           <CardContent className="text-xs @lg:text-sm leading-relaxed whitespace-pre-wrap">
@@ -174,7 +189,7 @@ export function NoteCard({ note, cardRef, ...props }: NoteCardProps) {
               exit={{ opacity: 0 }}
               transition={CARD_MOTION_TRANSITION}
             >
-              <NoteCardFooter note={note} />
+              <NoteCardFooter note={note} displayName={displayName} />
             </motion.div>
           )}
         </AnimatePresence>

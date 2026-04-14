@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/controls/tabs";
 import { cn } from "@/lib/utils/classnames";
 import { ACCOUNT_TAB_ITEMS } from "@/components/account/tabs/config";
-import type { CurrentUser } from "@/lib/auth/auth-server-actions";
+import type { CurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 
 // ============================================================================
 // Types
@@ -54,7 +54,7 @@ export const AccountTabsList = memo(function AccountTabsList() {
     <TabsList
       variant="panel"
       size="xs"
-      className="w-52 @3xl:w-56  h-fit shadow-xs "
+      className="h-fit shadow-xs "
       orientation="vertical"
       role="tablist"
       aria-label="Lead detail sections"

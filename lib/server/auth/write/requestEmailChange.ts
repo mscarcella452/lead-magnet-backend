@@ -1,6 +1,6 @@
 import "server-only";
 import { prisma } from "@/lib/db";
-import { getCurrentUser } from "@/lib/auth/auth-server-actions";
+import { getCurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 import bcrypt from "bcryptjs";
 import { sendEmailVerificationEmail } from "@/lib/server/email/send/sendEmailVerificationEmail";
 import { generateToken } from "@/lib/server/utils";
@@ -28,9 +28,12 @@ export async function requestEmailChange(data: RequestEmailChangeInput) {
   );
   if (!passwordValid) throw new Error("invalid_password");
 
+  // Normalize email to lowercase for case-insensitive storage
+  const normalizedEmail = data.email.toLowerCase().trim();
+
   // Check if email is already in use by another user
   const emailTaken = await prisma.user.findFirst({
-    where: { email: data.email, id: { not: currentUser.id } },
+    where: { email: normalizedEmail, id: { not: currentUser.id } },
   });
   if (emailTaken) throw new Error("email_taken");
 
@@ -47,16 +50,16 @@ export async function requestEmailChange(data: RequestEmailChangeInput) {
     data: {
       userId: currentUser.id,
       token,
-      newEmail: data.email,
+      newEmail: normalizedEmail,
       expiresAt,
     },
   });
 
   // Send verification email to the NEW email address
   const emailResult = await sendEmailVerificationEmail(
-    data.email,
+    normalizedEmail,
     user.name,
-    data.email,
+    normalizedEmail,
     token,
     expiresAt,
   );

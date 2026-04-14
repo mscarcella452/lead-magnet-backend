@@ -1,8 +1,8 @@
 import "server-only";
 import { prisma } from "@/lib/db";
 import { revalidateTag, revalidatePath } from "next/cache";
-import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
-import { getCurrentUser } from "@/lib/auth/auth-server-actions";
+import { CACHE_TAGS, REVALIDATE_PATHS, getUserCacheTag } from "@/lib/server/constants";
+import { getCurrentUserFromDB } from "@/lib/server/auth/read/getCurrentUser";
 import { isAdminRole, isProtectedRole } from "@/lib/auth/rbac";
 import type { AssignableRole } from "@/config/field-controls-config";
 
@@ -16,7 +16,8 @@ export async function updateTeamMemberRole(
   newRole: AssignableRole,
 ) {
   // Auth check: current user must be admin
-  const currentUser = await getCurrentUser();
+  // Use DB call to ensure fresh role data (security: prevent stale session role)
+  const currentUser = await getCurrentUserFromDB();
   if (!currentUser) {
     throw new Error("Unauthorized");
   }
@@ -52,6 +53,7 @@ export async function updateTeamMemberRole(
 
   // Revalidate caches
   revalidateTag(CACHE_TAGS.TEAM_MEMBERS, {});
+  revalidateTag(getUserCacheTag(targetUserId), {}); // Invalidate only this user's cache
   revalidatePath(REVALIDATE_PATHS.ADMIN_TEAM);
 
   return updatedUser;

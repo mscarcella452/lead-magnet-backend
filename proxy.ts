@@ -1,18 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { APP_ROUTES, AUTH_ROUTES } from "@/lib/server/constants";
-
-// Routes that don't require authentication
-const PUBLIC_ROUTES = [
-  "/",
-  "/api/auth",
-  "/auth/complete-invite",
-  "/auth/account-recovery",
-  "/auth/reset-password",
-  "/auth/verify-email",
-  "/auth/invalid-token",
-];
+import { APP_ROUTES, AUTH_ROUTES, PUBLIC_ROUTES } from "@/lib/server/constants";
 
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { auth } from "@/auth";
+import { getCurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 import { ErrorBoundary } from "@/components/ui/feedback/error-boundary";
 import { APP_ROUTES } from "@/lib/server/constants";
 import { isAdminRole } from "@/lib/auth/rbac";
@@ -16,10 +16,11 @@ export const metadata = {
 };
 
 export default async function AdminTeamPage() {
-  const session = await auth();
+  const user = await getCurrentUser();
 
+  // Layout already ensures user exists, just check role authorization
   // Only OWNER or ADMIN role can access this page
-  if (!session?.user || !isAdminRole(session.user.role)) {
+  if (!user || !isAdminRole(user.role)) {
     redirect(APP_ROUTES.DASHBOARD);
   }
 

@@ -2,7 +2,7 @@
 import { memo } from "react";
 
 import { ACCOUNT_TAB_ITEMS } from "@/components/account/tabs/config";
-import type { CurrentUser } from "@/lib/auth/auth-server-actions";
+import type { CurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 
 import { Container } from "@/components/ui/layout/containers";
 

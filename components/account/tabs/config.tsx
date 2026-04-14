@@ -2,7 +2,7 @@ import { Contact, UserIcon, ShieldIcon, type LucideIcon } from "lucide-react";
 import { ProfileForm } from "@/components/account/form-components/profile-form";
 import { EmailForm } from "@/components/account/form-components/email-form";
 import { PasswordForm } from "@/components/account/form-components/password-form";
-import type { CurrentUser } from "@/lib/auth/auth-server-actions";
+import type { CurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 
 import type { ComponentType } from "react";
 

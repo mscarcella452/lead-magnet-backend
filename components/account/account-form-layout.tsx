@@ -3,7 +3,7 @@ import { memo } from "react";
 
 import { AccountStackLayout } from "./account-stack-layout";
 import { AccountTabsLayout } from "./account-tabs-layout";
-import type { CurrentUser } from "@/lib/auth/auth-server-actions";
+import type { CurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 
 export const AccountFormLayout = memo(function AccountFormLayout({
   user,

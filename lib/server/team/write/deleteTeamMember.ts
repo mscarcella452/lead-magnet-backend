@@ -2,11 +2,12 @@ import "server-only";
 import { prisma } from "@/lib/db";
 import { revalidateTag, revalidatePath } from "next/cache";
 import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
-import { getCurrentUser } from "@/lib/auth/auth-server-actions";
+import { getCurrentUserFromDB } from "@/lib/server/auth/read/getCurrentUser";
 import { isAdminRole, isProtectedRole } from "@/lib/auth/rbac";
 
 export async function deleteTeamMember(targetUserId: string) {
-  const currentUser = await getCurrentUser();
+  // Use DB call to ensure fresh role data (security: prevent stale session role)
+  const currentUser = await getCurrentUserFromDB();
   if (!currentUser) throw new Error("Unauthorized");
   if (!isAdminRole(currentUser.role)) throw new Error("Unauthorized");
 

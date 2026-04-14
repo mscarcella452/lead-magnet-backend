@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 import { revalidateTag, revalidatePath } from "next/cache";
 import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 import { sendInviteEmail } from "@/lib/server/email/send/sendInviteEmail";
-import { getCurrentUser } from "@/lib/auth/auth-server-actions";
+import { getCurrentUserFromDB } from "@/lib/server/auth/read/getCurrentUser";
 import { generateToken, generateUniqueUsername } from "@/lib/server/utils";
 import { EXPIRY_MS } from "@/lib/server/constants";
 import { ADMIN_ROLES } from "@/lib/auth/rbac";
@@ -27,7 +27,8 @@ export interface InviteTeamMemberInput {
 export async function inviteTeamMember(
   data: InviteTeamMemberInput,
 ): Promise<void> {
-  const currentUser = await getCurrentUser();
+  // Use DB call to ensure fresh role data (security: prevent stale session role)
+  const currentUser = await getCurrentUserFromDB();
   if (!currentUser) throw new Error("Unauthorized");
   if (!ADMIN_ROLES.includes(currentUser.role as never))
     throw new Error("Unauthorized");
@@ -37,12 +38,15 @@ export async function inviteTeamMember(
   if (role === "DEV") throw new Error("Cannot create DEV users from admin UI");
   if (!isValidEmail(email)) throw new Error("Invalid email address");
 
-  const existingUser = await prisma.user.findFirst({ where: { email } });
+  // Normalize email to lowercase for case-insensitive storage
+  const normalizedEmail = email.toLowerCase().trim();
+
+  const existingUser = await prisma.user.findFirst({ where: { email: normalizedEmail } });
   if (existingUser) throw new Error("Email already exists");
 
   const pendingInvite = await prisma.userInvite.findFirst({
     where: {
-      user: { email },
+      user: { email: normalizedEmail },
       expiresAt: { gt: new Date() },
     },
   });
@@ -51,7 +55,7 @@ export async function inviteTeamMember(
 
   const username = await generateUniqueUsername(name);
   const user = await prisma.user.create({
-    data: { name, email, role, username },
+    data: { name, email: normalizedEmail, role, username },
   });
 
   const { token, expiresAt } = generateToken(EXPIRY_MS.invite);

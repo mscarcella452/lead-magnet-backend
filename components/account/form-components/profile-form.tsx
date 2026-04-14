@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/forms/input";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/forms";
 import { AccountFieldCard } from "../shared/account-field-card";
-import type { CurrentUser } from "@/lib/auth/auth-server-actions";
+import type { CurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 
 // ==============================================
 // Constants

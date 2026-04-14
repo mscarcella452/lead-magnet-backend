@@ -8,7 +8,7 @@ import { SITE_CONFIG } from "@/config";
 import { UserDropdownMenu } from "@/components/navigation/user-dropdown-menu";
 import { CircleUserIcon } from "lucide-react";
 import { Button } from "@/components/ui/controls";
-import { CurrentUser } from "@/lib/auth/auth-server-actions";
+import { CurrentUser } from "@/lib/server/auth/read/getCurrentUser";
 import { APP_ROUTES } from "@/lib/server/constants";
 
 /**
