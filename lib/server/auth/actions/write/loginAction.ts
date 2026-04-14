@@ -12,9 +12,10 @@ import { headers } from "next/headers";
 import {
   ERROR_MESSAGES as err,
   type AuthErrorCode,
-} from "@/lib/auth/auth-errors";
-import { type FormState } from "@/components/auth/lib/types";
-import { validateLogin } from "@/components/auth/lib/utils";
+} from "@/lib/auth/nextauth-errors";
+import type { FormState } from "@/lib/forms/useFormState";
+import type { AuthFieldKey } from "@/lib/auth/auth-forms/types";
+import { validateLogin } from "@/lib/auth/auth-forms/validation";
 
 // ==============================================
 // Rate Limiting
@@ -33,7 +34,7 @@ const ratelimit = new Ratelimit({
 export async function loginAction(
   redirectTo: string,
   formData: FormData,
-): Promise<FormState> {
+): Promise<FormState<AuthFieldKey>> {
   const username = (formData.get("username") as string)?.trim();
   const password = formData.get("password") as string;
 

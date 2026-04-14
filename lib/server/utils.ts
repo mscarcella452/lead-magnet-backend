@@ -1,6 +1,7 @@
 import "server-only";
 import crypto from "crypto";
 import { prisma } from "@/lib/db";
+import { ERROR_CODES, type ErrorCode } from "./constants";
 
 // ============================================================================
 // generateToken
@@ -38,3 +39,24 @@ export async function generateUniqueUsername(name: string): Promise<string> {
     if (!existing) return username;
   }
 }
+
+// ============================================================================
+// getErrorCode
+// ============================================================================
+/**
+ * Maps error messages to error codes for consistent error handling in the UI.
+ * Returns undefined if the error message doesn't match any known error.
+ * Use in server actions to add error codes to ActionResult responses.
+ */
+
+const ERROR_MESSAGE_MAP: Record<string, ErrorCode> = {
+  "Email already exists": ERROR_CODES.EMAIL_EXISTS,
+  "A pending invite already exists for this email": ERROR_CODES.INVITE_EXISTS,
+  Unauthorized: ERROR_CODES.UNAUTHORIZED,
+  "Failed to send invite email": ERROR_CODES.EMAIL_SEND_FAILED,
+  "Invalid email address": ERROR_CODES.INVALID_EMAIL,
+  "Cannot create DEV users from admin UI": ERROR_CODES.FORBIDDEN_ROLE,
+};
+
+export const getErrorCode = (message: string): ErrorCode | undefined =>
+  ERROR_MESSAGE_MAP[message];

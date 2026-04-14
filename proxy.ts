@@ -11,6 +11,7 @@ const PUBLIC_ROUTES = [
   "/auth/account-recovery",
   "/auth/reset-password",
   "/auth/verify-email",
+  "/auth/invalid-token",
 ];
 
 export async function proxy(req: NextRequest) {

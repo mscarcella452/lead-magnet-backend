@@ -1,11 +1,12 @@
 "use server";
 import { updatePassword } from "@/lib/server/auth/write/updatePassword";
-import { validatePasswordChange } from "@/components/auth/lib/utils";
-import { type FormState } from "@/components/auth/lib/types";
+import type { FormState } from "@/lib/forms/useFormState";
+import type { AuthFieldKey } from "@/lib/auth/auth-forms/types";
+import { validatePasswordChange } from "@/lib/auth/auth-forms/validation";
 
 export async function updatePasswordAction(
   formData: FormData,
-): Promise<FormState> {
+): Promise<FormState<AuthFieldKey>> {
   const currentPassword = formData.get("currentPassword") as string;
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;

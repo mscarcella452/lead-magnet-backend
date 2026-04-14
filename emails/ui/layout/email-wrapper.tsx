@@ -55,8 +55,8 @@ export const EmailWrapper = ({
 
         <Preview>{preview}</Preview>
 
-        <Body className="bg-background px-6 py-8 text-foreground font-sans">
-          {children}
+        <Body className="text-foreground font-sans">
+          <Container className="px-6 py-8 mx-auto">{children}</Container>
         </Body>
       </Tailwind>
     </Html>

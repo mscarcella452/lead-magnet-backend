@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 import { formatExpiry } from "@/lib/utils/dates";
 import { resend, getAppUrl, getEmailFrom } from "../utils";
 import { EMAIL_SUBJECTS } from "../constants";
+import { buildResetPasswordUrl } from "@/lib/server/auth/helpers";
 
 /**
  * Send password reset email with reset link
@@ -17,7 +18,7 @@ export async function sendPasswordResetEmail(
   expiresAt: Date,
 ): Promise<{ success: boolean; error?: string }> {
   const appUrl = getAppUrl();
-  const resetLink = `${appUrl}/auth/reset-password?token=${token}`;
+  const resetLink = `${appUrl}${buildResetPasswordUrl(token)}`;
   const expiryDuration = formatExpiry(expiresAt);
 
   try {

@@ -2,14 +2,15 @@
 import { resetPassword } from "@/lib/server/auth/write/resetPassword";
 import { signIn } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { type FormState } from "@/components/auth/lib/types";
-import { validateResetPassword } from "@/components/auth/lib/utils";
+import type { FormState } from "@/lib/forms/useFormState";
+import type { AuthFieldKey } from "@/lib/auth/auth-forms/types";
+import { validateResetPassword } from "@/lib/auth/auth-forms/validation";
 import { APP_ROUTES } from "@/lib/server/constants";
 
 export async function resetPasswordAction(
   token: string,
   formData: FormData,
-): Promise<FormState> {
+): Promise<FormState<AuthFieldKey>> {
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;
 

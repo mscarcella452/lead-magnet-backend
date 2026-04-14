@@ -10,12 +10,11 @@ import {
   AlertDialogPayloads,
   DialogEnterFrom,
 } from "@/types/ui/dialog";
-import { EditLeadDialog } from "@/components/dialogs/edit-lead-dialog";
-import { ViewLeadDialog } from "@/components/dialogs/view-lead-dialog";
-import { DeleteLeadDialog } from "@/components/dialogs/delete-lead-dialog";
-import { CreateNewMemberDialog } from "@/components/dialogs/team-member/create-new-member-dialog";
-import { DeleteMemberDialog } from "@/components/dialogs/team-member/delete-lead-member";
-import { EditMemberDialog } from "@/components/dialogs/team-member/edit-member-dialog";
+import { EditLeadDialog } from "@/components/dialogs/leads/edit-lead-dialog";
+import { ViewLeadDialog } from "@/components/dialogs/leads/view-lead-dialog";
+import { DeleteLeadDialog } from "@/components/dialogs/leads/delete-lead-dialog";
+import { CreateMemberDialog } from "@/components/dialogs/team/create-member-dialog";
+import { DeleteMemberDialog } from "@/components/dialogs/team/delete-member";
 import { AccountEmailChangeDialog } from "@/components/dialogs/account/account-email-change-dialog";
 
 // ============================================================================
@@ -56,8 +55,7 @@ export const DIALOG_CONTENT_MAP: {
 } = {
   [DIALOG_TYPES.EDIT_LEAD]: EditLeadDialog,
   [DIALOG_TYPES.VIEW_LEAD]: ViewLeadDialog,
-  [DIALOG_TYPES.CREATE_NEW_MEMBER]: CreateNewMemberDialog,
-  [DIALOG_TYPES.EDIT_MEMBER]: EditMemberDialog,
+  [DIALOG_TYPES.CREATE_MEMBER]: CreateMemberDialog,
 };
 
 export const ALERT_DIALOG_CONTENT_MAP: {

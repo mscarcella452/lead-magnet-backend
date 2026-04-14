@@ -42,7 +42,7 @@ export function AuthCard({ children, description, ...props }: AuthCardProps) {
       )}
       {...cardProps}
     >
-      <motion.div layout className="w-full">
+      <motion.div layout initial={false} className="w-full">
         <Container spacing="block">
           {/* ── Header ── */}
           <CardHeader>

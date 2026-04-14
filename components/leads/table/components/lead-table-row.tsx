@@ -4,7 +4,7 @@
 
 import { memo, useCallback } from "react";
 import { TableCell, TableRow } from "@/components/ui/layout/table";
-import { SourceBadge } from "@/components/leads/source/source-badge";
+import { SourceBadge } from "@/components/field-controls/source";
 import { Checkbox } from "@/components/ui/controls/checkbox";
 import { ActionsMenu } from "@/components/leads/table/components/actions-menu";
 import { formatDate } from "@/lib/utils/dates";

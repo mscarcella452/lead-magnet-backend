@@ -1,13 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/controls";
-import { Container, Inset } from "@/components/ui/layout/containers";
+import { Container } from "@/components/ui/layout/containers";
 import { FormMotionAlertContainer } from "@/components/ui/forms";
-import { UsernameInput } from "./inputs";
+import { UsernameInput } from "@/components/ui/forms/form-inputs";
 import { AuthCard } from "./cards/auth-card";
 import { completeInviteAction } from "@/lib/server/auth/actions/write/completeInviteAction";
-import { validateAccountCreation } from "./lib/utils";
-import { useAuthForm } from "./lib/useAuthForm";
-import { PasswordCreationFields } from "./inputs/password-creation-fields";
+import { validateAccountCreation } from "@/lib/auth/auth-forms/validation";
+import { useAuthForm } from "@/lib/auth/auth-forms/hooks";
+import { PasswordCreationFields } from "../ui/forms/password-creation-fields";
 
 // ==============================================
 // Constants
@@ -62,41 +62,37 @@ export function CompleteAccountForm({ token }: { token: string }) {
   };
 
   return (
-    <Inset className="flex min-h-screen @container">
-      <h1 className="sr-only">Set Up Your Account</h1>
+    <AuthCard
+      description="Set up your account to get started"
+      className="min-h-[550px]"
+    >
+      <Container as="form" onSubmit={handleSubmit} spacing="block" noValidate>
+        <FormMotionAlertContainer
+          error={errorMessage}
+          spacing="group"
+          alertProps={{ id: FORM_ERROR_ID, spacing: "block" }}
+        >
+          <UsernameInput
+            id="username"
+            name="username"
+            placeholder="Create Username"
+            onChange={() => clearFieldError("username")}
+            aria-describedby={usernameError ? FORM_ERROR_ID : undefined}
+            aria-invalid={usernameError}
+            autoFocus
+          />
 
-      <AuthCard
-        description="Set up your account to get started"
-        className="min-h-[550px]"
-      >
-        <Container as="form" onSubmit={handleSubmit} spacing="block" noValidate>
-          <FormMotionAlertContainer
-            error={errorMessage}
-            spacing="group"
-            alertProps={{ id: FORM_ERROR_ID, spacing: "block" }}
-          >
-            <UsernameInput
-              id="username"
-              name="username"
-              placeholder="Create Username"
-              onChange={() => clearFieldError("username")}
-              aria-describedby={usernameError ? FORM_ERROR_ID : undefined}
-              aria-invalid={usernameError}
-              autoFocus
-            />
+          <PasswordCreationFields
+            fieldHasError={fieldHasError}
+            clearFieldError={clearFieldError}
+            formErrorId={FORM_ERROR_ID}
+          />
+        </FormMotionAlertContainer>
 
-            <PasswordCreationFields
-              fieldHasError={fieldHasError}
-              clearFieldError={clearFieldError}
-              formErrorId={FORM_ERROR_ID}
-            />
-          </FormMotionAlertContainer>
-
-          <Button type="submit" disabled={isPending}>
-            {isPending ? "Setting up account…" : "Set Up Account"}
-          </Button>
-        </Container>
-      </AuthCard>
-    </Inset>
+        <Button type="submit" disabled={isPending}>
+          {isPending ? "Setting up account…" : "Set Up Account"}
+        </Button>
+      </Container>
+    </AuthCard>
   );
 }

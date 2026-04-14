@@ -2,7 +2,7 @@
 
 import { DialogClose } from "@/components/ui/feedback/dialog";
 import { Container } from "@/components/ui/layout/containers";
-import { StatusBadge } from "@/components/leads/status";
+import { StatusBadge } from "@/components/field-controls/status";
 import { ArrowLeftFromLine } from "lucide-react";
 import { formatDate } from "@/lib/utils/dates";
 import { LeadHeaderDropdown } from "@/components/lead-details/view-lead/header/header-dropdown";

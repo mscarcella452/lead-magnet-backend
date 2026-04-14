@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 import { resend, getAppUrl, getEmailFrom } from "../utils";
 import { EMAIL_SUBJECTS } from "../constants";
 import { formatExpiry } from "@/lib/utils/dates";
+import { buildVerifyEmailUrl } from "@/lib/server/auth/helpers";
 
 /**
  * Send email verification email with verification link
@@ -17,7 +18,7 @@ export async function sendEmailVerificationEmail(
   expiresAt: Date,
 ): Promise<{ success: boolean; error?: string }> {
   const appUrl = getAppUrl();
-  const verificationLink = `${appUrl}/auth/verify-email?token=${token}`;
+  const verificationLink = `${appUrl}${buildVerifyEmailUrl(token)}`;
   const expiryDuration = formatExpiry(expiresAt);
 
   try {

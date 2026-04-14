@@ -39,13 +39,13 @@ export const CONTACT_ACTION_CONFIGS: Array<{
     buildHref: (phone) => `tel:${phone.replace(/\D/g, "")}`,
     requires: "phone",
   },
-  {
-    key: "video",
-    icon: Video,
-    label: "Video Call",
-    buildHref: (phone) => `facetime:${phone.replace(/\D/g, "")}`,
-    requires: "phone",
-  },
+  // {
+  //   key: "video",
+  //   icon: Video,
+  //   label: "Video Call",
+  //   buildHref: (phone) => `facetime:${phone.replace(/\D/g, "")}`,
+  //   requires: "phone",
+  // },
   {
     key: "website",
     icon: Globe,

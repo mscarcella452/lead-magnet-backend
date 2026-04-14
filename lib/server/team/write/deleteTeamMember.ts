@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { revalidateTag, revalidatePath } from "next/cache";
 import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 import { getCurrentUser } from "@/lib/auth/auth-server-actions";
-import { isAdminRole, isProtectedRole } from "@/lib/auth/constants";
+import { isAdminRole, isProtectedRole } from "@/lib/auth/rbac";
 
 export async function deleteTeamMember(targetUserId: string) {
   const currentUser = await getCurrentUser();

@@ -1,11 +1,12 @@
 "use server";
 import { requestEmailChange } from "@/lib/server/auth/write/requestEmailChange";
-import { validateEmailChange } from "@/components/auth/lib/utils";
-import { type FormState } from "@/components/auth/lib/types";
+import type { FormState } from "@/lib/forms/useFormState";
+import type { AuthFieldKey } from "@/lib/auth/auth-forms/types";
+import { validateEmailChange } from "@/lib/auth/auth-forms/validation";
 
 export async function requestEmailChangeAction(
   formData: FormData,
-): Promise<FormState> {
+): Promise<FormState<AuthFieldKey>> {
   const email = (formData.get("email") as string)?.trim();
   const currentPassword = formData.get("currentPassword") as string;
 

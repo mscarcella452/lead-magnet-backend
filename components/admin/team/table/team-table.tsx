@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/layout/table";
 import { TeamMember } from "@/lib/server/team/read/getTeamMembers";
 import { TeamTableRow } from "@/components/admin/team/table/team-table-row";
+import { UserRole } from "@prisma/client";
 
 // ============================================================
 // types
@@ -16,7 +17,8 @@ import { TeamTableRow } from "@/components/admin/team/table/team-table-row";
 
 interface TeamTableProps {
   initialMembers: TeamMember[];
-  currentUserRole?: string;
+  currentUserRole?: UserRole;
+  currentUserId?: string;
 }
 
 // ============================================================
@@ -35,7 +37,7 @@ const TABLE_HEADERS = [
 // Team Table
 // ============================================================
 
-export function TeamTable({ initialMembers, currentUserRole }: TeamTableProps) {
+export function TeamTable({ initialMembers, currentUserRole, currentUserId }: TeamTableProps) {
   return (
     <Table role="region" aria-label="Team table" className="@5xl:table-fixed">
       <TableHeader>
@@ -59,6 +61,7 @@ export function TeamTable({ initialMembers, currentUserRole }: TeamTableProps) {
             key={member.id}
             member={member}
             currentUserRole={currentUserRole}
+            currentUserId={currentUserId}
           />
         ))}
       </TableBody>

@@ -6,5 +6,10 @@ export const metadata = {
 };
 
 export default function AccountRecoveryPage() {
-  return <AccountRecoveryForm />;
+  return (
+    <>
+      <h1 className="sr-only">Account Recovery</h1>
+      <AccountRecoveryForm />
+    </>
+  );
 }

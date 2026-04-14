@@ -1,13 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/controls";
-import { Container, Inset } from "@/components/ui/layout/containers";
+import { Container } from "@/components/ui/layout/containers";
 import { AuthCard } from "./cards/auth-card";
-import { PasswordCreationFields } from "./inputs";
+import { PasswordCreationFields } from "@/components/ui/forms/password-creation-fields";
 import { FormMotionAlertContainer } from "@/components/ui/forms";
-import { useAuthForm } from "@/components/auth/lib/useAuthForm";
+import { useAuthForm } from "@/lib/auth/auth-forms/hooks";
 import { resetPasswordAction } from "@/lib/server/auth/actions/write/resetPasswordAction";
-import { validateResetPassword } from "./lib/utils";
+import { validateResetPassword } from "@/lib/auth/auth-forms/validation";
 
 // ==============================================
 // Constants
@@ -50,29 +50,25 @@ export function ResetPasswordForm({ token }: { token: string }) {
   };
 
   return (
-    <Inset className="flex min-h-screen @container">
-      <h1 className="sr-only">Reset Password</h1>
+    <AuthCard description="Set New Password">
+      <Container as="form" onSubmit={handleSubmit} spacing="block" noValidate>
+        <FormMotionAlertContainer
+          error={errorMessage}
+          spacing="group"
+          alertProps={{ id: FORM_ERROR_ID, spacing: "block" }}
+        >
+          <PasswordCreationFields
+            fieldHasError={fieldHasError}
+            clearFieldError={clearFieldError}
+            formErrorId={FORM_ERROR_ID}
+            isPassWordReset={true}
+          />
+        </FormMotionAlertContainer>
 
-      <AuthCard description="Set New Password">
-        <Container as="form" onSubmit={handleSubmit} spacing="block" noValidate>
-          <FormMotionAlertContainer
-            error={errorMessage}
-            spacing="group"
-            alertProps={{ id: FORM_ERROR_ID, spacing: "block" }}
-          >
-            <PasswordCreationFields
-              fieldHasError={fieldHasError}
-              clearFieldError={clearFieldError}
-              formErrorId={FORM_ERROR_ID}
-              isPassWordReset={true}
-            />
-          </FormMotionAlertContainer>
-
-          <Button type="submit" disabled={isPending} aria-busy={isPending}>
-            {isPending ? "Resetting password…" : "Reset Password"}
-          </Button>
-        </Container>
-      </AuthCard>
-    </Inset>
+        <Button type="submit" disabled={isPending} aria-busy={isPending}>
+          {isPending ? "Resetting password…" : "Reset Password"}
+        </Button>
+      </Container>
+    </AuthCard>
   );
 }

@@ -3,7 +3,7 @@
 import { Activity, ActivityType } from "@prisma/client";
 import { formatDate } from "@/lib/utils/dates";
 import { Container } from "@/components/ui/layout/containers";
-import { StatusBadge } from "@/components/leads/status";
+import { StatusBadge } from "@/components/field-controls/status";
 import {
   Card,
   CardHeader,
@@ -11,8 +11,8 @@ import {
   CardContent,
 } from "@/components/ui/layout/card";
 import { ComponentProps } from "react";
-import { PriorityBadge } from "@/components/leads/priority";
-import { SourceBadge } from "@/components/leads/source/source-badge";
+import { PriorityBadge } from "@/components/field-controls/priority";
+import { SourceBadge } from "@/components/field-controls/source";
 import { Badge } from "@/components/ui/feedback/badge";
 
 // ============================================================================

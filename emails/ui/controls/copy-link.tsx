@@ -1,5 +1,4 @@
-import { cn } from "@/lib/utils";
-import { Text, CodeInline, Tailwind } from "@react-email/components";
+import { Text, CodeInline, Tailwind, Section } from "@react-email/components";
 
 export const CopyLink = ({
   link,
@@ -9,11 +8,13 @@ export const CopyLink = ({
   className?: string;
 }) => {
   return (
-    <p className={cn("text-subtle-foreground text-sm break-all", className)}>
-      Or copy this link:{" "}
+    <Section className={className}>
+      <p className="text-subtle-foreground text-sm break-all mb-2">
+        Or copy this link:
+      </p>
       <CodeInline className="bg-card px-1.5 py-0.5 rounded text-sm font-mono">
         {link}
       </CodeInline>
-    </p>
+    </Section>
   );
 };

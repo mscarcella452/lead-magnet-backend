@@ -105,7 +105,7 @@ model User {
   username  String      @unique
   email     String      @unique
   password  String?
-  role      UserRole    @default(SALES)
+  role      UserRole    @default(MEMBER)
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   invite    UserInvite?
@@ -152,9 +152,6 @@ model EmailVerificationToken {
 enum UserRole {
   OWNER
   ADMIN
-  MARKETING
-  SUPPORT
-  SALES
-  HR
   DEV
+  MEMBER
 }

@@ -1,14 +1,13 @@
 "use client";
 
-import { Button, Link } from "@/components/ui/controls";
-import { Container, Inset } from "@/components/ui/layout/containers";
+import { Button } from "@/components/ui/controls";
+import { Container } from "@/components/ui/layout/containers";
 import { AuthCard } from "./cards/auth-card";
 import { FormMotionAlertContainer } from "@/components/ui/forms";
-import { useAuthForm } from "@/components/auth/lib/useAuthForm";
-import { EmailInput } from "./inputs/auth-inputs";
-import { validateEmail } from "./lib/utils";
+import { useAuthForm } from "@/lib/auth/auth-forms/hooks";
+import { EmailInput } from "@/components/ui/forms/form-inputs";
+import { validateEmail } from "@/lib/auth/auth-forms/validation";
 import { requestPasswordResetAction } from "@/lib/server/auth/actions/write/requestPasswordResetAction";
-import { toast } from "sonner";
 import { SuccessResetCard } from "./cards/success-reset-card";
 import { useState } from "react";
 
@@ -61,38 +60,31 @@ export function AccountRecoveryForm() {
 
   if (sentEmail)
     return (
-      <Inset className="flex min-h-screen @container">
-        <h1 className="sr-only">Recovery Email Sent</h1>
-        <SuccessResetCard sentEmail={sentEmail} setSentEmail={setSentEmail} />
-      </Inset>
+      <SuccessResetCard sentEmail={sentEmail} setSentEmail={setSentEmail} />
     );
 
   return (
-    <Inset className="flex min-h-screen @container">
-      <h1 className="sr-only">Account Recovery</h1>
+    <AuthCard description="We'll email your username and a password reset link.">
+      <Container as="form" onSubmit={handleSubmit} spacing="block" noValidate>
+        <FormMotionAlertContainer
+          error={errorMessage}
+          spacing="group"
+          alertProps={{ id: FORM_ERROR_ID, spacing: "block" }}
+        >
+          <EmailInput
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            onChange={() => clearFieldError("email")}
+            aria-describedby={emailError ? FORM_ERROR_ID : undefined}
+            aria-invalid={emailError}
+          />
+        </FormMotionAlertContainer>
 
-      <AuthCard description="We'll email your username and a password reset link.">
-        <Container as="form" onSubmit={handleSubmit} spacing="block" noValidate>
-          <FormMotionAlertContainer
-            error={errorMessage}
-            spacing="group"
-            alertProps={{ id: FORM_ERROR_ID, spacing: "block" }}
-          >
-            <EmailInput
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-              onChange={() => clearFieldError("email")}
-              aria-describedby={emailError ? FORM_ERROR_ID : undefined}
-              aria-invalid={emailError}
-            />
-          </FormMotionAlertContainer>
-
-          <Button type="submit" disabled={isPending} aria-busy={isPending}>
-            {isPending ? "Sending…" : "Send Recovery Link"}
-          </Button>
-        </Container>
-      </AuthCard>
-    </Inset>
+        <Button type="submit" disabled={isPending} aria-busy={isPending}>
+          {isPending ? "Sending…" : "Send Recovery Link"}
+        </Button>
+      </Container>
+    </AuthCard>
   );
 }

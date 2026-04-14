@@ -1,11 +1,10 @@
-import { Row, Column, Link, Img, Tailwind } from "@react-email/components";
+import { Row, Column, Img, Section } from "@react-email/components";
 import { EmailSeperator } from "./email-seperator";
 import { SITE_CONFIG } from "@/config";
-import { cn } from "@/lib/utils";
 
 export const EmailLogoHeader = () => {
   return (
-    <header>
+    <Section className="mb-8">
       <Row>
         <Column align="left">
           <Row className="w-auto table-fixed border-collapse border-spacing-0">
@@ -25,6 +24,6 @@ export const EmailLogoHeader = () => {
         </Column>
       </Row>
       <EmailSeperator className="mt-2" />
-    </header>
+    </Section>
   );
 };

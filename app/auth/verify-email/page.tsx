@@ -1,71 +1,84 @@
 import { VerifyEmailCard } from "@/components/auth/cards/verify-email-card";
-import { InvalidLinkCard } from "@/components/auth/cards/invalid-link-card";
-import {
-  verifyEmailChange,
-  getVerifyEmailError,
-} from "@/lib/server/auth/write/verifyEmailChange";
+import { verifyEmailChange } from "@/lib/server/auth/write/verifyEmailChange";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { Suspense } from "react";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { auth } from "@/auth";
+import { APP_ROUTES } from "@/lib/server/constants";
 import {
-  APP_ROUTES,
-  AUTH_ROUTES,
   buildAccountUrl,
-} from "@/lib/server/constants";
+  buildInvalidTokenUrl,
+} from "@/lib/server/auth/helpers";
+import { validateToken } from "@/lib/server/auth/read/validateToken";
+
+// ==============================================
+// Types
+// ==============================================
 
 interface VerifyEmailPageProps {
   searchParams: Promise<{ token?: string }>;
 }
 
-type sharedProps = {
-  title: string;
-  buttonLabel: string;
-  buttonHref: string;
-};
-
-interface VerifyEmailProps extends sharedProps {
+interface VerifyEmailProps {
   token: string;
 }
+
+// ==============================================
+// Page
+// ==============================================
 
 export default async function VerifyEmailPage({
   searchParams,
 }: VerifyEmailPageProps) {
   const { token } = await searchParams;
-  const session = await auth();
-  const buttonHref = session ? APP_ROUTES.ACCOUNT : AUTH_ROUTES.LOGIN;
-  const buttonLabel = session ? "Back to Account" : "Back to Login";
 
-  const sharedProps: sharedProps = {
-    title: "Email verification failed",
-    buttonLabel,
-    buttonHref,
-  };
-
-  if (!token)
-    return (
-      <InvalidLinkCard
-        message="This verification link is invalid or has expired."
-        {...sharedProps}
-      />
+  if (!token) {
+    redirect(
+      buildInvalidTokenUrl({ type: "emailVerification", reason: "not_found" }),
     );
+  }
+
+  const result = await validateToken(token, "emailVerification");
+
+  if (!result.valid) {
+    redirect(
+      buildInvalidTokenUrl({
+        type: "emailVerification",
+        reason: result.reason,
+      }),
+    );
+  }
 
   return (
-    <Suspense fallback={<VerifyEmailCard />}>
-      <VerifyEmail token={token} {...sharedProps} />
+    <Suspense
+      fallback={
+        <>
+          <h1 className="sr-only">Verify Email</h1>
+          <VerifyEmailCard />
+        </>
+      }
+    >
+      <VerifyEmail token={token} />
     </Suspense>
   );
 }
 
-async function VerifyEmail({ token, ...sharedProps }: VerifyEmailProps) {
+// ==============================================
+// VerifyEmail
+// ==============================================
+
+async function VerifyEmail({ token }: VerifyEmailProps) {
   try {
     await verifyEmailChange(token);
     revalidatePath(APP_ROUTES.ACCOUNT);
     redirect(buildAccountUrl({ emailVerified: true }));
   } catch (e) {
     if (isRedirectError(e)) throw e;
-    const errorMessage = getVerifyEmailError(e);
-    return <InvalidLinkCard message={errorMessage} {...sharedProps} />;
+    // If verification fails for any reason, redirect to invalid token page
+    redirect(
+      buildInvalidTokenUrl({ type: "emailVerification", reason: "not_found" }),
+    );
   }
+
+  return null; // Never reached - both paths redirect
 }

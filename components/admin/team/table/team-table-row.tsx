@@ -3,13 +3,12 @@ import { formatDate } from "@/lib/utils/dates";
 import { TeamRowActions } from "./team-row-actions";
 import { memo } from "react";
 import { TableRow, TableCell } from "@/components/ui/layout/table";
-import {
-  UserStatusBadge,
-  UserRoleBadge,
-} from "@/components/admin/team/table/badges";
+import { InviteStatusBadge } from "@/components/field-controls/invite-status";
 import { Container } from "@/components/ui/layout/containers";
 import { UserAvatar } from "@/components/avatars/user-avatar";
 import { Badge } from "@/components/ui/feedback/badge";
+import { RoleDropdown } from "@/components/field-controls/role";
+import { UserRole } from "@prisma/client";
 
 // ============================================================
 // types
@@ -17,7 +16,8 @@ import { Badge } from "@/components/ui/feedback/badge";
 
 interface TeamTableRowProps {
   member: TeamMember;
-  currentUserRole?: string;
+  currentUserRole?: UserRole;
+  currentUserId?: string;
 }
 // ============================================================
 // Team Table Row
@@ -26,6 +26,7 @@ interface TeamTableRowProps {
 export const TeamTableRow = memo(function TeamTableRow({
   member,
   currentUserRole,
+  currentUserId,
 }: TeamTableRowProps) {
   return (
     <TableRow>
@@ -60,11 +61,15 @@ export const TeamTableRow = memo(function TeamTableRow({
         </Badge>
       </TableCell>
       <TableCell>
-        <UserRoleBadge role={member.role} />
+        <RoleDropdown
+          userId={member.id}
+          currentRole={member.role}
+          currentUserId={currentUserId}
+        />
       </TableCell>
       {/* <TableCell className="truncate max-w-[50px]">{member.email}</TableCell> */}
       <TableCell>
-        <UserStatusBadge member={member} />
+        <InviteStatusBadge member={member} />
       </TableCell>
       <TableCell>
         <time
@@ -75,7 +80,11 @@ export const TeamTableRow = memo(function TeamTableRow({
         </time>
       </TableCell>
       <TableCell>
-        <TeamRowActions member={member} currentUserRole={currentUserRole} />
+        <TeamRowActions
+          member={member}
+          currentUserRole={currentUserRole}
+          currentUserId={currentUserId}
+        />
       </TableCell>
     </TableRow>
   );

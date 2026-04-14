@@ -31,12 +31,7 @@ export function EditLeadBody({ children }: { children: React.ReactNode }) {
 export function EditLeadFooter({ children }: { children: React.ReactNode }) {
   return (
     <DialogFooter className="sticky surface-background-blur bottom-0 px-dialog-x-md pb-dialog-y-md pt-dialog-y-sm">
-      <Container
-        spacing="block"
-        className="flex-col-reverse @lg:flex-row @lg:justify-end"
-      >
-        {children}
-      </Container>
+      {children}
     </DialogFooter>
   );
 }

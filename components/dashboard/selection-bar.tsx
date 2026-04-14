@@ -3,8 +3,8 @@ import { X } from "lucide-react";
 import { Separator } from "@/components/ui/layout/separator";
 import { Container } from "@/components/ui/layout/containers";
 import { motion, AnimatePresence } from "motion/react";
-import { BulkStatusDropdown } from "@/components/leads/status/bulk-status-dropdown";
-import { BulkPriorityDropdown } from "@/components/leads/priority/bulk-priority-dropdown";
+import { BulkStatusDropdown } from "@/components/field-controls/status";
+import { BulkPriorityDropdown } from "@/components/field-controls/priority";
 import { BulkExportButton } from "@/components/leads/export/bulk-export-button";
 import { Card } from "@/components/ui/layout/card";
 import { BulkDeleteLeadsButton } from "@/components/leads/delete/bulk-delete-leads-button";
@@ -75,28 +75,28 @@ export const SelectionBar = memo(function SelectionBar({
               <Container
                 spacing="group"
                 width="full"
-                className="grid @xs:grid-cols-2 @md:grid-cols-4"
+                className="grid @xs:grid-cols-2 @lg:grid-cols-4"
               >
                 <BulkStatusDropdown
                   selectedLeads={selectedLeads}
                   onSuccess={refetch}
-                  className="@max-lg:h-control-h-sm"
+                  // className="@max-lg:h-control-h-sm"
                 />
                 <BulkPriorityDropdown
                   selectedLeads={selectedLeads}
                   onSuccess={refetch}
-                  className="@max-lg:h-control-h-sm"
+                  // className="@max-lg:h-control-h-sm"
                 />
 
                 <BulkExportButton
                   selectedLeads={selectedLeads}
-                  className="@max-lg:h-control-h-sm "
+                  // className="@max-lg:h-control-h-sm "
                 />
 
                 <BulkDeleteLeadsButton
                   selectedLeads={selectedLeads}
                   onConfirm={handleDelete}
-                  className="@max-lg:h-control-h-sm"
+                  // className="@max-lg:h-control-h-sm"
                 />
               </Container>
 

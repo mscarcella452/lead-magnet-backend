@@ -1,6 +1,6 @@
 import "server-only";
 import { auth } from "@/auth";
-import { isAdminRole, isProtectedRole } from "@/lib/auth/constants";
+import { isAdminRole, isProtectedRole } from "@/lib/auth/rbac";
 import { prisma } from "@/lib/db";
 import { Prisma, UserRole } from "@prisma/client";
 

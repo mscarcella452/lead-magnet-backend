@@ -2,14 +2,15 @@
 import { completeUserInvite } from "@/lib/server/auth/write/completeUserInvite";
 import { signIn } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { type FormState } from "@/components/auth/lib/types";
-import { validateAccountCreation } from "@/components/auth/lib/utils";
+import type { FormState } from "@/lib/forms/useFormState";
+import type { AuthFieldKey } from "@/lib/auth/auth-forms/types";
+import { validateAccountCreation } from "@/lib/auth/auth-forms/validation";
 import { APP_ROUTES } from "@/lib/server/constants";
 
 export async function completeInviteAction(
   token: string,
   formData: FormData,
-): Promise<FormState> {
+): Promise<FormState<AuthFieldKey>> {
   const username = (formData.get("username") as string)?.trim();
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;

@@ -38,6 +38,7 @@ export const AUTH_ROUTES = {
   ACCOUNT_RECOVERY: "/auth/account-recovery",
   RESET_PASSWORD: "/auth/reset-password",
   VERIFY_EMAIL: "/auth/verify-email",
+  INVALID_TOKEN: "/auth/invalid-token",
 } as const;
 
 // ============================================================================
@@ -53,31 +54,6 @@ export const APP_ROUTES = {
 } as const;
 
 // ============================================================================
-// REDIRECT HELPERS
-// ============================================================================
-
-/** Build account URL with optional query params */
-export const buildAccountUrl = (params?: { emailVerified?: boolean }) => {
-  if (!params?.emailVerified) return APP_ROUTES.ACCOUNT;
-  return `${APP_ROUTES.ACCOUNT}?emailVerified=true`;
-};
-
-/** Build verify-email URL with token */
-export const buildVerifyEmailUrl = (token: string) => {
-  return `${AUTH_ROUTES.VERIFY_EMAIL}?token=${token}`;
-};
-
-/** Build complete-invite URL with token */
-export const buildCompleteInviteUrl = (token: string) => {
-  return `${AUTH_ROUTES.COMPLETE_INVITE}?token=${token}`;
-};
-
-/** Build reset-password URL with token */
-export const buildResetPasswordUrl = (token: string) => {
-  return `${AUTH_ROUTES.RESET_PASSWORD}?token=${token}`;
-};
-
-// ============================================================================
 // EXPIRY_MS
 // ============================================================================
 
@@ -88,8 +64,23 @@ export const EXPIRY_MS = {
 } as const;
 
 // ============================================================================
+// ERROR CODES
+// Used to identify specific errors in ActionResult responses
+// ============================================================================
+
+export const ERROR_CODES = {
+  UNAUTHORIZED: "UNAUTHORIZED",
+  EMAIL_EXISTS: "EMAIL_EXISTS",
+  INVITE_EXISTS: "INVITE_EXISTS",
+  EMAIL_SEND_FAILED: "EMAIL_SEND_FAILED",
+  INVALID_EMAIL: "INVALID_EMAIL",
+  FORBIDDEN_ROLE: "FORBIDDEN_ROLE",
+} as const;
+
+// ============================================================================
 // TYPES
 // ============================================================================
 
 export type AuthRoute = (typeof AUTH_ROUTES)[keyof typeof AUTH_ROUTES];
 export type AppRoute = (typeof APP_ROUTES)[keyof typeof APP_ROUTES];
+export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];

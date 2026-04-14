@@ -12,7 +12,7 @@ export const TeamHeader = () => {
       header="Team Management"
       subheader="Manage team members and their roles"
       action={
-        <DialogTrigger dialogType={DIALOG_TYPES.CREATE_NEW_MEMBER} asChild>
+        <DialogTrigger dialogType={DIALOG_TYPES.CREATE_MEMBER} asChild>
           <Button size="sm" mode="responsiveIcon">
             <Plus aria-hidden="true" />
             <ControlLabel>Add Team Member</ControlLabel>

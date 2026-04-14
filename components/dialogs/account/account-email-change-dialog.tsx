@@ -10,11 +10,11 @@ import {
 import { UpdateEmailAlertPayload } from "@/types/ui/dialog";
 import { Container } from "@/components/ui/layout/containers";
 import { FormMotionAlertContainer } from "@/components/ui/forms";
-import { PasswordInput } from "@/components/auth/inputs/auth-inputs";
-import { useAuthForm } from "@/components/auth/lib/useAuthForm";
+import { PasswordInput } from "@/components/ui/forms/form-inputs";
+import { useAuthForm } from "@/lib/auth/auth-forms/hooks";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/controls";
-import { validateEmailChange } from "@/components/auth/lib/utils";
+import { validateEmailChange } from "@/lib/auth/auth-forms/validation";
 import { requestEmailChangeAction } from "@/lib/server/auth/actions/write/requestEmailChangeAction";
 import { useAlertDialogs } from "@/components/dialogs/providers/alert-dialog-provider";
 

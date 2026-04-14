@@ -1,14 +1,3 @@
-import { UserRole } from "@prisma/client";
-// ============================================================================
-// types
-// ============================================================================
-
-export interface TeamMemberFormData {
-  name: string;
-  email: string;
-  role: UserRole | "";
-}
-
 // ============================================================================
 // Constants
 // Unique identifiers for all dialogs — used to open dialogs and map to
@@ -21,8 +10,7 @@ export const DIALOG_TYPES = {
   EDIT_LEAD: "editLead",
   VIEW_LEAD: "viewLead",
   // Team table
-  CREATE_NEW_MEMBER: "createNewMember",
-  EDIT_MEMBER: "editMember",
+  CREATE_MEMBER: "createMember",
 } as const;
 
 /** Alert dialog type identifiers. */
@@ -62,12 +50,7 @@ export type LeadUpdatePayload = {
 export type DialogPayloads = {
   [DIALOG_TYPES.EDIT_LEAD]: LeadUpdatePayload;
   [DIALOG_TYPES.VIEW_LEAD]: LeadUpdatePayload;
-  [DIALOG_TYPES.CREATE_NEW_MEMBER]: never;
-  [DIALOG_TYPES.EDIT_MEMBER]: {
-    userId: string;
-    initialFormData: TeamMemberFormData;
-    hasPendingInvite: boolean;
-  };
+  [DIALOG_TYPES.CREATE_MEMBER]: never;
 };
 
 /** Alert dialog payload types. */
@@ -78,6 +61,7 @@ export type AlertDialogPayloads = {
   };
   [ALERT_DIALOG_TYPES.DELETE_MEMBER]: {
     userId: string;
+    isPendingInvite?: boolean;
   };
   [ALERT_DIALOG_TYPES.UPDATE_EMAIL]: {
     newEmail: string;
@@ -117,10 +101,6 @@ export type EditLeadDialogPayload =
   DialogPayloads[typeof DIALOG_TYPES.EDIT_LEAD];
 export type ViewLeadDialogPayload =
   DialogPayloads[typeof DIALOG_TYPES.VIEW_LEAD];
-// export type CreateNewMemberDialogPayload =
-//   DialogPayloads[typeof DIALOG_TYPES.CREATE_NEW_MEMBER];
-export type EditMemberDialogPayload =
-  DialogPayloads[typeof DIALOG_TYPES.EDIT_MEMBER];
 
 // Alert Dialogs
 export type DeleteLeadAlertPayload =

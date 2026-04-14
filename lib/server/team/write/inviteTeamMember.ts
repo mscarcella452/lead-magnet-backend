@@ -7,7 +7,7 @@ import { sendInviteEmail } from "@/lib/server/email/send/sendInviteEmail";
 import { getCurrentUser } from "@/lib/auth/auth-server-actions";
 import { generateToken, generateUniqueUsername } from "@/lib/server/utils";
 import { EXPIRY_MS } from "@/lib/server/constants";
-import { ADMIN_ROLES } from "@/lib/auth/constants";
+import { ADMIN_ROLES } from "@/lib/auth/rbac";
 import { isValidEmail } from "@/lib/utils/validation";
 
 // ============================================================

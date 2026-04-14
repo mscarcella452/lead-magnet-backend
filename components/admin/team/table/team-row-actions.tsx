@@ -1,8 +1,8 @@
 import { TeamMember } from "@/lib/server/team/read/getTeamMembers";
 import { Button } from "@/components/ui/controls";
 import { useState, memo } from "react";
-import { Trash2, RotateCcw, Ellipsis, Pencil } from "lucide-react";
-import { isAdminRole, isProtectedRole } from "@/lib/auth/constants";
+import { Trash2, RotateCcw, Ellipsis } from "lucide-react";
+import { isAdminRole, isProtectedRole } from "@/lib/auth/rbac";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -11,12 +11,10 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/layout/dropdown-menu";
 import { AlertDialogTrigger } from "@/components/ui/feedback/alert-dialog";
-import { DialogTrigger } from "@/components/ui/feedback/dialog";
-import { ALERT_DIALOG_TYPES, DIALOG_TYPES } from "@/types/ui/dialog";
+import { ALERT_DIALOG_TYPES } from "@/types/ui/dialog";
 import { UserRole } from "@prisma/client";
 import { resendTeamMemberInviteAction } from "@/lib/server/team/actions/write/resendTeamMemberInviteAction";
 import { toast } from "sonner";
-
 // ============================================================
 // Team Row Actions
 // ============================================================
@@ -24,14 +22,18 @@ import { toast } from "sonner";
 export const TeamRowActions = memo(function TeamRowActions({
   member,
   currentUserRole,
+  currentUserId,
 }: {
   member: TeamMember;
-  currentUserRole?: string;
+  currentUserRole?: UserRole;
+  currentUserId?: string;
 }) {
   const [isResending, setIsResending] = useState(false);
 
   const isProtected = isProtectedRole(member.role);
-  const optionsAuth = !isAdminRole(currentUserRole);
+  const isSelf = currentUserId === member.id;
+  const isUnauthorized = !isAdminRole(currentUserRole);
+  const cannotDelete = isProtected || isSelf || isUnauthorized;
 
   const handleResendInvite = async () => {
     setIsResending(true);
@@ -47,9 +49,46 @@ export const TeamRowActions = memo(function TeamRowActions({
     }
   };
 
+  // User has accepted invite - only show delete button
+  if (member.password) {
+    // Don't show any actions if user cannot delete
+    if (cannotDelete) return null;
+    // return (
+    //   <LockKeyhole
+    //     aria-hidden="true"
+    //     // match size to sm button of alert dialog trigger
+    //     className="size-[1em] text-control-sm text-foreground opacity-50 mx-auto"
+    //   />
+    // );
+
+    return (
+      <AlertDialogTrigger
+        asChild
+        dialogType={ALERT_DIALOG_TYPES.DELETE_MEMBER}
+        payload={{ userId: member.id }}
+      >
+        <Button
+          variant="destructive"
+          intent="ghost"
+          size="sm"
+          mode="iconOnly"
+          aria-label="Delete Member"
+        >
+          <Trash2 aria-hidden="true" />
+        </Button>
+      </AlertDialogTrigger>
+    );
+  }
+
+  // User has pending invite - show dropdown with resend and cancel invite
+  // Don't show dropdown if unauthorized
+  if (isUnauthorized || isProtected) {
+    return null;
+  }
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild disabled={optionsAuth}>
+      <DropdownMenuTrigger asChild>
         <Button
           size="sm"
           intent="ghost"
@@ -57,35 +96,13 @@ export const TeamRowActions = memo(function TeamRowActions({
           aria-label={`Actions for ${member.name}`}
           title={`Actions for ${member.name}`}
         >
-          <Ellipsis className="size-4" aria-hidden="true" />
+          <Ellipsis aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
-          <DialogTrigger
-            asChild
-            dialogType={DIALOG_TYPES.EDIT_MEMBER}
-            payload={{
-              userId: member.id,
-              initialFormData: {
-                name: member?.name ?? "",
-                email: member?.email ?? "",
-                role: (member?.role as UserRole) ?? "",
-              },
-              hasPendingInvite: !!member.invite,
-            }}
-          >
-            <DropdownMenuItem>
-              <Pencil aria-hidden="true" />
-              Edit {isProtected ? "Owner" : "Member"}
-            </DropdownMenuItem>
-          </DialogTrigger>
-
-          <DropdownMenuItem
-            onClick={handleResendInvite}
-            disabled={isResending || isProtected}
-          >
-            <RotateCcw className="size-4" />
+          <DropdownMenuItem onClick={handleResendInvite} disabled={isResending}>
+            <RotateCcw aria-hidden="true" />
             Resend Invite
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -94,12 +111,14 @@ export const TeamRowActions = memo(function TeamRowActions({
           <AlertDialogTrigger
             asChild
             dialogType={ALERT_DIALOG_TYPES.DELETE_MEMBER}
-            payload={{ userId: member.id }}
-            disabled={isProtected}
+            payload={{
+              userId: member.id,
+              isPendingInvite: true,
+            }}
           >
             <DropdownMenuItem variant="destructive">
               <Trash2 aria-hidden="true" />
-              Delete Member
+              Cancel Invite
             </DropdownMenuItem>
           </AlertDialogTrigger>
         </DropdownMenuGroup>

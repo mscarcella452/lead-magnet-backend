@@ -16,7 +16,7 @@ import {
   type SummaryRowProps,
 } from "@/components/lead-details/view-lead/info/lib/types";
 import { hasAnyValue } from "@/components/lead-details/lib/helpers";
-import { PriorityBadge } from "@/components/leads/priority";
+import { PriorityBadge } from "@/components/field-controls/priority";
 import { LeadPriority } from "@prisma/client";
 
 // ====================================================

@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "@/components/ui/feedback/error-boundary";
-import { Inset, Container } from "@/components/ui/layout/containers";
+import { Container } from "@/components/ui/layout/containers";
 import { SectionHeading } from "@/components/ui/layout/blocks";
 import {
   StatsCardsError,
@@ -20,26 +20,24 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const resolvedSearchParams = await searchParams;
 
   return (
-    <Inset as="main" variant="content">
-      <Container as="section" spacing="section" width="constrained">
-        <Container spacing="content" position="start" width="full">
-          <SectionHeading
-            header="Dashboard"
-            subheader="Track and manage leads from your fitness campaigns"
-            action={<ExportAllButton />}
-          />
-          <ErrorBoundary fallbackRender={StatsCardsError}>
-            <Suspense fallback={<StatsCardsSkeleton />}>
-              <StatsSection />
-            </Suspense>
-          </ErrorBoundary>
-        </Container>
-        <ErrorBoundary fallbackRender={LeadsPanelError}>
-          <Suspense fallback={<LeadsPanelSkeleton />}>
-            <LeadsSection searchParams={resolvedSearchParams} />
+    <Container as="section" spacing="section" width="constrained">
+      <Container spacing="content" position="start" width="full">
+        <SectionHeading
+          header="Dashboard"
+          subheader="Track and manage leads from your fitness campaigns"
+          action={<ExportAllButton />}
+        />
+        <ErrorBoundary fallbackRender={StatsCardsError}>
+          <Suspense fallback={<StatsCardsSkeleton />}>
+            <StatsSection />
           </Suspense>
         </ErrorBoundary>
       </Container>
-    </Inset>
+      <ErrorBoundary fallbackRender={LeadsPanelError}>
+        <Suspense fallback={<LeadsPanelSkeleton />}>
+          <LeadsSection searchParams={resolvedSearchParams} />
+        </Suspense>
+      </ErrorBoundary>
+    </Container>
   );
 }

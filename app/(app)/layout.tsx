@@ -2,8 +2,9 @@ import { AdminNav } from "@/components/navigation/AdminNav";
 import { getCurrentUser } from "@/lib/auth/auth-server-actions";
 import { redirect } from "next/navigation";
 import { AUTH_ROUTES } from "@/lib/server/constants";
-import { isAdminRole } from "@/lib/auth/constants";
+import { isAdminRole } from "@/lib/auth/rbac";
 import { BfcacheGuard } from "@/components/auth/bfcache-guard";
+import { Inset } from "@/components/ui/layout/containers";
 
 export default async function AppLayout({
   children,
@@ -23,7 +24,9 @@ export default async function AppLayout({
        * via the browser's back/forward cache (bfcache). */}
       <BfcacheGuard />
       <AdminNav isAdmin={isAdmin} user={user} />
-      {children}
+      <Inset as="main" variant="content">
+        {children}
+      </Inset>
     </div>
   );
 }

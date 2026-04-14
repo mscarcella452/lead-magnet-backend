@@ -1,10 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { Button } from "@/components/ui/controls";
 import { Container } from "@/components/ui/layout/containers";
 import { AuthCard } from "./auth-card";
 import { AUTH_ROUTES } from "@/lib/server/constants";
+import { formatExpiry } from "@/lib/utils";
+import { EXPIRY_MS } from "@/lib/server/constants";
 
 // ==============================================
 // Types
@@ -29,6 +30,10 @@ export const SuccessResetCard = ({
 
   const handleBackToLogin = () => router.push(AUTH_ROUTES.LOGIN);
 
+  const expiryDuration = formatExpiry(
+    new Date(Date.now() + EXPIRY_MS.passwordReset),
+  );
+
   return (
     <AuthCard description="">
       <Container spacing="block" className="text-center">
@@ -37,7 +42,7 @@ export const SuccessResetCard = ({
             We sent a reset link to{" "}
             <span className="text-foreground font-medium">{sentEmail}</span>.
           </p>
-          <p>It expires in 24 hours.</p>
+          <p>It expires in {expiryDuration}.</p>
         </Container>
         <Container spacing="group">
           <Button intent="solid" onClick={handleResend}>

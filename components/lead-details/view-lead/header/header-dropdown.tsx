@@ -35,7 +35,7 @@ interface LeadHeaderDropdownProps {
 const COMMUNICATION_ACTIONS = [
   { label: "Message", icon: Mail },
   { label: "Call", icon: Phone },
-  { label: "Video Call", icon: Video },
+  // { label: "Video Call", icon: Video },
 ] as const;
 
 // ============================================================================

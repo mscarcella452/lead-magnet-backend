@@ -4,6 +4,7 @@ import * as React from "react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { Button, ButtonProps } from "@/components/ui/controls";
 import { cn } from "@/lib/utils/classnames";
+import { Container, ContainerProps } from "@/components/ui/layout/containers";
 
 // ============================================================================
 // DialogHeader - Header section with title and description
@@ -24,13 +25,26 @@ AlertDialogHeader.displayName = "AlertDialogHeader";
 // AlertDialogFooter - Footer section for actions and metadata
 // ============================================================================
 
+interface AlertDialogFooterProps extends Omit<ContainerProps, "className"> {
+  className?: string;
+  layout?: "default" | "responsive" | "custom";
+}
+
 const AlertDialogFooter = ({
   className,
+  layout = "responsive",
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
+}: AlertDialogFooterProps) => (
+  <Container
+    spacing="group"
     className={cn(
-      "flex flex-col-reverse @lg:flex-row @lg:justify-end @lg:items-center gap-2",
+      {
+        "flex flex-row justify-end items-center": layout === "default",
+      },
+      {
+        "flex flex-col-reverse @md:flex-row @md:justify-end @md:items-center":
+          layout === "responsive",
+      },
       className,
     )}
     {...props}

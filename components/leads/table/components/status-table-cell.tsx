@@ -1,6 +1,6 @@
 import { memo, useCallback } from "react";
 import { TableCell } from "@/components/ui/layout/table";
-import { StatusDropdown } from "@/components/leads/status/status-dropdown";
+import { StatusDropdown } from "@/components/field-controls/status";
 import { updateLeadStatusAction } from "@/lib/server/leads/actions/write/updateLeadStatusAction";
 import { invalidateLeadWithRelationsCache } from "@/lib/server/leads/cache";
 import { toast } from "sonner";

@@ -39,8 +39,8 @@ const buttonVariants = cva(
 export interface EmailButtonProps {
   children: string;
   href: string;
-  intent?: Intent;
-  size?: Size;
+  // intent?: Intent;
+  // size?: Size;
   className?: string;
 }
 
@@ -48,12 +48,16 @@ export const EmailButton = ({
   children,
   className,
   href,
-  intent,
-  size,
+  // intent,
+  // size,
 }: EmailButtonProps) => {
   return (
     <Button
-      className={cn(buttonVariants({ intent, size }), className)}
+      // className={cn(buttonVariants({ intent, size }), className)}
+      className={cn(
+        "py-3 px-4 text-sm bg-brand text-brand-foreground hover:bg-brand-hover inline-block rounded-lg transition-colors duration-500 cursor-pointer w-fit font-medium",
+        className,
+      )}
       href={href}
     >
       {children}

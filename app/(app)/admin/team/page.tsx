@@ -3,12 +3,12 @@ import { Suspense } from "react";
 import { auth } from "@/auth";
 import { ErrorBoundary } from "@/components/ui/feedback/error-boundary";
 import { APP_ROUTES } from "@/lib/server/constants";
-import { isAdminRole } from "@/lib/auth/constants";
+import { isAdminRole } from "@/lib/auth/rbac";
 import { TeamError } from "@/components/admin/team/states/team-error";
 import { TeamSkeleton } from "@/components/admin/team/states/team-skeleton";
 import { TeamHeader } from "@/components/admin/team/team-header";
 import { TeamSection } from "@/components/admin/team/team-section";
-import { Inset, Container } from "@/components/ui/layout/containers";
+import { Container } from "@/components/ui/layout/containers";
 
 export const metadata = {
   title: "Team Management",
@@ -24,17 +24,15 @@ export default async function AdminTeamPage() {
   }
 
   return (
-    <Inset as="main" variant="content">
-      <Container as="section" spacing="section" width="constrained">
-        <Container spacing="content" position="start" width="full">
-          <TeamHeader />
-          <ErrorBoundary fallbackRender={TeamError}>
-            <Suspense fallback={<TeamSkeleton />}>
-              <TeamSection />
-            </Suspense>
-          </ErrorBoundary>
-        </Container>
+    <Container as="section" spacing="section" width="constrained">
+      <Container spacing="content" position="start" width="full">
+        <TeamHeader />
+        <ErrorBoundary fallbackRender={TeamError}>
+          <Suspense fallback={<TeamSkeleton />}>
+            <TeamSection />
+          </Suspense>
+        </ErrorBoundary>
       </Container>
-    </Inset>
+    </Container>
   );
 }

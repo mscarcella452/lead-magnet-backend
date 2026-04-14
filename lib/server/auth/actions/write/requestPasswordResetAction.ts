@@ -1,7 +1,8 @@
 "use server";
 import { requestPasswordReset } from "@/lib/server/auth/write/requestPasswordReset";
-import { type FormState } from "@/components/auth/lib/types";
-import { validateEmail } from "@/components/auth/lib/utils";
+import type { FormState } from "@/lib/forms/useFormState";
+import type { AuthFieldKey } from "@/lib/auth/auth-forms/types";
+import { validateEmail } from "@/lib/auth/auth-forms/validation";
 import { headers } from "next/headers";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
@@ -22,7 +23,7 @@ const ratelimit = new Ratelimit({
 
 export async function requestPasswordResetAction(
   formData: FormData,
-): Promise<FormState> {
+): Promise<FormState<AuthFieldKey>> {
   const email = (formData.get("email") as string)?.trim();
 
   // ==============================================

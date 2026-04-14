@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { Button } from "@/components/ui/controls";
+import { Button, ButtonProps } from "@/components/ui/controls";
 import { cn } from "@/lib/utils/classnames";
 import { useDialogContext } from "./dialog-context";
 import { X } from "lucide-react";
+import { Container, ContainerProps } from "@/components/ui/layout/containers";
 
 // ============================================================================
 // DialogClose - Close button with context integration
@@ -75,19 +76,32 @@ DialogBody.displayName = "DialogBody";
 // DialogFooter - Footer section for actions and metadata
 // ============================================================================
 
-const DialogFooter = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
+interface DialogFooterProps extends Omit<ContainerProps, "className"> {
+  className?: string;
+  layout?: "default" | "responsive" | "custom";
+}
+
+const DialogFooter = ({
+  className,
+  layout = "responsive",
+  ...props
+}: DialogFooterProps) => (
+  <Container
+    spacing="group"
     className={cn(
-      "flex items-center justify-between gap-2 text-sm text-muted-foreground",
+      "text-sm text-muted-foreground",
+      {
+        "flex flex-row justify-end items-center": layout === "default",
+      },
+      {
+        "flex flex-col-reverse @md:flex-row @md:justify-end @md:items-center ":
+          layout === "responsive",
+      },
       className,
     )}
     {...props}
   />
-));
+);
 DialogFooter.displayName = "DialogFooter";
 
 // ============================================================================

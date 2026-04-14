@@ -18,7 +18,7 @@ import {
   EditSectionBlock,
   EditSummaryBlock,
 } from "@/components/lead-details/edit-lead/shared/edit-components";
-import { Button } from "@/components/ui/controls/button";
+
 import { useDialogs } from "@/components/dialogs/providers/dialog-provider";
 import { updateLeadAction } from "@/lib/server/leads/actions/write/updateLeadAction";
 import { invalidateLeadWithRelationsCache } from "@/lib/server/leads/cache";
@@ -27,6 +27,7 @@ import {
   EditLeadBody,
   EditLeadFooter,
 } from "@/components/lead-details/edit-lead/shared/edit-lead-shell";
+import { Button } from "@/components/ui/controls";
 
 // ============================================================================
 // Types
@@ -125,22 +126,19 @@ export function EditLeadDetails({ lead, onConfirm }: EditLeadDetailsProps) {
 
       <EditLeadFooter>
         <Button
-          type="button"
           intent="outline"
           size="sm"
           onClick={closeDialog}
           disabled={isSubmitting}
-          className="@max-lg:h-11"
         >
           Cancel
         </Button>
         <Button
-          type="button"
+          intent="solid"
           size="sm"
           onClick={handleSubmit}
           disabled={isSubmitting}
           aria-disabled={isSubmitting}
-          className="@max-lg:h-11"
         >
           {isSubmitting ? "Saving..." : "Save Changes"}
         </Button>

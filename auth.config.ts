@@ -8,7 +8,7 @@ import {
   PasswordNotSetError,
   InvalidCredentialsError,
   MissingFieldsError,
-} from "@/lib/auth/auth-errors";
+} from "@/lib/auth/nextauth-errors";
 
 const prisma = new PrismaClient();
 

@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { revalidateTag, revalidatePath } from "next/cache";
+import { CACHE_TAGS, REVALIDATE_PATHS } from "@/lib/server/constants";
 
 const prisma = new PrismaClient();
 
@@ -41,6 +43,10 @@ export async function completeUserInvite(
   });
 
   await prisma.userInvite.delete({ where: { id: invite.id } });
+
+  // Revalidate team members cache so admin page shows updated status
+  revalidateTag(CACHE_TAGS.TEAM_MEMBERS, {});
+  revalidatePath(REVALIDATE_PATHS.ADMIN_TEAM);
 
   return { username: normalizedUsername };
 }

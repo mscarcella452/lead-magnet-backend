@@ -1,3 +1,4 @@
+import { Section } from "@react-email/components";
 import { EmailSeperator } from "./email-seperator";
 
 interface EmailFooterProps {
@@ -7,13 +8,13 @@ interface EmailFooterProps {
 
 export const EmailFooter = ({ description, children }: EmailFooterProps) => {
   return (
-    <div>
-      <EmailSeperator className="mb-2" />
+    <Section className="mt-8">
+      <EmailSeperator />
       {description && (
-        <p className="text-subtle-foreground text-xs">{description}</p>
+        <p className="text-subtle-foreground text-xs mt-2">{description}</p>
       )}
 
       {children}
-    </div>
+    </Section>
   );
 };

@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 import { formatExpiry } from "@/lib/utils/dates";
 import { resend, getAppUrl, getEmailFrom } from "../utils";
 import { EMAIL_SUBJECTS } from "../constants";
+import { buildCompleteInviteUrl } from "@/lib/server/auth/helpers";
 
 /**
  * Send invite email with magic link for setting password
@@ -16,7 +17,7 @@ export async function sendInviteEmail(
   expiresAt: Date,
 ): Promise<{ success: boolean; error?: string }> {
   const appUrl = getAppUrl();
-  const magicLink = `${appUrl}/auth/complete-invite?token=${token}`;
+  const magicLink = `${appUrl}${buildCompleteInviteUrl(token)}`;
   const expiryDuration = formatExpiry(expiresAt);
 
   try {

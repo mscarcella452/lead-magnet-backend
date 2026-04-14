@@ -1,13 +1,14 @@
 "use server";
 import { updateProfile } from "@/lib/server/auth/write/updateProfile";
-import { validateProfile } from "@/components/auth/lib/utils";
-import { type FormState } from "@/components/auth/lib/types";
+import type { FormState } from "@/lib/forms/useFormState";
+import type { AuthFieldKey } from "@/lib/auth/auth-forms/types";
+import { validateProfile } from "@/lib/auth/auth-forms/validation";
 import { revalidatePath } from "next/cache";
 import { APP_ROUTES } from "@/lib/server/constants";
 
 export async function updateProfileAction(
   formData: FormData,
-): Promise<FormState> {
+): Promise<FormState<AuthFieldKey>> {
   const name = (formData.get("name") as string)?.trim();
   const username = (formData.get("username") as string)?.trim();
 

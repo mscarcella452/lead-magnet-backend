@@ -1,10 +1,10 @@
 import {
-  Body,
-  Button,
+  // Body,
+  // Button,
   // Container,
-  Head,
-  Heading,
-  Html,
+  // Head,
+  // Heading,
+  // Html,
   Preview,
   Section,
   Tailwind,
@@ -17,15 +17,9 @@ import { EmailButton, CopyLink } from "./ui/controls";
 import {
   EmailHeading,
   EmailWrapper,
-  EmailSeperator,
-  EmailCard,
-  EmailInfoCard,
   EmailFooter,
   EmailLogoHeader,
 } from "./ui/layout";
-import { Container } from "@/components/ui/layout/containers";
-import { Card } from "@/components/ui/layout/card";
-import { Label } from "@/components/ui/forms/label";
 
 interface InviteEmailProps {
   name: string;
@@ -40,34 +34,26 @@ export default function InviteEmail({
 }: InviteEmailProps) {
   return (
     <EmailWrapper preview="Welcome! Set your password to get started">
-      <div className="mx-auto max-w-[600px]">
-        <EmailLogoHeader />
-
-        <div className="my-8">
-          <EmailHeading
-            heading={
-              <>
-                Welcome, <span className="capitalize">{name}</span>!
-              </>
-            }
-            subHeading="You've been invited to join our lead dashboard. Click the button below to set your password and get started."
-          />
-
-          <Section className="mt-4 mb-6">
-            <Button
-              className="inline-block bg-brand text-brand-foreground hover:bg-brand-hover border border-[#333] px-4 py-3 rounded-lg no-underline font-medium text-sm"
-              href={magicLink}
-            >
-              Set Your Password
-            </Button>
-          </Section>
-
-          <CopyLink link={magicLink} />
-        </div>
-        <EmailFooter
-          description={`This link expires in ${expiryDuration}. If you didn't request this, you can safely ignore this email`}
+      <EmailLogoHeader />
+      <Section>
+        <EmailHeading
+          heading={
+            <>
+              Welcome, <span className="capitalize">{name}</span>!
+            </>
+          }
+          subHeading="You've been invited to join our lead dashboard. Click the button below to set your password and get started."
         />
-      </div>
+
+        <Section className="mt-4 mb-6">
+          <EmailButton href={magicLink}>Set Your Password</EmailButton>
+        </Section>
+
+        <CopyLink link={magicLink} />
+      </Section>
+      <EmailFooter
+        description={`This link expires in ${expiryDuration}. If you didn't request this, you can safely ignore this email`}
+      />
     </EmailWrapper>
   );
 }
